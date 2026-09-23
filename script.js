@@ -1,6 +1,6 @@
 /* ==========================================
    CENTRAL SAC ALCANS
-   GLOBO + REDE DE CONEXÕES
+   CONSTELAÇÕES
 ========================================== */
 
 
@@ -14,13 +14,13 @@ const ctx =
 let particles = [];
 
 
-const particleCount = 65;
+const particleCount = 95;
 
-const connectionDistance = 155;
+const connectionDistance = 145;
 
 
 /* ==========================================
-   CONFIGURAÇÃO DO CANVAS
+   TAMANHO DO CANVAS
 ========================================== */
 
 function resizeCanvas() {
@@ -64,7 +64,7 @@ window.addEventListener(
 
 
 /* ==========================================
-   CRIAR PARTÍCULAS
+   CRIAR CONSTELAÇÕES
 ========================================== */
 
 function createParticles() {
@@ -90,16 +90,16 @@ function createParticles() {
 
             vx:
                 (Math.random() - 0.5)
-                * 0.22,
+                * 0.25,
 
             vy:
                 (Math.random() - 0.5)
-                * 0.22,
+                * 0.25,
 
             radius:
                 Math.random() *
-                1.4 +
-                0.6
+                1.5 +
+                0.5
 
         });
 
@@ -117,46 +117,49 @@ createParticles();
 function updateParticles() {
 
     particles.forEach(
-        p => {
+        particle => {
 
-            p.x += p.vx;
+            particle.x +=
+                particle.vx;
 
-            p.y += p.vy;
+
+            particle.y +=
+                particle.vy;
 
 
             if (
-                p.x < 0
+                particle.x < 0
             ) {
 
-                p.x =
+                particle.x =
                     canvas.clientWidth;
             }
 
 
             if (
-                p.x >
+                particle.x >
                 canvas.clientWidth
             ) {
 
-                p.x = 0;
+                particle.x = 0;
             }
 
 
             if (
-                p.y < 0
+                particle.y < 0
             ) {
 
-                p.y =
+                particle.y =
                     canvas.clientHeight;
             }
 
 
             if (
-                p.y >
+                particle.y >
                 canvas.clientHeight
             ) {
 
-                p.y = 0;
+                particle.y = 0;
             }
 
         }
@@ -165,7 +168,7 @@ function updateParticles() {
 
 
 /* ==========================================
-   CONEXÕES DA REDE
+   LINHAS DAS CONSTELAÇÕES
 ========================================== */
 
 function drawConnections() {
@@ -192,6 +195,7 @@ function drawConnections() {
             const dx =
                 a.x - b.x;
 
+
             const dy =
                 a.y - b.y;
 
@@ -213,7 +217,7 @@ function drawConnections() {
                         1 -
                         distance /
                         connectionDistance
-                    ) * 0.20;
+                    ) * 0.22;
 
 
                 ctx.beginPath();
@@ -255,491 +259,31 @@ function drawConnections() {
 
 
 /* ==========================================
-   PARTÍCULAS
+   PONTOS DAS CONSTELAÇÕES
 ========================================== */
 
 function drawParticles() {
 
     particles.forEach(
-        p => {
+        particle => {
 
             ctx.beginPath();
 
 
             ctx.arc(
-                p.x,
-                p.y,
-                p.radius,
+                particle.x,
+                particle.y,
+                particle.radius,
                 0,
                 Math.PI * 2
             );
 
 
             ctx.fillStyle =
-                "rgba(255,255,255,0.42)";
+                "rgba(255,255,255,0.55)";
 
 
             ctx.fill();
-
-        }
-    );
-}
-
-
-/* ==========================================
-   POSIÇÃO DO GLOBO
-========================================== */
-
-function getGlobePosition() {
-
-    return {
-
-        x:
-            canvas.clientWidth * 0.70,
-
-        y:
-            canvas.clientHeight * 0.52
-
-    };
-}
-
-
-/* ==========================================
-   GLOBO
-========================================== */
-
-function drawGlobe(time) {
-
-    const position =
-        getGlobePosition();
-
-
-    const centerX =
-        position.x;
-
-    const centerY =
-        position.y;
-
-
-    /*
-        Globo pequeno,
-        mas claramente visível.
-    */
-
-    const radius = 65;
-
-
-    /* =====================================
-       BRILHO EXTERNO
-    ====================================== */
-
-    const glow =
-        ctx.createRadialGradient(
-            centerX,
-            centerY,
-            radius * 0.3,
-            centerX,
-            centerY,
-            radius * 2.2
-        );
-
-
-    glow.addColorStop(
-        0,
-        "rgba(255,255,255,0.15)"
-    );
-
-
-    glow.addColorStop(
-        0.5,
-        "rgba(255,255,255,0.05)"
-    );
-
-
-    glow.addColorStop(
-        1,
-        "rgba(255,255,255,0)"
-    );
-
-
-    ctx.beginPath();
-
-
-    ctx.arc(
-        centerX,
-        centerY,
-        radius * 2.2,
-        0,
-        Math.PI * 2
-    );
-
-
-    ctx.fillStyle =
-        glow;
-
-
-    ctx.fill();
-
-
-    /* =====================================
-       ESFERA
-    ====================================== */
-
-    ctx.beginPath();
-
-
-    ctx.arc(
-        centerX,
-        centerY,
-        radius,
-        0,
-        Math.PI * 2
-    );
-
-
-    ctx.fillStyle =
-        "rgba(88,28,0,0.42)";
-
-
-    ctx.fill();
-
-
-    ctx.strokeStyle =
-        "rgba(255,255,255,0.88)";
-
-
-    ctx.lineWidth = 2;
-
-
-    ctx.stroke();
-
-
-    /* =====================================
-       LINHA EQUATORIAL
-    ====================================== */
-
-    ctx.beginPath();
-
-
-    ctx.moveTo(
-        centerX - radius,
-        centerY
-    );
-
-
-    ctx.lineTo(
-        centerX + radius,
-        centerY
-    );
-
-
-    ctx.strokeStyle =
-        "rgba(255,255,255,0.48)";
-
-
-    ctx.lineWidth = 1;
-
-
-    ctx.stroke();
-
-
-    /* =====================================
-       LATITUDE SUPERIOR
-    ====================================== */
-
-    ctx.beginPath();
-
-
-    ctx.ellipse(
-        centerX,
-        centerY,
-        radius,
-        radius * 0.38,
-        0,
-        0,
-        Math.PI * 2
-    );
-
-
-    ctx.strokeStyle =
-        "rgba(255,255,255,0.55)";
-
-
-    ctx.lineWidth = 1;
-
-
-    ctx.stroke();
-
-
-    /* =====================================
-       LATITUDE INFERIOR
-    ====================================== */
-
-    ctx.beginPath();
-
-
-    ctx.ellipse(
-        centerX,
-        centerY,
-        radius,
-        radius * 0.70,
-        0,
-        0,
-        Math.PI * 2
-    );
-
-
-    ctx.strokeStyle =
-        "rgba(255,255,255,0.28)";
-
-
-    ctx.stroke();
-
-
-    /* =====================================
-       LONGITUDE CENTRAL
-    ====================================== */
-
-    ctx.beginPath();
-
-
-    ctx.ellipse(
-        centerX,
-        centerY,
-        radius * 0.38,
-        radius,
-        0,
-        0,
-        Math.PI * 2
-    );
-
-
-    ctx.strokeStyle =
-        "rgba(255,255,255,0.55)";
-
-
-    ctx.stroke();
-
-
-    /* =====================================
-       LONGITUDE LATERAL
-    ====================================== */
-
-    ctx.beginPath();
-
-
-    ctx.ellipse(
-        centerX,
-        centerY,
-        radius * 0.72,
-        radius,
-        0,
-        0,
-        Math.PI * 2
-    );
-
-
-    ctx.strokeStyle =
-        "rgba(255,255,255,0.28)";
-
-
-    ctx.stroke();
-
-
-    /* =====================================
-       PONTO CENTRAL PULSANTE
-    ====================================== */
-
-    const pulse =
-        Math.sin(
-            time * 0.003
-        ) * 2 + 5;
-
-
-    ctx.beginPath();
-
-
-    ctx.arc(
-        centerX,
-        centerY,
-        pulse,
-        0,
-        Math.PI * 2
-    );
-
-
-    ctx.fillStyle =
-        "rgba(255,255,255,0.90)";
-
-
-    ctx.fill();
-}
-
-
-/* ==========================================
-   CONEXÕES DO GLOBO
-========================================== */
-
-function drawGlobeConnections(time) {
-
-    const position =
-        getGlobePosition();
-
-
-    const centerX =
-        position.x;
-
-    const centerY =
-        position.y;
-
-
-    const points = [
-
-        {
-            x:
-                centerX - 180,
-
-            y:
-                centerY - 95,
-
-            label:
-                "CLIENTE"
-        },
-
-        {
-            x:
-                centerX + 180,
-
-            y:
-                centerY - 80,
-
-            label:
-                "ATENDIMENTO"
-        },
-
-        {
-            x:
-                centerX - 175,
-
-            y:
-                centerY + 105,
-
-            label:
-                "PROCEDIMENTO"
-        },
-
-        {
-            x:
-                centerX + 175,
-
-            y:
-                centerY + 100,
-
-            label:
-                "SOLUÇÃO"
-        }
-
-    ];
-
-
-    points.forEach(
-        (point, index) => {
-
-            const pulse =
-                Math.sin(
-                    time * 0.002 +
-                    index
-                ) * 0.15 + 0.85;
-
-
-            /* =================================
-               LINHA
-            ================================= */
-
-            ctx.beginPath();
-
-
-            ctx.moveTo(
-                centerX,
-                centerY
-            );
-
-
-            ctx.lineTo(
-                point.x,
-                point.y
-            );
-
-
-            ctx.strokeStyle =
-                `rgba(
-                    255,
-                    255,
-                    255,
-                    ${0.20 * pulse}
-                )`;
-
-
-            ctx.lineWidth = 1;
-
-
-            ctx.stroke();
-
-
-            /* =================================
-               PONTO
-            ================================= */
-
-            ctx.beginPath();
-
-
-            ctx.arc(
-                point.x,
-                point.y,
-                3,
-                0,
-                Math.PI * 2
-            );
-
-
-            ctx.fillStyle =
-                `rgba(
-                    255,
-                    255,
-                    255,
-                    ${0.75 * pulse}
-                )`;
-
-
-            ctx.fill();
-
-
-            /* =================================
-               TEXTO
-            ================================= */
-
-            ctx.font =
-                "700 9px Nunito";
-
-
-            ctx.fillStyle =
-                `rgba(
-                    255,
-                    255,
-                    255,
-                    ${0.65 * pulse}
-                )`;
-
-
-            ctx.textAlign =
-                "center";
-
-
-            ctx.fillText(
-                point.label,
-                point.x,
-                point.y - 11
-            );
 
         }
     );
@@ -750,7 +294,7 @@ function drawGlobeConnections(time) {
    ANIMAÇÃO
 ========================================== */
 
-function animate(time) {
+function animate() {
 
     ctx.clearRect(
         0,
@@ -769,25 +313,13 @@ function animate(time) {
     drawParticles();
 
 
-    drawGlobeConnections(
-        time
-    );
-
-
-    drawGlobe(
-        time
-    );
-
-
     requestAnimationFrame(
         animate
     );
 }
 
 
-requestAnimationFrame(
-    animate
-);
+animate();
 
 
 /* ==========================================
@@ -911,10 +443,6 @@ loginForm.addEventListener(
             "";
 
 
-        /* =================================
-           VALIDAR CAMPOS
-        ================================= */
-
         if (
             !username ||
             !password
@@ -926,10 +454,6 @@ loginForm.addEventListener(
             return;
         }
 
-
-        /* =================================
-           LOADING
-        ================================= */
 
         buttonText.classList.add(
             "hidden"
@@ -944,10 +468,6 @@ loginForm.addEventListener(
         loginButton.disabled =
             true;
 
-
-        /* =================================
-           SIMULAÇÃO
-        ================================= */
 
         setTimeout(
             () => {
