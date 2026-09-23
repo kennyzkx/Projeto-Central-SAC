@@ -1,15 +1,11 @@
 :root {
 
-    --orange: #d65305;
-    --orange-light: #e86a16;
-    --orange-dark: #b94400;
+    --orange: #ff6500;
+    --orange-light: #ff7b1a;
+    --orange-dark: #e65300;
 
-    --black: #090909;
-
+    --black: #070707;
     --white: #ffffff;
-
-    --gray: #777777;
-    --gray-light: #eeeeee;
 
     --font: "Nunito", sans-serif;
 }
@@ -34,21 +30,17 @@ body {
 
 
 body {
-
     font-family: var(--font);
-
-    background: #090909;
-
+    background: var(--black);
     overflow: hidden;
 }
 
 
 /* =====================================
-   CONTAINER PRINCIPAL
+   CONTAINER
 ===================================== */
 
 .login-container {
-
     width: 100%;
     height: 100vh;
 
@@ -57,11 +49,10 @@ body {
 
 
 /* =====================================
-   ÁREA LARANJA
+   ÁREA ALCANS
 ===================================== */
 
 .brand-section {
-
     position: relative;
 
     width: 60%;
@@ -72,32 +63,31 @@ body {
     background:
 
         radial-gradient(
-            circle at 65% 50%,
-            rgba(238, 102, 15, 0.32),
-            transparent 32%
+            circle at 70% 45%,
+            rgba(255, 123, 26, 0.38),
+            transparent 35%
         ),
 
         radial-gradient(
-            circle at 10% 90%,
-            rgba(70, 20, 0, 0.22),
+            circle at 20% 85%,
+            rgba(180, 55, 0, 0.25),
             transparent 45%
         ),
 
         linear-gradient(
             135deg,
-            #b94400 0%,
-            #ca4d03 48%,
-            #b64000 100%
+            #e85300 0%,
+            #ff6500 48%,
+            #d94d00 100%
         );
 }
 
 
 /* =====================================
-   BRILHO
+   BRILHO CENTRAL
 ===================================== */
 
 .brand-section::before {
-
     content: "";
 
     position: absolute;
@@ -105,10 +95,11 @@ body {
     width: 650px;
     height: 650px;
 
-    left: 72%;
+    left: 70%;
     top: 50%;
 
-    transform: translate(-50%, -50%);
+    transform:
+        translate(-50%, -50%);
 
     border-radius: 50%;
 
@@ -116,7 +107,7 @@ body {
 
         radial-gradient(
             circle,
-            rgba(255, 150, 50, 0.15),
+            rgba(255, 160, 65, 0.18),
             transparent 68%
         );
 
@@ -125,11 +116,10 @@ body {
 
 
 /* =====================================
-   SOMBRA LATERAL
+   SOMBRA
 ===================================== */
 
 .brand-section::after {
-
     content: "";
 
     position: absolute;
@@ -140,7 +130,7 @@ body {
 
         linear-gradient(
             90deg,
-            rgba(0, 0, 0, 0.12),
+            rgba(0, 0, 0, 0.08),
             transparent 45%,
             rgba(0, 0, 0, 0.12)
         );
@@ -150,11 +140,10 @@ body {
 
 
 /* =====================================
-   CANVAS
+   CONSTELAÇÕES
 ===================================== */
 
 #networkCanvas {
-
     position: absolute;
 
     inset: 0;
@@ -171,7 +160,6 @@ body {
 ===================================== */
 
 .brand-overlay {
-
     position: absolute;
 
     inset: 0;
@@ -183,7 +171,7 @@ body {
         radial-gradient(
             circle at 70% 50%,
             transparent 20%,
-            rgba(60, 15, 0, 0.08) 100%
+            rgba(120, 35, 0, 0.08) 100%
         );
 
     pointer-events: none;
@@ -195,15 +183,15 @@ body {
 ===================================== */
 
 .brand-content {
-
     position: absolute;
 
     left: 8%;
     top: 50%;
 
-    transform: translateY(-50%);
+    transform:
+        translateY(-50%);
 
-    width: min(480px, 68%);
+    width: min(480px, 70%);
 
     z-index: 5;
 }
@@ -214,14 +202,10 @@ body {
 ===================================== */
 
 .brand-logo {
-
     color: white;
 
-    font-size: clamp(
-        48px,
-        5vw,
-        74px
-    );
+    font-size:
+        clamp(48px, 5vw, 74px);
 
     font-weight: 900;
 
@@ -230,7 +214,6 @@ body {
     line-height: 0.95;
 
     text-shadow:
-
         0 5px 20px
         rgba(0, 0, 0, 0.18);
 }
@@ -241,14 +224,11 @@ body {
 ===================================== */
 
 .brand-line {
-
     width: 65px;
     height: 4px;
 
     margin:
-
-        22px 0
-        25px;
+        22px 0 25px;
 
     border-radius: 10px;
 
@@ -261,14 +241,10 @@ body {
 ===================================== */
 
 .brand-content h1 {
-
     color: white;
 
-    font-size: clamp(
-        27px,
-        3vw,
-        40px
-    );
+    font-size:
+        clamp(27px, 3vw, 40px);
 
     font-weight: 800;
 
@@ -279,19 +255,12 @@ body {
 
 
 /* =====================================
-   TEXTO
+   DESCRIÇÃO
 ===================================== */
 
 .brand-content p {
-
     color:
-
-        rgba(
-            255,
-            255,
-            255,
-            0.88
-        );
+        rgba(255, 255, 255, 0.90);
 
     font-size: 17px;
 
@@ -308,7 +277,6 @@ body {
 ===================================== */
 
 .connection-status {
-
     display: inline-flex;
 
     align-items: center;
@@ -318,7 +286,6 @@ body {
     margin-top: 30px;
 
     padding:
-
         9px 15px;
 
     border-radius: 30px;
@@ -330,30 +297,17 @@ body {
     font-weight: 700;
 
     background:
-
-        rgba(
-            0,
-            0,
-            0,
-            0.16
-        );
+        rgba(0, 0, 0, 0.16);
 
     border:
-
         1px solid
-        rgba(
-            255,
-            255,
-            255,
-            0.18
-        );
+        rgba(255, 255, 255, 0.20);
 
     backdrop-filter: blur(8px);
 }
 
 
 .status-dot {
-
     width: 8px;
     height: 8px;
 
@@ -362,14 +316,8 @@ body {
     background: white;
 
     box-shadow:
-
         0 0 10px
-        rgba(
-            255,
-            255,
-            255,
-            0.8
-        );
+        rgba(255, 255, 255, 0.85);
 
     animation:
         statusPulse 2s infinite;
@@ -380,19 +328,13 @@ body {
 
     0%,
     100% {
-
         opacity: 1;
-
-        transform:
-            scale(1);
+        transform: scale(1);
     }
 
     50% {
-
         opacity: 0.45;
-
-        transform:
-            scale(0.75);
+        transform: scale(0.75);
     }
 }
 
@@ -402,7 +344,6 @@ body {
 ===================================== */
 
 .brand-footer {
-
     position: absolute;
 
     left: 8%;
@@ -411,19 +352,11 @@ body {
     z-index: 5;
 
     color:
-
-        rgba(
-            255,
-            255,
-            255,
-            0.55
-        );
+        rgba(255, 255, 255, 0.60);
 
     font-size: 12px;
 
     font-weight: 700;
-
-    letter-spacing: 0.5px;
 }
 
 
@@ -432,7 +365,6 @@ body {
 ===================================== */
 
 .login-section {
-
     width: 40%;
     height: 100%;
 
@@ -448,7 +380,6 @@ body {
 
 
 .login-box {
-
     width: 100%;
 
     max-width: 410px;
@@ -460,10 +391,10 @@ body {
 ===================================== */
 
 .login-label {
-
     display: block;
 
-    color: var(--orange);
+    color:
+        var(--orange);
 
     font-size: 12px;
 
@@ -476,7 +407,6 @@ body {
 
 
 .login-header h2 {
-
     color: #111111;
 
     font-size: 32px;
@@ -490,7 +420,6 @@ body {
 
 
 .login-header p {
-
     color: #777777;
 
     font-size: 15px;
@@ -502,17 +431,15 @@ body {
 
 
 /* =====================================
-   INPUT
+   INPUTS
 ===================================== */
 
 .input-group {
-
     margin-bottom: 22px;
 }
 
 
 .input-group label {
-
     display: block;
 
     color: #252525;
@@ -526,15 +453,12 @@ body {
 
 
 .input-group input {
-
     width: 100%;
 
     height: 52px;
 
     border:
-
-        1px solid
-        #dddddd;
+        1px solid #dddddd;
 
     border-radius: 9px;
 
@@ -551,32 +475,23 @@ body {
     outline: none;
 
     transition:
-
         border-color 0.2s,
         box-shadow 0.2s;
 }
 
 
 .input-group input::placeholder {
-
     color: #aaaaaa;
 }
 
 
 .input-group input:focus {
-
     border-color:
         var(--orange);
 
     box-shadow:
-
         0 0 0 3px
-        rgba(
-            214,
-            83,
-            5,
-            0.10
-        );
+        rgba(255, 101, 0, 0.12);
 }
 
 
@@ -585,19 +500,16 @@ body {
 ===================================== */
 
 .password-wrapper {
-
     position: relative;
 }
 
 
 .password-wrapper input {
-
     padding-right: 50px;
 }
 
 
 .password-toggle {
-
     position: absolute;
 
     right: 14px;
@@ -625,21 +537,18 @@ body {
 
 
 .password-toggle:hover {
-
     color:
         var(--orange);
 }
 
 
 .password-toggle svg {
-
     width: 19px;
     height: 19px;
 }
 
 
 .hidden {
-
     display: none !important;
 }
 
@@ -649,13 +558,10 @@ body {
 ===================================== */
 
 .login-message {
-
     min-height: 20px;
 
     margin:
-
-        5px 0
-        12px;
+        5px 0 12px;
 
     color:
         var(--orange);
@@ -671,7 +577,6 @@ body {
 ===================================== */
 
 .login-button {
-
     position: relative;
 
     width: 100%;
@@ -700,7 +605,6 @@ body {
     justify-content: center;
 
     transition:
-
         background 0.2s,
         transform 0.2s,
         box-shadow 0.2s;
@@ -708,7 +612,6 @@ body {
 
 
 .login-button:hover {
-
     background:
         var(--orange-dark);
 
@@ -716,26 +619,18 @@ body {
         translateY(-1px);
 
     box-shadow:
-
         0 8px 20px
-        rgba(
-            180,
-            65,
-            0,
-            0.20
-        );
+        rgba(230, 83, 0, 0.25);
 }
 
 
 .login-button:active {
-
     transform:
         translateY(0);
 }
 
 
 .button-arrow {
-
     position: absolute;
 
     right: 18px;
@@ -751,19 +646,12 @@ body {
 ===================================== */
 
 .button-loader {
-
     width: 18px;
     height: 18px;
 
     border:
-
         2px solid
-        rgba(
-            255,
-            255,
-            255,
-            0.35
-        );
+        rgba(255, 255, 255, 0.35);
 
     border-top-color:
         white;
@@ -778,7 +666,6 @@ body {
 @keyframes spin {
 
     to {
-
         transform:
             rotate(360deg);
     }
@@ -790,7 +677,6 @@ body {
 ===================================== */
 
 .login-footer {
-
     margin-top: 30px;
 
     text-align: center;
@@ -815,7 +701,6 @@ body {
 
 
     .login-container {
-
         height: auto;
 
         min-height: 100vh;
@@ -825,7 +710,6 @@ body {
 
 
     .brand-section {
-
         width: 100%;
 
         height: 430px;
@@ -833,7 +717,6 @@ body {
 
 
     .login-section {
-
         width: 100%;
 
         min-height: 500px;
@@ -844,22 +727,9 @@ body {
 
 
     .brand-content {
-
         left: 8%;
 
         width: 84%;
-    }
-
-
-    .brand-logo {
-
-        font-size: 52px;
-    }
-
-
-    .brand-content h1 {
-
-        font-size: 30px;
     }
 }
 
@@ -867,13 +737,11 @@ body {
 @media (max-width: 500px) {
 
     .brand-section {
-
         height: 390px;
     }
 
 
     .brand-content {
-
         left: 25px;
 
         width:
@@ -882,25 +750,21 @@ body {
 
 
     .brand-logo {
-
         font-size: 44px;
     }
 
 
     .brand-content h1 {
-
         font-size: 25px;
     }
 
 
     .brand-content p {
-
         font-size: 14px;
     }
 
 
     .brand-footer {
-
         left: 25px;
     }
 }
