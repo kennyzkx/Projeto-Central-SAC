@@ -15,7 +15,7 @@ let particles = [];
 const networkSettings = {
 
     // Quanto maior, mais pontos aparecem
-    density: 8500,
+    density: 4000,
 
     // Distância máxima para criar conexões
     connectionDistance: 165,
