@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ALCANS | Central SAC</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <main class="login-container">
+
+        <!-- LADO ESQUERDO -->
+        <section class="brand-section">
+
+            <canvas id="networkCanvas"></canvas>
+
+            <div class="brand-content">
+
+                <div class="brand-logo">
+                    ALCANS
+                </div>
+
+                <div class="brand-line"></div>
+
+                <h1>
+                    Central de<br>
+                    Atendimento
+                </h1>
+
+                <p>
+                    Tudo o que você precisa para realizar
+                    um atendimento com mais rapidez,
+                    qualidade e excelência.
+                </p>
+
+                <div class="connection-status">
+                    <span class="status-dot"></span>
+                    Sistema interno ALCANS
+                </div>
+
+            </div>
+
+            <div class="brand-footer">
+                <span>ALCANS</span>
+                <span>•</span>
+                <span>Central SAC</span>
+            </div>
+
+        </section>
+
+
+        <!-- LADO DIREITO -->
+        <section class="login-section">
+
+            <div class="login-box">
+
+                <div class="mobile-logo">
+                    ALCANS
+                </div>
+
+                <div class="login-header">
+
+                    <span class="login-label">
+                        CENTRAL SAC
+                    </span>
+
+                    <h2>
+                        Bem-vindo de volta
+                    </h2>
+
+                    <p>
+                        Entre com suas credenciais para acessar
+                        a Central de Atendimento.
+                    </p>
+
+                </div>
+
+
+                <form id="loginForm">
+
+                    <!-- USUÁRIO -->
+                    <div class="input-group">
+
+                        <label for="username">
+                            Usuário
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <span class="input-icon">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M20 21a8 8 0 0 0-16 0"/>
+                                    <circle cx="12" cy="7" r="4"/>
+                                </svg>
+                            </span>
+
+                            <input
+                                type="email"
+                                id="username"
+                                placeholder="Digite seu usuário"
+                                autocomplete="username"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- SENHA -->
+                    <div class="input-group">
+
+                        <div class="password-label">
+
+                            <label for="password">
+                                Senha
+                            </label>
+
+                        </div>
+
+                        <div class="input-wrapper">
+
+                            <span class="input-icon">
+                                <svg viewBox="0 0 24 24">
+                                    <rect
+                                        x="3"
+                                        y="11"
+                                        width="18"
+                                        height="10"
+                                        rx="2"
+                                    />
+
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                                </svg>
+                            </span>
+
+                            <input
+                                type="password"
+                                id="password"
+                                placeholder="Digite sua senha"
+                                autocomplete="current-password"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                id="togglePassword"
+                                class="password-toggle"
+                                aria-label="Mostrar senha"
+                            >
+
+                                <svg
+                                    id="eyeOpen"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/>
+                                    <circle cx="12" cy="12" r="3"/>
+                                </svg>
+
+                                <svg
+                                    id="eyeClosed"
+                                    class="hidden"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path d="M3 3l18 18"/>
+                                    <path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"/>
+                                    <path d="M9.9 5.1A10.7 10.7 0 0 1 12 5c6.5 0 10 7 10 7a17.2 17.2 0 0 1-3.1 3.9"/>
+                                    <path d="M6.1 6.1C3.5 8 2 12 2 12s3.5 7 10 7a10.7 10.7 0 0 0 4.1-.8"/>
+                                </svg>
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- MENSAGEM -->
+                    <div
+                        id="loginMessage"
+                        class="login-message"
+                    ></div>
+
+
+                    <!-- BOTÃO -->
+                    <button
+                        type="submit"
+                        id="loginButton"
+                        class="login-button"
+                    >
+
+                        <span id="buttonText">
+                            ENTRAR
+                        </span>
+
+                        <span
+                            id="buttonLoader"
+                            class="loader hidden"
+                        ></span>
+
+                        <svg
+                            class="button-arrow"
+                            viewBox="0 0 24 24"
+                        >
+                            <path d="M5 12h14"/>
+                            <path d="m13 6 6 6-6 6"/>
+                        </svg>
+
+                    </button>
+
+                </form>
+
+
+                <div class="login-footer">
+
+                    <span class="footer-line"></span>
+
+                    <span>
+                        Acesso restrito aos colaboradores
+                    </span>
+
+                    <span class="footer-line"></span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
