@@ -1,19 +1,18 @@
 :root {
+    --orange: #ff6a00;
+    --orange-light: #ff7a1a;
+    --orange-dark: #e95700;
 
-    --orange: #ff6500;
-    --orange-light: #ff7b1a;
-    --orange-dark: #e65300;
+    --black: #111111;
+    --black-soft: #171717;
 
-    --black: #070707;
     --white: #ffffff;
+    --gray: #777777;
+    --gray-light: #eeeeee;
 
     --font: "Nunito", sans-serif;
 }
 
-
-/* =====================================
-   RESET
-===================================== */
 
 * {
     margin: 0;
@@ -22,23 +21,18 @@
 }
 
 
-html,
 body {
-    width: 100%;
-    height: 100%;
-}
+    min-height: 100vh;
 
-
-body {
     font-family: var(--font);
+
     background: var(--black);
+
+    color: var(--black);
+
     overflow: hidden;
 }
 
-
-/* =====================================
-   CONTAINER
-===================================== */
 
 .login-container {
     width: 100%;
@@ -48,11 +42,12 @@ body {
 }
 
 
-/* =====================================
-   ÁREA ALCANS
-===================================== */
+/* =====================================================
+   LADO ALCANS
+===================================================== */
 
 .brand-section {
+
     position: relative;
 
     width: 60%;
@@ -61,89 +56,24 @@ body {
     overflow: hidden;
 
     background:
-
         radial-gradient(
-            circle at 70% 45%,
-            rgba(255, 123, 26, 0.38),
-            transparent 35%
+            circle at 20% 30%,
+            rgba(255,255,255,0.12),
+            transparent 30%
         ),
-
-        radial-gradient(
-            circle at 20% 85%,
-            rgba(180, 55, 0, 0.25),
-            transparent 45%
-        ),
-
         linear-gradient(
             135deg,
-            #e85300 0%,
-            #ff6500 48%,
-            #d94d00 100%
-        );
-}
-
-
-/* =====================================
-   BRILHO CENTRAL
-===================================== */
-
-.brand-section::before {
-    content: "";
-
-    position: absolute;
-
-    width: 650px;
-    height: 650px;
-
-    left: 70%;
-    top: 50%;
-
-    transform:
-        translate(-50%, -50%);
-
-    border-radius: 50%;
-
-    background:
-
-        radial-gradient(
-            circle,
-            rgba(255, 160, 65, 0.18),
-            transparent 68%
+            #ff7200 0%,
+            #ff6200 45%,
+            #e95000 100%
         );
 
-    pointer-events: none;
+    color: white;
 }
 
-
-/* =====================================
-   SOMBRA
-===================================== */
-
-.brand-section::after {
-    content: "";
-
-    position: absolute;
-
-    inset: 0;
-
-    background:
-
-        linear-gradient(
-            90deg,
-            rgba(0, 0, 0, 0.08),
-            transparent 45%,
-            rgba(0, 0, 0, 0.12)
-        );
-
-    pointer-events: none;
-}
-
-
-/* =====================================
-   CONSTELAÇÕES
-===================================== */
 
 #networkCanvas {
+
     position: absolute;
 
     inset: 0;
@@ -151,163 +81,120 @@ body {
     width: 100%;
     height: 100%;
 
-    z-index: 1;
+    opacity: 0.65;
 }
 
 
-/* =====================================
-   OVERLAY
-===================================== */
+.brand-content {
 
-.brand-overlay {
-    position: absolute;
-
-    inset: 0;
+    position: relative;
 
     z-index: 2;
 
-    background:
+    width: min(620px, 80%);
 
-        radial-gradient(
-            circle at 70% 50%,
-            transparent 20%,
-            rgba(120, 35, 0, 0.08) 100%
-        );
+    margin: auto;
 
-    pointer-events: none;
+    height: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: flex-start;
 }
 
-
-/* =====================================
-   CONTEÚDO
-===================================== */
-
-.brand-content {
-    position: absolute;
-
-    left: 8%;
-    top: 50%;
-
-    transform:
-        translateY(-50%);
-
-    width: min(480px, 70%);
-
-    z-index: 5;
-}
-
-
-/* =====================================
-   LOGO
-===================================== */
 
 .brand-logo {
-    color: white;
 
-    font-size:
-        clamp(48px, 5vw, 74px);
+    font-size: clamp(45px, 5vw, 78px);
 
     font-weight: 900;
 
-    letter-spacing: -3px;
+    letter-spacing: 5px;
 
-    line-height: 0.95;
+    line-height: 1;
+
+    margin-bottom: 24px;
 
     text-shadow:
-        0 5px 20px
-        rgba(0, 0, 0, 0.18);
+        0 4px 20px rgba(0,0,0,0.12);
 }
 
-
-/* =====================================
-   LINHA
-===================================== */
 
 .brand-line {
-    width: 65px;
-    height: 4px;
 
-    margin:
-        22px 0 25px;
-
-    border-radius: 10px;
+    width: 70px;
+    height: 5px;
 
     background: white;
+
+    border-radius: 20px;
+
+    margin-bottom: 28px;
 }
 
 
-/* =====================================
-   TÍTULO
-===================================== */
-
 .brand-content h1 {
-    color: white;
 
-    font-size:
-        clamp(27px, 3vw, 40px);
+    font-size: clamp(34px, 4vw, 58px);
+
+    line-height: 1.05;
 
     font-weight: 800;
 
-    line-height: 1.15;
+    letter-spacing: -1px;
 
-    margin-bottom: 18px;
+    margin-bottom: 24px;
 }
 
 
-/* =====================================
-   DESCRIÇÃO
-===================================== */
-
 .brand-content p {
-    color:
-        rgba(255, 255, 255, 0.90);
 
-    font-size: 17px;
+    max-width: 480px;
 
-    line-height: 1.65;
+    font-size: 18px;
+
+    line-height: 1.7;
 
     font-weight: 500;
 
-    max-width: 460px;
+    color: rgba(255,255,255,0.88);
 }
 
 
-/* =====================================
-   STATUS
-===================================== */
-
 .connection-status {
-    display: inline-flex;
+
+    margin-top: 38px;
+
+    padding: 10px 16px;
+
+    display: flex;
 
     align-items: center;
 
     gap: 10px;
 
-    margin-top: 30px;
+    border: 1px solid rgba(255,255,255,0.25);
 
-    padding:
-        9px 15px;
+    background: rgba(255,255,255,0.08);
 
-    border-radius: 30px;
+    backdrop-filter: blur(8px);
 
-    color: white;
+    border-radius: 50px;
 
     font-size: 13px;
 
     font-weight: 700;
 
-    background:
-        rgba(0, 0, 0, 0.16);
-
-    border:
-        1px solid
-        rgba(255, 255, 255, 0.20);
-
-    backdrop-filter: blur(8px);
+    letter-spacing: 0.4px;
 }
 
 
 .status-dot {
+
     width: 8px;
     height: 8px;
 
@@ -316,235 +203,309 @@ body {
     background: white;
 
     box-shadow:
-        0 0 10px
-        rgba(255, 255, 255, 0.85);
+        0 0 10px white;
 
-    animation:
-        statusPulse 2s infinite;
+    animation: pulse 2s infinite;
 }
 
 
-@keyframes statusPulse {
+@keyframes pulse {
 
-    0%,
-    100% {
+    0%, 100% {
         opacity: 1;
         transform: scale(1);
     }
 
     50% {
-        opacity: 0.45;
-        transform: scale(0.75);
+        opacity: 0.4;
+        transform: scale(0.7);
     }
 }
 
 
-/* =====================================
-   FOOTER
-===================================== */
-
 .brand-footer {
+
     position: absolute;
 
-    left: 8%;
-    bottom: 28px;
+    z-index: 3;
 
-    z-index: 5;
+    bottom: 30px;
+    left: 45px;
 
-    color:
-        rgba(255, 255, 255, 0.60);
+    display: flex;
+
+    gap: 12px;
+
+    align-items: center;
 
     font-size: 12px;
 
     font-weight: 700;
+
+    letter-spacing: 1px;
+
+    color: rgba(255,255,255,0.65);
 }
 
 
-/* =====================================
+/* =====================================================
    LOGIN
-===================================== */
+===================================================== */
 
 .login-section {
+
     width: 40%;
     height: 100%;
 
+    background: #ffffff;
+
     display: flex;
 
-    align-items: center;
     justify-content: center;
 
-    background: white;
+    align-items: center;
 
     padding: 50px;
 }
 
 
 .login-box {
-    width: 100%;
 
-    max-width: 410px;
+    width: 100%;
+    max-width: 430px;
 }
 
 
-/* =====================================
-   CABEÇALHO
-===================================== */
+.mobile-logo {
+
+    display: none;
+}
+
+
+.login-header {
+
+    margin-bottom: 38px;
+}
+
 
 .login-label {
-    display: block;
 
-    color:
-        var(--orange);
+    display: inline-block;
+
+    margin-bottom: 13px;
+
+    color: var(--orange);
 
     font-size: 12px;
 
     font-weight: 900;
 
     letter-spacing: 2px;
-
-    margin-bottom: 14px;
 }
 
 
 .login-header h2 {
-    color: #111111;
 
-    font-size: 32px;
+    font-size: 34px;
+
+    line-height: 1.15;
 
     font-weight: 800;
 
-    line-height: 1.2;
+    color: #151515;
 
-    margin-bottom: 8px;
+    margin-bottom: 12px;
 }
 
 
 .login-header p {
-    color: #777777;
 
-    font-size: 15px;
+    color: #858585;
 
-    font-weight: 500;
+    font-size: 14px;
 
-    margin-bottom: 36px;
+    line-height: 1.6;
+
+    max-width: 370px;
 }
 
 
-/* =====================================
+/* =====================================================
    INPUTS
-===================================== */
+===================================================== */
 
 .input-group {
+
     margin-bottom: 22px;
 }
 
 
 .input-group label {
+
     display: block;
 
-    color: #252525;
+    margin-bottom: 8px;
+
+    color: #333333;
 
     font-size: 13px;
 
     font-weight: 800;
-
-    margin-bottom: 8px;
 }
 
 
-.input-group input {
+.input-wrapper {
+
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+}
+
+
+.input-wrapper input {
+
     width: 100%;
 
-    height: 52px;
+    height: 58px;
 
-    border:
-        1px solid #dddddd;
+    border: 1px solid #e3e3e3;
 
-    border-radius: 9px;
+    border-radius: 12px;
 
-    padding: 0 15px;
+    outline: none;
+
+    padding: 0 48px 0 50px;
 
     font-family: var(--font);
 
     font-size: 14px;
 
-    color: #222222;
+    font-weight: 600;
+
+    color: #222;
+
+    background: #fafafa;
+
+    transition: all 0.25s ease;
+}
+
+
+.input-wrapper input::placeholder {
+
+    color: #aaaaaa;
+
+    font-weight: 500;
+}
+
+
+.input-wrapper input:hover {
+
+    border-color: #d4d4d4;
+}
+
+
+.input-wrapper input:focus {
 
     background: white;
 
-    outline: none;
-
-    transition:
-        border-color 0.2s,
-        box-shadow 0.2s;
-}
-
-
-.input-group input::placeholder {
-    color: #aaaaaa;
-}
-
-
-.input-group input:focus {
-    border-color:
-        var(--orange);
+    border-color: var(--orange);
 
     box-shadow:
-        0 0 0 3px
-        rgba(255, 101, 0, 0.12);
+        0 0 0 4px rgba(255,106,0,0.10);
 }
 
 
-/* =====================================
+.input-icon {
+
+    position: absolute;
+
+    left: 17px;
+
+    z-index: 2;
+
+    width: 19px;
+
+    height: 19px;
+
+    color: #999;
+
+    pointer-events: none;
+}
+
+
+.input-icon svg {
+
+    width: 100%;
+    height: 100%;
+
+    fill: none;
+
+    stroke: currentColor;
+
+    stroke-width: 1.8;
+
+    stroke-linecap: round;
+
+    stroke-linejoin: round;
+}
+
+
+/* =====================================================
    SENHA
-===================================== */
-
-.password-wrapper {
-    position: relative;
-}
-
-
-.password-wrapper input {
-    padding-right: 50px;
-}
-
+===================================================== */
 
 .password-toggle {
+
     position: absolute;
 
     right: 14px;
-    top: 50%;
 
-    transform:
-        translateY(-50%);
-
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
 
     display: flex;
 
-    align-items: center;
     justify-content: center;
+    align-items: center;
 
     border: none;
 
     background: transparent;
 
-    color: #777777;
-
     cursor: pointer;
+
+    color: #999;
+
+    border-radius: 7px;
+
+    transition: 0.2s;
 }
 
 
 .password-toggle:hover {
-    color:
-        var(--orange);
+
+    color: var(--orange);
+
+    background: rgba(255,106,0,0.08);
 }
 
 
 .password-toggle svg {
+
     width: 19px;
     height: 19px;
+
+    fill: none;
+
+    stroke: currentColor;
+
+    stroke-width: 1.8;
+
+    stroke-linecap: round;
+
+    stroke-linejoin: round;
 }
 
 
@@ -553,218 +514,260 @@ body {
 }
 
 
-/* =====================================
-   MENSAGEM
-===================================== */
-
-.login-message {
-    min-height: 20px;
-
-    margin:
-        5px 0 12px;
-
-    color:
-        var(--orange);
-
-    font-size: 13px;
-
-    font-weight: 700;
-}
-
-
-/* =====================================
+/* =====================================================
    BOTÃO
-===================================== */
+===================================================== */
 
 .login-button {
-    position: relative;
 
     width: 100%;
-    height: 54px;
+
+    height: 58px;
 
     border: none;
 
-    border-radius: 9px;
+    border-radius: 12px;
 
-    background:
-        var(--orange);
+    background: var(--orange);
 
     color: white;
 
     font-family: var(--font);
 
-    font-size: 15px;
+    font-size: 13px;
 
-    font-weight: 800;
+    font-weight: 900;
+
+    letter-spacing: 1.5px;
 
     cursor: pointer;
 
     display: flex;
 
-    align-items: center;
     justify-content: center;
 
+    align-items: center;
+
+    gap: 13px;
+
+    position: relative;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 8px 20px rgba(255,106,0,0.20);
+
     transition:
-        background 0.2s,
-        transform 0.2s,
-        box-shadow 0.2s;
+        transform 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
 
 .login-button:hover {
-    background:
-        var(--orange-dark);
 
-    transform:
-        translateY(-1px);
+    background: var(--orange-dark);
+
+    transform: translateY(-2px);
 
     box-shadow:
-        0 8px 20px
-        rgba(230, 83, 0, 0.25);
+        0 12px 25px rgba(255,106,0,0.28);
 }
 
 
 .login-button:active {
-    transform:
-        translateY(0);
+
+    transform: translateY(0);
 }
 
 
 .button-arrow {
-    position: absolute;
 
-    right: 18px;
-
-    font-size: 20px;
-
-    font-weight: 500;
-}
-
-
-/* =====================================
-   LOADER
-===================================== */
-
-.button-loader {
     width: 18px;
     height: 18px;
 
-    border:
-        2px solid
-        rgba(255, 255, 255, 0.35);
+    fill: none;
 
-    border-top-color:
-        white;
+    stroke: currentColor;
+
+    stroke-width: 2;
+
+    stroke-linecap: round;
+
+    stroke-linejoin: round;
+
+    transition: transform 0.2s;
+}
+
+
+.login-button:hover .button-arrow {
+
+    transform: translateX(4px);
+}
+
+
+/* =====================================================
+   LOADER
+===================================================== */
+
+.loader {
+
+    width: 18px;
+    height: 18px;
+
+    border: 2px solid rgba(255,255,255,0.35);
+
+    border-top-color: white;
 
     border-radius: 50%;
 
-    animation:
-        spin 0.7s linear infinite;
+    animation: spin 0.7s linear infinite;
 }
 
 
 @keyframes spin {
 
     to {
-        transform:
-            rotate(360deg);
+        transform: rotate(360deg);
     }
 }
 
 
-/* =====================================
-   FOOTER LOGIN
-===================================== */
+/* =====================================================
+   MENSAGEM
+===================================================== */
 
-.login-footer {
-    margin-top: 30px;
+.login-message {
 
-    text-align: center;
+    min-height: 20px;
 
-    color: #999999;
+    margin: -5px 0 16px;
 
-    font-size: 11px;
+    font-size: 12px;
 
-    font-weight: 600;
+    font-weight: 700;
+
+    color: #d94040;
 }
 
 
-/* =====================================
+/* =====================================================
+   FOOTER
+===================================================== */
+
+.login-footer {
+
+    margin-top: 28px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    color: #b0b0b0;
+
+    font-size: 10px;
+
+    font-weight: 600;
+
+    text-align: center;
+}
+
+
+.footer-line {
+
+    height: 1px;
+
+    flex: 1;
+
+    background: #eeeeee;
+}
+
+
+/* =====================================================
    RESPONSIVO
-===================================== */
+===================================================== */
 
 @media (max-width: 900px) {
+
+    .brand-section {
+        width: 50%;
+    }
+
+    .login-section {
+        width: 50%;
+        padding: 35px;
+    }
+
+    .brand-content {
+        width: 80%;
+    }
+
+    .brand-content p {
+        font-size: 15px;
+    }
+
+}
+
+
+@media (max-width: 700px) {
 
     body {
         overflow: auto;
     }
 
-
     .login-container {
-        height: auto;
-
         min-height: 100vh;
-
-        flex-direction: column;
+        height: auto;
+        display: block;
     }
-
 
     .brand-section {
         width: 100%;
-
-        height: 430px;
+        height: 270px;
     }
 
+    .brand-content {
+        width: 85%;
+        align-items: center;
+        text-align: center;
+    }
+
+    .brand-logo {
+        font-size: 42px;
+        margin-bottom: 12px;
+    }
+
+    .brand-line {
+        width: 45px;
+        height: 3px;
+        margin-bottom: 14px;
+    }
+
+    .brand-content h1 {
+        font-size: 26px;
+        margin-bottom: 0;
+    }
+
+    .brand-content p,
+    .connection-status,
+    .brand-footer {
+        display: none;
+    }
 
     .login-section {
         width: 100%;
-
-        min-height: 500px;
-
-        padding:
-            40px 25px;
+        min-height: calc(100vh - 270px);
+        padding: 40px 25px;
     }
 
-
-    .brand-content {
-        left: 8%;
-
-        width: 84%;
-    }
-}
-
-
-@media (max-width: 500px) {
-
-    .brand-section {
-        height: 390px;
+    .login-box {
+        max-width: 450px;
     }
 
-
-    .brand-content {
-        left: 25px;
-
-        width:
-            calc(100% - 50px);
+    .mobile-logo {
+        display: none;
     }
 
-
-    .brand-logo {
-        font-size: 44px;
-    }
-
-
-    .brand-content h1 {
-        font-size: 25px;
-    }
-
-
-    .brand-content p {
-        font-size: 14px;
-    }
-
-
-    .brand-footer {
-        left: 25px;
-    }
 }
