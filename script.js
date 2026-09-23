@@ -1,88 +1,168 @@
 /* =====================================================
-   REDE / CONSTELAÇÕES
+   GLOBO TECNOLÓGICO ALCANS
 ===================================================== */
 
-const canvas = document.getElementById("networkCanvas");
-const ctx = canvas.getContext("2d");
+const canvas =
+    document.getElementById("networkCanvas");
 
-let particles = [];
+const ctx =
+    canvas.getContext("2d");
+
+
+let width;
+let height;
+
+let globePoints = [];
+
+let rotation = 0;
+
 
 
 /* =====================================================
-   CONFIGURAÇÕES
+   CONFIGURAÇÕES DO GLOBO
 ===================================================== */
 
-const networkSettings = {
+const settings = {
 
-    // Quanto maior, mais pontos aparecem
-    density: 8500,
+    /*
+        Quantidade de pontos
+    */
 
-    // Distância máxima para criar conexões
-    connectionDistance: 165,
+    points: 520,
 
-    // Tamanho dos pontos
-    minRadius: 0.7,
-    maxRadius: 2.2,
 
-    // Velocidade da movimentação
-    speed: 0.30
+    /*
+        Tamanho do planeta
+    */
+
+    globeSize: 0.75,
+
+
+    /*
+        Distância máxima entre pontos
+    */
+
+    connectionDistance: 0.34,
+
+
+    /*
+        Velocidade de rotação
+    */
+
+    rotationSpeed: 0.0007
 
 };
 
 
+
 /* =====================================================
-   TAMANHO DO CANVAS
+   AJUSTAR CANVAS
 ===================================================== */
 
 function resizeCanvas() {
 
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
+    width =
+        canvas.width =
+        canvas.offsetWidth;
 
-    createParticles();
+
+    height =
+        canvas.height =
+        canvas.offsetHeight;
+
+
+    createGlobe();
+
 }
 
 
+
 /* =====================================================
-   CRIAR PONTOS
+   CRIAR GLOBO
 ===================================================== */
 
-function createParticles() {
+function createGlobe() {
 
-    particles = [];
+    globePoints = [];
 
-    const amount = Math.floor(
-        (canvas.width * canvas.height) /
-        networkSettings.density
-    );
 
-    for (let i = 0; i < amount; i++) {
+    /*
+        Ângulo dourado.
 
-        particles.push({
+        Permite distribuir os pontos
+        uniformemente na esfera.
+    */
 
-            x: Math.random() * canvas.width,
+    const goldenAngle =
+        Math.PI *
+        (3 - Math.sqrt(5));
 
-            y: Math.random() * canvas.height,
 
-            vx:
-                (Math.random() - 0.5) *
-                networkSettings.speed,
+    for (
+        let i = 0;
+        i < settings.points;
+        i++
+    ) {
 
-            vy:
-                (Math.random() - 0.5) *
-                networkSettings.speed,
 
-            radius:
-                Math.random() *
-                (
-                    networkSettings.maxRadius -
-                    networkSettings.minRadius
-                ) +
-                networkSettings.minRadius,
+        /*
+            Coordenada vertical
+        */
 
-            // Alguns pontos brilham mais
+        const y =
+            1 -
+            (
+                i /
+                (settings.points - 1)
+            ) *
+            2;
+
+
+        /*
+            Raio da posição
+        */
+
+        const radius =
+            Math.sqrt(
+                1 -
+                y * y
+            );
+
+
+        /*
+            Ângulo
+        */
+
+        const theta =
+            goldenAngle * i;
+
+
+        /*
+            Coordenadas 3D
+        */
+
+        const x =
+            Math.cos(theta) *
+            radius;
+
+
+        const z =
+            Math.sin(theta) *
+            radius;
+
+
+        globePoints.push({
+
+            x,
+
+            y,
+
+            z,
+
             brightness:
-                Math.random() * 0.5 + 0.5
+                Math.random() *
+                0.5 +
+                0.5
 
         });
 
@@ -91,118 +171,339 @@ function createParticles() {
 }
 
 
+
 /* =====================================================
-   DESENHAR REDE
+   PROJEÇÃO 3D
 ===================================================== */
 
-function drawNetwork() {
+function projectPoint(point) {
+
+
+    /*
+        Rotação horizontal
+    */
+
+    const cos =
+        Math.cos(rotation);
+
+
+    const sin =
+        Math.sin(rotation);
+
+
+    const x =
+        point.x * cos -
+        point.z * sin;
+
+
+    const z =
+        point.x * sin +
+        point.z * cos;
+
+
+
+    /*
+        Tamanho do globo
+    */
+
+    const radius =
+        Math.min(width, height) *
+        settings.globeSize;
+
+
+
+    /*
+        Perspectiva
+    */
+
+    const perspective =
+        1 /
+        (
+            1.8 -
+            z * 0.55
+        );
+
+
+
+    return {
+
+        x:
+            width * 0.48 +
+            x *
+            radius *
+            perspective,
+
+
+        y:
+            height * 0.50 +
+            point.y *
+            radius *
+            perspective,
+
+
+        z,
+
+
+        scale:
+            perspective
+
+    };
+
+}
+
+
+
+/* =====================================================
+   DESENHAR GLOBO
+===================================================== */
+
+function drawGlobe() {
+
+
+    /*
+        Limpar tela
+    */
 
     ctx.clearRect(
         0,
         0,
-        canvas.width,
-        canvas.height
+        width,
+        height
     );
 
 
-    /* ---------------------------------------------
-       MOVIMENTO DOS PONTOS
-    --------------------------------------------- */
 
-    particles.forEach((particle) => {
+    /* =================================================
+       BRILHO DO GLOBO
+    ================================================= */
 
-        particle.x += particle.vx;
-        particle.y += particle.vy;
+    const glow =
+        ctx.createRadialGradient(
 
+            width * 0.48,
 
-        // Faz o ponto voltar para a tela
-        if (particle.x < -10) {
-            particle.x = canvas.width + 10;
-        }
+            height * 0.50,
 
-        if (particle.x > canvas.width + 10) {
-            particle.x = -10;
-        }
+            20,
 
-        if (particle.y < -10) {
-            particle.y = canvas.height + 10;
-        }
+            width * 0.48,
 
-        if (particle.y > canvas.height + 10) {
-            particle.y = -10;
-        }
+            height * 0.50,
 
-    });
+            Math.min(
+                width,
+                height
+            ) * 0.46
+
+        );
 
 
-    /* ---------------------------------------------
+
+    glow.addColorStop(
+        0,
+        "rgba(255,90,0,0.14)"
+    );
+
+
+    glow.addColorStop(
+        0.45,
+        "rgba(255,70,0,0.05)"
+    );
+
+
+    glow.addColorStop(
+        1,
+        "rgba(255,50,0,0)"
+    );
+
+
+
+    ctx.fillStyle = glow;
+
+
+
+    ctx.beginPath();
+
+
+    ctx.arc(
+
+        width * 0.48,
+
+        height * 0.50,
+
+        Math.min(
+            width,
+            height
+        ) * 0.46,
+
+        0,
+
+        Math.PI * 2
+
+    );
+
+
+    ctx.fill();
+
+
+
+    /* =================================================
+       PROJETAR PONTOS
+    ================================================= */
+
+    const projected =
+        globePoints.map(
+            point => ({
+
+                original:
+                    point,
+
+                projected:
+                    projectPoint(point)
+
+            })
+        );
+
+
+
+    /*
+        Organizar por profundidade
+    */
+
+    projected.sort(
+        (a, b) =>
+            a.projected.z -
+            b.projected.z
+    );
+
+
+
+    /* =================================================
        CONEXÕES
-    --------------------------------------------- */
+    ================================================= */
 
-    for (let i = 0; i < particles.length; i++) {
+    for (
+        let i = 0;
+        i < projected.length;
+        i++
+    ) {
 
-        const particle = particles[i];
+
+        const a =
+            projected[i];
+
 
 
         for (
             let j = i + 1;
-            j < particles.length;
+            j < projected.length;
             j++
         ) {
 
-            const other = particles[j];
+
+            const b =
+                projected[j];
+
 
 
             const dx =
-                particle.x - other.x;
+                a.original.x -
+                b.original.x;
+
 
             const dy =
-                particle.y - other.y;
+                a.original.y -
+                b.original.y;
+
+
+            const dz =
+                a.original.z -
+                b.original.z;
+
 
 
             const distance =
                 Math.sqrt(
                     dx * dx +
-                    dy * dy
+                    dy * dy +
+                    dz * dz
                 );
+
 
 
             if (
                 distance <
-                networkSettings.connectionDistance
+                settings.connectionDistance
             ) {
+
+
+                /*
+                    Profundidade
+
+                    Pontos da parte traseira
+                    ficam mais discretos.
+                */
+
+                const depth =
+                    Math.max(
+                        0,
+                        (
+                            a.projected.z +
+                            1
+                        ) / 2
+                    );
+
+
 
                 const opacity =
                     (
                         1 -
                         distance /
-                        networkSettings.connectionDistance
-                    ) * 0.38;
+                        settings.connectionDistance
+                    ) *
+                    depth *
+                    0.65;
+
 
 
                 ctx.beginPath();
 
+
+
                 ctx.moveTo(
-                    particle.x,
-                    particle.y
+
+                    a.projected.x,
+
+                    a.projected.y
+
                 );
 
+
+
                 ctx.lineTo(
-                    other.x,
-                    other.y
+
+                    b.projected.x,
+
+                    b.projected.y
+
                 );
+
 
 
                 ctx.strokeStyle =
                     `rgba(
                         255,
-                        255,
-                        255,
+                        100,
+                        20,
                         ${opacity}
                     )`;
 
 
-                ctx.lineWidth = 0.8;
+
+                ctx.lineWidth =
+                    0.55;
+
+
 
                 ctx.stroke();
 
@@ -213,73 +514,160 @@ function drawNetwork() {
     }
 
 
-    /* ---------------------------------------------
-       DESENHAR PONTOS
-    --------------------------------------------- */
 
-    particles.forEach((particle) => {
+    /* =================================================
+       PONTOS
+    ================================================= */
 
-        ctx.beginPath();
-
-        ctx.arc(
-            particle.x,
-            particle.y,
-            particle.radius,
-            0,
-            Math.PI * 2
-        );
+    projected.forEach(
+        item => {
 
 
-        ctx.fillStyle =
-            `rgba(
-                255,
-                255,
-                255,
-                ${particle.brightness}
-            )`;
+            const point =
+                item.projected;
 
 
-        ctx.fill();
+
+            /*
+                Profundidade
+            */
+
+            const depth =
+                Math.max(
+                    0,
+                    (
+                        point.z +
+                        1
+                    ) / 2
+                );
 
 
-        /* Pequeno brilho */
 
-        if (particle.radius > 1.7) {
+            /*
+                Tamanho
+            */
+
+            const size =
+                0.65 +
+                depth * 1.7;
+
+
+
+            /*
+                Transparência
+            */
+
+            const opacity =
+                0.15 +
+                depth * 0.85;
+
+
+
+            /*
+                Ponto
+            */
 
             ctx.beginPath();
 
+
+
             ctx.arc(
-                particle.x,
-                particle.y,
-                particle.radius * 3.5,
+
+                point.x,
+
+                point.y,
+
+                size,
+
                 0,
+
                 Math.PI * 2
+
             );
+
 
 
             ctx.fillStyle =
                 `rgba(
                     255,
-                    255,
-                    255,
-                    0.06
+                    ${80 + depth * 80},
+                    ${20 + depth * 40},
+                    ${opacity}
                 )`;
+
 
 
             ctx.fill();
 
+
+
+            /*
+                Brilho nos pontos próximos
+            */
+
+            if (
+                depth > 0.7
+            ) {
+
+
+                ctx.beginPath();
+
+
+
+                ctx.arc(
+
+                    point.x,
+
+                    point.y,
+
+                    size * 4,
+
+                    0,
+
+                    Math.PI * 2
+
+                );
+
+
+
+                ctx.fillStyle =
+                    `rgba(
+                        255,
+                        80,
+                        0,
+                        ${0.035 * depth}
+                    )`;
+
+
+
+                ctx.fill();
+
+            }
+
         }
+    );
 
-    });
 
 
-    requestAnimationFrame(drawNetwork);
+    /* =================================================
+       ROTAÇÃO
+    ================================================= */
+
+    rotation +=
+        settings.rotationSpeed;
+
+
+
+    requestAnimationFrame(
+        drawGlobe
+    );
 
 }
 
 
+
 /* =====================================================
-   INICIALIZAÇÃO
+   INICIALIZAÇÃO DO GLOBO
 ===================================================== */
 
 window.addEventListener(
@@ -290,4 +678,256 @@ window.addEventListener(
 
 resizeCanvas();
 
-drawNetwork();
+
+drawGlobe();
+
+
+
+/* =====================================================
+   MOSTRAR / ESCONDER SENHA
+===================================================== */
+
+const passwordInput =
+    document.getElementById(
+        "password"
+    );
+
+
+const togglePassword =
+    document.getElementById(
+        "togglePassword"
+    );
+
+
+const eyeOpen =
+    document.getElementById(
+        "eyeOpen"
+    );
+
+
+const eyeClosed =
+    document.getElementById(
+        "eyeClosed"
+    );
+
+
+
+togglePassword.addEventListener(
+    "click",
+    () => {
+
+
+        const showing =
+            passwordInput.type ===
+            "text";
+
+
+
+        if (showing) {
+
+
+            passwordInput.type =
+                "password";
+
+
+            eyeOpen.classList.remove(
+                "hidden"
+            );
+
+
+            eyeClosed.classList.add(
+                "hidden"
+            );
+
+
+            togglePassword.setAttribute(
+                "aria-label",
+                "Mostrar senha"
+            );
+
+
+        } else {
+
+
+            passwordInput.type =
+                "text";
+
+
+            eyeOpen.classList.add(
+                "hidden"
+            );
+
+
+            eyeClosed.classList.remove(
+                "hidden"
+            );
+
+
+            togglePassword.setAttribute(
+                "aria-label",
+                "Ocultar senha"
+            );
+
+        }
+
+    }
+);
+
+
+
+/* =====================================================
+   LOGIN — PREPARADO PARA SUPABASE
+===================================================== */
+
+const loginForm =
+    document.getElementById(
+        "loginForm"
+    );
+
+
+const loginButton =
+    document.getElementById(
+        "loginButton"
+    );
+
+
+const buttonText =
+    document.getElementById(
+        "buttonText"
+    );
+
+
+const buttonLoader =
+    document.getElementById(
+        "buttonLoader"
+    );
+
+
+const loginMessage =
+    document.getElementById(
+        "loginMessage"
+    );
+
+
+
+loginForm.addEventListener(
+    "submit",
+    async event => {
+
+
+        event.preventDefault();
+
+
+
+        const username =
+            document
+                .getElementById(
+                    "username"
+                )
+                .value
+                .trim();
+
+
+
+        const password =
+            document
+                .getElementById(
+                    "password"
+                )
+                .value;
+
+
+
+        /*
+            Limpar mensagem
+        */
+
+        loginMessage.textContent =
+            "";
+
+
+
+        /*
+            Validação básica
+        */
+
+        if (
+            !username ||
+            !password
+        ) {
+
+
+            loginMessage.textContent =
+                "Preencha usuário e senha.";
+
+
+            return;
+
+        }
+
+
+
+        /*
+            Estado de carregamento
+        */
+
+        loginButton.disabled =
+            true;
+
+
+        buttonText.classList.add(
+            "hidden"
+        );
+
+
+        buttonLoader.classList.remove(
+            "hidden"
+        );
+
+
+
+        /*
+            Simulação temporária.
+
+            ESTA PARTE SERÁ SUBSTITUÍDA
+            PELO SUPABASE AUTH.
+        */
+
+        await new Promise(
+            resolve =>
+                setTimeout(
+                    resolve,
+                    1000
+                )
+        );
+
+
+
+        /*
+            Voltar botão
+        */
+
+        loginButton.disabled =
+            false;
+
+
+        buttonText.classList.remove(
+            "hidden"
+        );
+
+
+        buttonLoader.classList.add(
+            "hidden"
+        );
+
+
+
+        /*
+            Mensagem temporária
+        */
+
+        loginMessage.textContent =
+            "Login ainda não conectado ao Supabase.";
+
+    }
+);
