@@ -1,54 +1,70 @@
-/* =========================================
-   VISUAL DA CENTRAL DE ATENDIMENTO
-========================================= */
+/* =========================================================
+   CENTRAL SAC ALCANS
+   VISUAL + LOGIN
+========================================================= */
+
+
+/* =========================================================
+   CANVAS
+========================================================= */
 
 const canvas = document.getElementById("networkCanvas");
+
 const ctx = canvas.getContext("2d");
 
 let width;
 let height;
+
 let animationFrame;
 
 
-/* =========================================
-   CONFIGURAÇÃO
-========================================= */
+/* =========================================================
+   CONFIGURAÇÕES
+========================================================= */
 
 const config = {
 
+    // Quantidade de pontos da rede
     particles: 95,
 
+    // Distância máxima entre pontos conectados
     connectionDistance: 145,
 
-    particleSpeed: 0.25,
-
-    pulseSpeed: 0.012
+    // Velocidade dos pontos
+    particleSpeed: 0.25
 
 };
 
 
-/* =========================================
+/* =========================================================
    PARTICULAS
-========================================= */
+========================================================= */
 
 let particles = [];
 
-let pulses = [];
 
-
-/* =========================================
-   REDIMENSIONAR
-========================================= */
+/* =========================================================
+   REDIMENSIONAR CANVAS
+========================================================= */
 
 function resizeCanvas() {
 
-    const ratio = window.devicePixelRatio || 1;
+    const ratio =
+        window.devicePixelRatio || 1;
 
-    width = canvas.clientWidth;
-    height = canvas.clientHeight;
+    width =
+        canvas.clientWidth;
 
-    canvas.width = width * ratio;
-    canvas.height = height * ratio;
+    height =
+        canvas.clientHeight;
+
+
+    canvas.width =
+        width * ratio;
+
+    canvas.height =
+        height * ratio;
+
 
     ctx.setTransform(
         ratio,
@@ -59,37 +75,48 @@ function resizeCanvas() {
         0
     );
 
+
     createParticles();
+
 }
 
 
-/* =========================================
+/* =========================================================
    CRIAR PARTICULAS
-========================================= */
+========================================================= */
 
 function createParticles() {
 
     particles = [];
 
-    for (let i = 0; i < config.particles; i++) {
+
+    for (
+        let i = 0;
+        i < config.particles;
+        i++
+    ) {
 
         particles.push({
 
-            x: Math.random() * width,
+            x:
+                Math.random() * width,
 
-            y: Math.random() * height,
+            y:
+                Math.random() * height,
 
-            vx: (Math.random() - 0.5) *
+            vx:
+                (Math.random() - 0.5) *
                 config.particleSpeed,
 
-            vy: (Math.random() - 0.5) *
+            vy:
+                (Math.random() - 0.5) *
                 config.particleSpeed,
 
             radius:
                 Math.random() * 1.7 + 0.6,
 
             alpha:
-                Math.random() * 0.5 + 0.25
+                Math.random() * 0.45 + 0.2
 
         });
 
@@ -98,313 +125,62 @@ function createParticles() {
 }
 
 
-/* =========================================
-   HEADSET
-========================================= */
-
-function drawHeadset(time) {
-
-    /*
-        Centro do headset
-    */
-
-    const centerX = width * 0.68;
-
-    const centerY = height * 0.50;
-
-    const scale =
-        Math.min(width, height) * 0.20;
-
-
-    ctx.save();
-
-    ctx.translate(centerX, centerY);
-
-
-    /*
-        Glow externo
-    */
-
-    ctx.shadowColor =
-        "rgba(255,101,0,0.7)";
-
-    ctx.shadowBlur = 25;
-
-
-    /*
-        Arco do headset
-    */
-
-    ctx.beginPath();
-
-    ctx.arc(
-        0,
-        0,
-        scale,
-        Math.PI,
-        Math.PI * 2
-    );
-
-    ctx.lineWidth = 5;
-
-    ctx.strokeStyle =
-        "rgba(255,101,0,0.9)";
-
-    ctx.stroke();
-
-
-    /*
-        segundo arco
-    */
-
-    ctx.shadowBlur = 10;
-
-    ctx.beginPath();
-
-    ctx.arc(
-        0,
-        0,
-        scale - 13,
-        Math.PI,
-        Math.PI * 2
-    );
-
-    ctx.lineWidth = 1.5;
-
-    ctx.strokeStyle =
-        "rgba(255,145,70,0.35)";
-
-    ctx.stroke();
-
-
-    /*
-        lado esquerdo
-    */
-
-    drawHeadphoneSide(
-        -scale,
-        0,
-        -1
-    );
-
-
-    /*
-        lado direito
-    */
-
-    drawHeadphoneSide(
-        scale,
-        0,
-        1
-    );
-
-
-    /*
-        microfone
-    */
-
-    ctx.shadowBlur = 18;
-
-    ctx.beginPath();
-
-    ctx.moveTo(
-        scale + 16,
-        42
-    );
-
-    ctx.bezierCurveTo(
-        scale + 55,
-        45,
-        scale + 60,
-        75,
-        scale + 32,
-        82
-    );
-
-    ctx.strokeStyle =
-        "rgba(255,101,0,0.95)";
-
-    ctx.lineWidth = 5;
-
-    ctx.lineCap = "round";
-
-    ctx.stroke();
-
-
-    /*
-        ponta do microfone
-    */
-
-    ctx.beginPath();
-
-    ctx.arc(
-        scale + 28,
-        82,
-        5,
-        0,
-        Math.PI * 2
-    );
-
-    ctx.fillStyle =
-        "#ff6500";
-
-    ctx.fill();
-
-
-    /*
-        pequenas ondas de comunicação
-    */
-
-    const wave =
-        Math.sin(time * 0.002) * 4;
-
-
-    ctx.shadowBlur = 15;
-
-    ctx.beginPath();
-
-    ctx.arc(
-        scale + 38,
-        80,
-        17 + wave,
-        -Math.PI / 2,
-        Math.PI / 2
-    );
-
-    ctx.strokeStyle =
-        "rgba(255,101,0,0.4)";
-
-    ctx.lineWidth = 1.5;
-
-    ctx.stroke();
-
-
-    ctx.beginPath();
-
-    ctx.arc(
-        scale + 38,
-        80,
-        27 + wave,
-        -Math.PI / 2,
-        Math.PI / 2
-    );
-
-    ctx.strokeStyle =
-        "rgba(255,101,0,0.18)";
-
-    ctx.stroke();
-
-
-    ctx.restore();
-
-}
-
-
-/* =========================================
-   LATERAIS DO HEADSET
-========================================= */
-
-function drawHeadphoneSide(x, y, direction) {
-
-    const size =
-        Math.min(width, height) * 0.20;
-
-
-    ctx.save();
-
-    ctx.translate(x, y);
-
-
-    /*
-        concha
-    */
-
-    ctx.beginPath();
-
-    ctx.roundRect(
-        direction * -14,
-        -15,
-        28,
-        65,
-        12
-    );
-
-    ctx.fillStyle =
-        "rgba(255,101,0,0.12)";
-
-    ctx.fill();
-
-    ctx.strokeStyle =
-        "rgba(255,101,0,0.85)";
-
-    ctx.lineWidth = 4;
-
-    ctx.stroke();
-
-
-    /*
-        detalhe interno
-    */
-
-    ctx.beginPath();
-
-    ctx.roundRect(
-        direction * -7,
-        -5,
-        14,
-        45,
-        7
-    );
-
-    ctx.strokeStyle =
-        "rgba(255,145,70,0.3)";
-
-    ctx.lineWidth = 1;
-
-    ctx.stroke();
-
-
-    ctx.restore();
-
-}
-
-
-/* =========================================
-   PARTICULAS
-========================================= */
+/* =========================================================
+   ATUALIZAR PARTICULAS
+========================================================= */
 
 function updateParticles() {
 
-    particles.forEach(p => {
+    particles.forEach(
+        particle => {
 
-        p.x += p.vx;
-        p.y += p.vy;
+            particle.x +=
+                particle.vx;
+
+            particle.y +=
+                particle.vy;
 
 
-        /*
-            limites
-        */
+            /*
+                Rebater nas bordas
+            */
 
-        if (p.x < 0 || p.x > width) {
-            p.vx *= -1;
+            if (
+                particle.x < 0 ||
+                particle.x > width
+            ) {
+
+                particle.vx *= -1;
+
+            }
+
+
+            if (
+                particle.y < 0 ||
+                particle.y > height
+            ) {
+
+                particle.vy *= -1;
+
+            }
+
         }
-
-        if (p.y < 0 || p.y > height) {
-            p.vy *= -1;
-        }
-
-    });
+    );
 
 }
 
 
-/* =========================================
-   CONEXÕES
-========================================= */
+/* =========================================================
+   DESENHAR CONEXÕES
+========================================================= */
 
 function drawConnections() {
 
-    for (let i = 0; i < particles.length; i++) {
+    for (
+        let i = 0;
+        i < particles.length;
+        i++
+    ) {
 
         for (
             let j = i + 1;
@@ -412,14 +188,19 @@ function drawConnections() {
             j++
         ) {
 
-            const a = particles[i];
+            const a =
+                particles[i];
 
-            const b = particles[j];
+            const b =
+                particles[j];
 
 
-            const dx = a.x - b.x;
+            const dx =
+                a.x - b.x;
 
-            const dy = a.y - b.y;
+            const dy =
+                a.y - b.y;
+
 
             const distance =
                 Math.sqrt(
@@ -434,18 +215,21 @@ function drawConnections() {
             ) {
 
                 const opacity =
-                    (1 -
+                    (
+                        1 -
                         distance /
                         config.connectionDistance
-                    ) * 0.22;
+                    ) * 0.20;
 
 
                 ctx.beginPath();
+
 
                 ctx.moveTo(
                     a.x,
                     a.y
                 );
+
 
                 ctx.lineTo(
                     b.x,
@@ -454,9 +238,12 @@ function drawConnections() {
 
 
                 ctx.strokeStyle =
-                    `rgba(255,101,0,${opacity})`;
+                    `rgba(255,255,255,${opacity})`;
 
-                ctx.lineWidth = 0.7;
+
+                ctx.lineWidth =
+                    0.7;
+
 
                 ctx.stroke();
 
@@ -469,48 +256,581 @@ function drawConnections() {
 }
 
 
-/* =========================================
+/* =========================================================
    DESENHAR PARTICULAS
-========================================= */
+========================================================= */
 
 function drawParticles() {
 
-    particles.forEach(p => {
+    particles.forEach(
+        particle => {
 
-        ctx.beginPath();
-
-        ctx.arc(
-            p.x,
-            p.y,
-            p.radius,
-            0,
-            Math.PI * 2
-        );
+            ctx.beginPath();
 
 
-        ctx.fillStyle =
-            `rgba(255,130,45,${p.alpha})`;
+            ctx.arc(
+                particle.x,
+                particle.y,
+                particle.radius,
+                0,
+                Math.PI * 2
+            );
 
-        ctx.fill();
 
-    });
+            ctx.fillStyle =
+                `rgba(255,255,255,${particle.alpha})`;
+
+
+            ctx.fill();
+
+        }
+    );
 
 }
 
 
-/* =========================================
-   NÓS DE ATENDIMENTO
-========================================= */
+/* =========================================================
+   HEADSET
+========================================================= */
 
-function drawNodes(time) {
+function drawHeadset(time) {
 
-    const centerX = width * 0.68;
+    /*
+        Centro do headset
+    */
 
-    const centerY = height * 0.50;
+    const centerX =
+        width * 0.68;
+
+    const centerY =
+        height * 0.50;
 
 
     /*
-        posições dos nós
+        Tamanho proporcional
+    */
+
+    const scale =
+        Math.min(
+            width,
+            height
+        ) * 0.20;
+
+
+    ctx.save();
+
+
+    ctx.translate(
+        centerX,
+        centerY
+    );
+
+
+    /* =====================================================
+       GLOW ESCURO
+    ===================================================== */
+
+    ctx.shadowColor =
+        "rgba(0,0,0,0.75)";
+
+    ctx.shadowBlur =
+        35;
+
+
+    /* =====================================================
+       ARCO PRINCIPAL PRETO
+    ===================================================== */
+
+    ctx.beginPath();
+
+
+    ctx.arc(
+        0,
+        0,
+        scale,
+        Math.PI,
+        Math.PI * 2
+    );
+
+
+    ctx.lineWidth =
+        13;
+
+
+    ctx.strokeStyle =
+        "#111111";
+
+
+    ctx.stroke();
+
+
+    /* =====================================================
+       CONTORNO BRANCO
+    ===================================================== */
+
+    ctx.shadowColor =
+        "rgba(255,255,255,0.45)";
+
+    ctx.shadowBlur =
+        8;
+
+
+    ctx.beginPath();
+
+
+    ctx.arc(
+        0,
+        0,
+        scale,
+        Math.PI,
+        Math.PI * 2
+    );
+
+
+    ctx.lineWidth =
+        3;
+
+
+    ctx.strokeStyle =
+        "rgba(255,255,255,0.9)";
+
+
+    ctx.stroke();
+
+
+    /* =====================================================
+       LINHA LARANJA INTERNA
+    ===================================================== */
+
+    ctx.shadowColor =
+        "#ff6500";
+
+    ctx.shadowBlur =
+        12;
+
+
+    ctx.beginPath();
+
+
+    ctx.arc(
+        0,
+        0,
+        scale - 7,
+        Math.PI,
+        Math.PI * 2
+    );
+
+
+    ctx.lineWidth =
+        2;
+
+
+    ctx.strokeStyle =
+        "#ff6500";
+
+
+    ctx.stroke();
+
+
+    /* =====================================================
+       FONE ESQUERDO
+    ===================================================== */
+
+    drawHeadphoneSide(
+        -scale,
+        0,
+        -1
+    );
+
+
+    /* =====================================================
+       FONE DIREITO
+    ===================================================== */
+
+    drawHeadphoneSide(
+        scale,
+        0,
+        1
+    );
+
+
+    /* =====================================================
+       MICROFONE — CORPO
+    ===================================================== */
+
+    ctx.shadowColor =
+        "rgba(0,0,0,0.85)";
+
+    ctx.shadowBlur =
+        15;
+
+
+    ctx.beginPath();
+
+
+    ctx.moveTo(
+        scale + 13,
+        40
+    );
+
+
+    ctx.bezierCurveTo(
+        scale + 48,
+        43,
+        scale + 56,
+        68,
+        scale + 30,
+        82
+    );
+
+
+    ctx.strokeStyle =
+        "#111111";
+
+
+    ctx.lineWidth =
+        11;
+
+
+    ctx.lineCap =
+        "round";
+
+
+    ctx.stroke();
+
+
+    /* =====================================================
+       MICROFONE — CONTORNO
+    ===================================================== */
+
+    ctx.shadowColor =
+        "rgba(255,255,255,0.4)";
+
+    ctx.shadowBlur =
+        8;
+
+
+    ctx.beginPath();
+
+
+    ctx.moveTo(
+        scale + 13,
+        40
+    );
+
+
+    ctx.bezierCurveTo(
+        scale + 48,
+        43,
+        scale + 56,
+        68,
+        scale + 30,
+        82
+    );
+
+
+    ctx.strokeStyle =
+        "rgba(255,255,255,0.85)";
+
+
+    ctx.lineWidth =
+        3;
+
+
+    ctx.stroke();
+
+
+    /* =====================================================
+       PONTA DO MICROFONE
+    ===================================================== */
+
+    ctx.shadowColor =
+        "#ff6500";
+
+    ctx.shadowBlur =
+        22;
+
+
+    ctx.beginPath();
+
+
+    ctx.arc(
+        scale + 28,
+        82,
+        6,
+        0,
+        Math.PI * 2
+    );
+
+
+    ctx.fillStyle =
+        "#ff6500";
+
+
+    ctx.fill();
+
+
+    /* =====================================================
+       ONDAS DE COMUNICAÇÃO
+    ===================================================== */
+
+    const wave =
+        Math.sin(
+            time * 0.002
+        ) * 4;
+
+
+    ctx.shadowColor =
+        "#ff6500";
+
+    ctx.shadowBlur =
+        10;
+
+
+    /*
+        Onda 1
+    */
+
+    ctx.beginPath();
+
+
+    ctx.arc(
+        scale + 38,
+        80,
+        18 + wave,
+        -Math.PI / 2,
+        Math.PI / 2
+    );
+
+
+    ctx.strokeStyle =
+        "rgba(255,255,255,0.9)";
+
+
+    ctx.lineWidth =
+        2;
+
+
+    ctx.stroke();
+
+
+    /*
+        Onda 2
+    */
+
+    ctx.beginPath();
+
+
+    ctx.arc(
+        scale + 38,
+        80,
+        29 + wave,
+        -Math.PI / 2,
+        Math.PI / 2
+    );
+
+
+    ctx.strokeStyle =
+        "rgba(255,255,255,0.45)";
+
+
+    ctx.lineWidth =
+        1.5;
+
+
+    ctx.stroke();
+
+
+    /* =====================================================
+       PONTO CENTRAL
+    ===================================================== */
+
+    ctx.shadowColor =
+        "#ff6500";
+
+    ctx.shadowBlur =
+        25;
+
+
+    ctx.beginPath();
+
+
+    ctx.arc(
+        0,
+        0,
+        5,
+        0,
+        Math.PI * 2
+    );
+
+
+    ctx.fillStyle =
+        "#ff6500";
+
+
+    ctx.fill();
+
+
+    ctx.restore();
+
+}
+
+
+/* =========================================================
+   FONES LATERAIS
+========================================================= */
+
+function drawHeadphoneSide(
+    x,
+    y,
+    direction
+) {
+
+    ctx.save();
+
+
+    ctx.translate(
+        x,
+        y
+    );
+
+
+    /* =====================================================
+       CORPO PRETO
+    ===================================================== */
+
+    ctx.shadowColor =
+        "rgba(0,0,0,0.8)";
+
+    ctx.shadowBlur =
+        20;
+
+
+    ctx.beginPath();
+
+
+    ctx.roundRect(
+        direction * -16,
+        -17,
+        32,
+        68,
+        13
+    );
+
+
+    ctx.fillStyle =
+        "#111111";
+
+
+    ctx.fill();
+
+
+    /* =====================================================
+       BORDA BRANCA
+    ===================================================== */
+
+    ctx.shadowColor =
+        "rgba(255,255,255,0.4)";
+
+    ctx.shadowBlur =
+        8;
+
+
+    ctx.strokeStyle =
+        "rgba(255,255,255,0.9)";
+
+
+    ctx.lineWidth =
+        2.5;
+
+
+    ctx.stroke();
+
+
+    /* =====================================================
+       DETALHE INTERNO LARANJA
+    ===================================================== */
+
+    ctx.shadowColor =
+        "#ff6500";
+
+    ctx.shadowBlur =
+        12;
+
+
+    ctx.beginPath();
+
+
+    ctx.roundRect(
+        direction * -8,
+        -6,
+        16,
+        46,
+        7
+    );
+
+
+    ctx.fillStyle =
+        "rgba(255,101,0,0.4)";
+
+
+    ctx.fill();
+
+
+    ctx.strokeStyle =
+        "#ff6500";
+
+
+    ctx.lineWidth =
+        1.5;
+
+
+    ctx.stroke();
+
+
+    /* =====================================================
+       LED
+    ===================================================== */
+
+    ctx.beginPath();
+
+
+    ctx.arc(
+        0,
+        28,
+        2.5,
+        0,
+        Math.PI * 2
+    );
+
+
+    ctx.fillStyle =
+        "#ff6500";
+
+
+    ctx.fill();
+
+
+    ctx.restore();
+
+}
+
+
+/* =========================================================
+   NÓS DE ATENDIMENTO
+========================================================= */
+
+function drawNodes(time) {
+
+    const centerX =
+        width * 0.68;
+
+    const centerY =
+        height * 0.50;
+
+
+    /*
+        Nós da Central
     */
 
     const nodes = [
@@ -542,93 +862,113 @@ function drawNodes(time) {
     ];
 
 
-    nodes.forEach((node, index) => {
+    nodes.forEach(
+        (node, index) => {
 
-        /*
-            linha até o centro
-        */
+            /* =============================================
+               LINHA ATÉ O HEADSET
+            ============================================= */
 
-        ctx.beginPath();
-
-        ctx.moveTo(
-            node.x,
-            node.y
-        );
-
-        ctx.lineTo(
-            centerX,
-            centerY
-        );
-
-        ctx.strokeStyle =
-            "rgba(255,101,0,0.18)";
-
-        ctx.lineWidth = 1;
-
-        ctx.stroke();
+            ctx.beginPath();
 
 
-        /*
-            pulso
-        */
-
-        const pulse =
-            (Math.sin(
-                time * 0.002 +
-                index
-            ) + 1) / 2;
+            ctx.moveTo(
+                node.x,
+                node.y
+            );
 
 
-        ctx.beginPath();
-
-        ctx.arc(
-            node.x,
-            node.y,
-            4 + pulse * 3,
-            0,
-            Math.PI * 2
-        );
-
-        ctx.fillStyle =
-            "#ff6500";
-
-        ctx.shadowColor =
-            "#ff6500";
-
-        ctx.shadowBlur =
-            10 + pulse * 10;
-
-        ctx.fill();
-
-        ctx.shadowBlur = 0;
+            ctx.lineTo(
+                centerX,
+                centerY
+            );
 
 
-        /*
-            label
-        */
+            ctx.strokeStyle =
+                "rgba(255,255,255,0.28)";
 
-        ctx.font =
-            "700 9px Nunito";
 
-        ctx.fillStyle =
-            "rgba(255,255,255,0.35)";
+            ctx.lineWidth =
+                1;
 
-        ctx.textAlign = "center";
 
-        ctx.fillText(
-            node.label,
-            node.x,
-            node.y + 22
-        );
+            ctx.stroke();
 
-    });
+
+            /* =============================================
+               PULSO
+            ============================================= */
+
+            const pulse =
+                (
+                    Math.sin(
+                        time * 0.002 +
+                        index
+                    ) + 1
+                ) / 2;
+
+
+            ctx.beginPath();
+
+
+            ctx.arc(
+                node.x,
+                node.y,
+                4 + pulse * 3,
+                0,
+                Math.PI * 2
+            );
+
+
+            ctx.fillStyle =
+                "#ff6500";
+
+
+            ctx.shadowColor =
+                "#ff6500";
+
+
+            ctx.shadowBlur =
+                12 + pulse * 12;
+
+
+            ctx.fill();
+
+
+            ctx.shadowBlur = 0;
+
+
+            /* =============================================
+               LABEL
+            ============================================= */
+
+            ctx.font =
+                "800 9px Nunito";
+
+
+            ctx.fillStyle =
+                "rgba(255,255,255,0.7)";
+
+
+            ctx.textAlign =
+                "center";
+
+
+            ctx.fillText(
+                node.label,
+                node.x,
+                node.y + 22
+            );
+
+        }
+    );
 
 }
 
 
-/* =========================================
+/* =========================================================
    ANIMAÇÃO
-========================================= */
+========================================================= */
 
 function animate(time) {
 
@@ -645,22 +985,27 @@ function animate(time) {
 
     drawConnections();
 
+
     drawParticles();
 
+
     drawNodes(time);
+
 
     drawHeadset(time);
 
 
     animationFrame =
-        requestAnimationFrame(animate);
+        requestAnimationFrame(
+            animate
+        );
 
 }
 
 
-/* =========================================
-   INICIALIZAÇÃO
-========================================= */
+/* =========================================================
+   INICIAR CANVAS
+========================================================= */
 
 window.addEventListener(
     "resize",
@@ -670,24 +1015,36 @@ window.addEventListener(
 
 resizeCanvas();
 
+
 animate(0);
 
 
-/* =========================================
+/* =========================================================
    MOSTRAR / ESCONDER SENHA
-========================================= */
+========================================================= */
 
 const passwordInput =
-    document.getElementById("password");
+    document.getElementById(
+        "password"
+    );
+
 
 const togglePassword =
-    document.getElementById("togglePassword");
+    document.getElementById(
+        "togglePassword"
+    );
+
 
 const eyeOpen =
-    document.getElementById("eyeOpen");
+    document.getElementById(
+        "eyeOpen"
+    );
+
 
 const eyeClosed =
-    document.getElementById("eyeClosed");
+    document.getElementById(
+        "eyeClosed"
+    );
 
 
 togglePassword.addEventListener(
@@ -695,7 +1052,8 @@ togglePassword.addEventListener(
     () => {
 
         const isPassword =
-            passwordInput.type === "password";
+            passwordInput.type ===
+            "password";
 
 
         passwordInput.type =
@@ -709,6 +1067,7 @@ togglePassword.addEventListener(
             isPassword
         );
 
+
         eyeClosed.classList.toggle(
             "hidden",
             !isPassword
@@ -718,46 +1077,68 @@ togglePassword.addEventListener(
 );
 
 
-/* =========================================
+/* =========================================================
    LOGIN
-========================================= */
+========================================================= */
 
 const loginForm =
-    document.getElementById("loginForm");
+    document.getElementById(
+        "loginForm"
+    );
+
 
 const loginButton =
-    document.getElementById("loginButton");
+    document.getElementById(
+        "loginButton"
+    );
+
 
 const buttonText =
-    document.getElementById("buttonText");
+    document.getElementById(
+        "buttonText"
+    );
+
 
 const buttonLoader =
-    document.getElementById("buttonLoader");
+    document.getElementById(
+        "buttonLoader"
+    );
+
 
 const loginMessage =
-    document.getElementById("loginMessage");
+    document.getElementById(
+        "loginMessage"
+    );
 
 
 loginForm.addEventListener(
     "submit",
-    async (event) => {
+    async event => {
 
         event.preventDefault();
 
 
         const username =
             document
-                .getElementById("username")
+                .getElementById(
+                    "username"
+                )
                 .value
                 .trim();
 
 
         const password =
-            passwordInput
-                .value;
+            passwordInput.value;
 
 
-        if (!username || !password) {
+        /* =============================================
+           VALIDAÇÃO
+        ============================================= */
+
+        if (
+            !username ||
+            !password
+        ) {
 
             loginMessage.textContent =
                 "Preencha usuário e senha.";
@@ -767,49 +1148,68 @@ loginForm.addEventListener(
         }
 
 
-        /*
-            Estado carregando
-        */
+        /* =============================================
+           LOADING
+        ============================================= */
 
-        loginMessage.textContent = "";
+        loginMessage.textContent =
+            "";
 
-        loginButton.disabled = true;
+
+        loginButton.disabled =
+            true;
+
 
         buttonText.classList.add(
             "hidden"
         );
+
 
         buttonLoader.classList.remove(
             "hidden"
         );
 
 
-        /*
-            Simulação temporária.
-
-            Aqui vamos conectar
-            o Supabase depois.
-        */
+        /* =============================================
+           SIMULAÇÃO TEMPORÁRIA
+           
+           Depois vamos substituir
+           isso pelo Supabase Auth.
+        ============================================= */
 
         await new Promise(
-            resolve =>
+            resolve => {
+
                 setTimeout(
                     resolve,
                     1000
-                )
+                );
+
+            }
         );
 
 
-        loginButton.disabled = false;
+        /* =============================================
+           FINALIZAR LOADING
+        ============================================= */
+
+        loginButton.disabled =
+            false;
+
 
         buttonText.classList.remove(
             "hidden"
         );
 
+
         buttonLoader.classList.add(
             "hidden"
         );
 
+
+        /* =============================================
+           MENSAGEM TEMPORÁRIA
+        ============================================= */
 
         loginMessage.textContent =
             "Login ainda não conectado ao Supabase.";
