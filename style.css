@@ -1,49 +1,90 @@
-:root {
-    --orange: #ff6a00;
-    --orange-light: #ff7a1a;
-    --orange-dark: #e95700;
+/* =====================================================
+   VARIÁVEIS
+===================================================== */
 
-    --black: #111111;
-    --black-soft: #171717;
+:root {
+
+    --orange: #ff6500;
+
+    --orange-light: #ff7b1a;
+
+    --orange-dark: #e65300;
+
+    --black: #070707;
+
+    --black-soft: #111111;
 
     --white: #ffffff;
+
     --gray: #777777;
+
     --gray-light: #eeeeee;
 
     --font: "Nunito", sans-serif;
+
 }
 
+
+
+/* =====================================================
+   RESET
+===================================================== */
 
 * {
+
     margin: 0;
+
     padding: 0;
+
     box-sizing: border-box;
+
 }
+
+
+
+html,
+body {
+
+    width: 100%;
+
+    height: 100%;
+
+}
+
 
 
 body {
-    min-height: 100vh;
 
     font-family: var(--font);
 
     background: var(--black);
 
-    color: var(--black);
+    color: #111111;
 
     overflow: hidden;
+
 }
 
-
-.login-container {
-    width: 100%;
-    height: 100vh;
-
-    display: flex;
-}
 
 
 /* =====================================================
-   LADO ALCANS
+   CONTAINER
+===================================================== */
+
+.login-container {
+
+    width: 100%;
+
+    height: 100vh;
+
+    display: flex;
+
+}
+
+
+
+/* =====================================================
+   ÁREA ALCANS
 ===================================================== */
 
 .brand-section {
@@ -51,26 +92,81 @@ body {
     position: relative;
 
     width: 60%;
+
     height: 100%;
 
     overflow: hidden;
 
     background:
+
         radial-gradient(
-            circle at 20% 30%,
-            rgba(255,255,255,0.12),
-            transparent 30%
+            circle at 50% 50%,
+            rgba(255, 83, 0, 0.17),
+            transparent 45%
         ),
+
+        radial-gradient(
+            circle at 30% 40%,
+            rgba(255, 65, 0, 0.07),
+            transparent 35%
+        ),
+
         linear-gradient(
             135deg,
-            #ff7200 0%,
-            #ff6200 45%,
-            #e95000 100%
+            #130b07 0%,
+            #090909 55%,
+            #050505 100%
         );
 
     color: white;
+
 }
 
+
+
+/* =====================================================
+   ATMOSFERA DO GLOBO
+===================================================== */
+
+.brand-section::before {
+
+    content: "";
+
+    position: absolute;
+
+    width: 750px;
+
+    height: 750px;
+
+    left: 50%;
+
+    top: 50%;
+
+    transform:
+        translate(-50%, -50%);
+
+    border-radius: 50%;
+
+    background:
+
+        radial-gradient(
+            circle,
+            rgba(255, 85, 0, 0.16),
+            rgba(255, 70, 0, 0.05) 35%,
+            transparent 70%
+        );
+
+    filter: blur(30px);
+
+    pointer-events: none;
+
+}
+
+
+
+/* =====================================================
+   CANVAS
+===================================================== */
 
 #networkCanvas {
 
@@ -79,23 +175,32 @@ body {
     inset: 0;
 
     width: 100%;
+
     height: 100%;
 
-    opacity: 0.65;
+    z-index: 1;
+
+    opacity: 0.95;
+
 }
 
+
+
+/* =====================================================
+   CONTEÚDO
+===================================================== */
 
 .brand-content {
 
     position: relative;
 
-    z-index: 2;
+    z-index: 3;
 
     width: min(620px, 80%);
 
-    margin: auto;
-
     height: 100%;
+
+    margin: auto;
 
     display: flex;
 
@@ -104,12 +209,24 @@ body {
     justify-content: center;
 
     align-items: flex-start;
+
+    pointer-events: none;
+
 }
 
 
+
+/* =====================================================
+   LOGO
+===================================================== */
+
 .brand-logo {
 
-    font-size: clamp(45px, 5vw, 78px);
+    font-size: clamp(
+        45px,
+        5vw,
+        78px
+    );
 
     font-weight: 900;
 
@@ -119,27 +236,55 @@ body {
 
     margin-bottom: 24px;
 
+    color: white;
+
     text-shadow:
-        0 4px 20px rgba(0,0,0,0.12);
+
+        0 0 20px rgba(255,255,255,0.12),
+
+        0 5px 30px rgba(0,0,0,0.7);
+
 }
 
+
+
+/* =====================================================
+   LINHA
+===================================================== */
 
 .brand-line {
 
     width: 70px;
-    height: 5px;
 
-    background: white;
+    height: 4px;
+
+    margin-bottom: 28px;
 
     border-radius: 20px;
 
-    margin-bottom: 28px;
+    background: var(--orange);
+
+    box-shadow:
+
+        0 0 12px rgba(255,101,0,0.8),
+
+        0 0 30px rgba(255,101,0,0.35);
+
 }
 
 
+
+/* =====================================================
+   TÍTULO
+===================================================== */
+
 .brand-content h1 {
 
-    font-size: clamp(34px, 4vw, 58px);
+    font-size: clamp(
+        34px,
+        4vw,
+        58px
+    );
 
     line-height: 1.05;
 
@@ -148,8 +293,18 @@ body {
     letter-spacing: -1px;
 
     margin-bottom: 24px;
+
+    text-shadow:
+
+        0 4px 30px rgba(0,0,0,0.8);
+
 }
 
+
+
+/* =====================================================
+   DESCRIÇÃO
+===================================================== */
 
 .brand-content p {
 
@@ -161,9 +316,19 @@ body {
 
     font-weight: 500;
 
-    color: rgba(255,255,255,0.88);
+    color: rgba(255,255,255,0.70);
+
+    text-shadow:
+
+        0 2px 15px rgba(0,0,0,0.8);
+
 }
 
+
+
+/* =====================================================
+   STATUS
+===================================================== */
 
 .connection-status {
 
@@ -177,59 +342,96 @@ body {
 
     gap: 10px;
 
-    border: 1px solid rgba(255,255,255,0.25);
+    border:
 
-    background: rgba(255,255,255,0.08);
-
-    backdrop-filter: blur(8px);
+        1px solid
+        rgba(255,101,0,0.25);
 
     border-radius: 50px;
+
+    background:
+
+        rgba(0,0,0,0.30);
+
+    backdrop-filter: blur(10px);
 
     font-size: 13px;
 
     font-weight: 700;
 
     letter-spacing: 0.4px;
+
+    color:
+
+        rgba(255,255,255,0.8);
+
 }
 
+
+
+/* =====================================================
+   PONTO DO STATUS
+===================================================== */
 
 .status-dot {
 
     width: 8px;
+
     height: 8px;
 
     border-radius: 50%;
 
-    background: white;
+    background: var(--orange);
 
     box-shadow:
-        0 0 10px white;
 
-    animation: pulse 2s infinite;
+        0 0 8px var(--orange),
+
+        0 0 18px rgba(255,101,0,0.8);
+
+    animation:
+
+        pulse 2s infinite;
+
 }
+
 
 
 @keyframes pulse {
 
-    0%, 100% {
+    0%,
+    100% {
+
         opacity: 1;
+
         transform: scale(1);
+
     }
 
     50% {
+
         opacity: 0.4;
+
         transform: scale(0.7);
+
     }
+
 }
 
+
+
+/* =====================================================
+   RODAPÉ ALCANS
+===================================================== */
 
 .brand-footer {
 
     position: absolute;
 
-    z-index: 3;
+    z-index: 4;
 
     bottom: 30px;
+
     left: 45px;
 
     display: flex;
@@ -244,17 +446,22 @@ body {
 
     letter-spacing: 1px;
 
-    color: rgba(255,255,255,0.65);
+    color:
+
+        rgba(255,255,255,0.35);
+
 }
 
 
+
 /* =====================================================
-   LOGIN
+   ÁREA LOGIN
 ===================================================== */
 
 .login-section {
 
     width: 40%;
+
     height: 100%;
 
     background: #ffffff;
@@ -266,26 +473,35 @@ body {
     align-items: center;
 
     padding: 50px;
+
 }
 
+
+
+/* =====================================================
+   CAIXA LOGIN
+===================================================== */
 
 .login-box {
 
     width: 100%;
+
     max-width: 430px;
+
 }
 
 
-.mobile-logo {
 
-    display: none;
-}
-
+/* =====================================================
+   CABEÇALHO
+===================================================== */
 
 .login-header {
 
     margin-bottom: 38px;
+
 }
+
 
 
 .login-label {
@@ -301,7 +517,9 @@ body {
     font-weight: 900;
 
     letter-spacing: 2px;
+
 }
+
 
 
 .login-header h2 {
@@ -315,7 +533,9 @@ body {
     color: #151515;
 
     margin-bottom: 12px;
+
 }
+
 
 
 .login-header p {
@@ -327,17 +547,21 @@ body {
     line-height: 1.6;
 
     max-width: 370px;
+
 }
 
 
+
 /* =====================================================
-   INPUTS
+   INPUT
 ===================================================== */
 
 .input-group {
 
     margin-bottom: 22px;
+
 }
+
 
 
 .input-group label {
@@ -351,7 +575,9 @@ body {
     font-size: 13px;
 
     font-weight: 800;
+
 }
+
 
 
 .input-wrapper {
@@ -361,7 +587,9 @@ body {
     display: flex;
 
     align-items: center;
+
 }
+
 
 
 .input-wrapper input {
@@ -370,13 +598,25 @@ body {
 
     height: 58px;
 
-    border: 1px solid #e3e3e3;
+    padding:
+
+        0
+        48px
+        0
+        50px;
+
+    border:
+
+        1px solid
+        #e3e3e3;
 
     border-radius: 12px;
 
     outline: none;
 
-    padding: 0 48px 0 50px;
+    background: #fafafa;
+
+    color: #222222;
 
     font-family: var(--font);
 
@@ -384,12 +624,10 @@ body {
 
     font-weight: 600;
 
-    color: #222;
-
-    background: #fafafa;
-
     transition: all 0.25s ease;
+
 }
+
 
 
 .input-wrapper input::placeholder {
@@ -397,13 +635,17 @@ body {
     color: #aaaaaa;
 
     font-weight: 500;
+
 }
+
 
 
 .input-wrapper input:hover {
 
     border-color: #d4d4d4;
+
 }
+
 
 
 .input-wrapper input:focus {
@@ -413,9 +655,17 @@ body {
     border-color: var(--orange);
 
     box-shadow:
-        0 0 0 4px rgba(255,106,0,0.10);
+
+        0 0 0 4px
+        rgba(255,106,0,0.10);
+
 }
 
+
+
+/* =====================================================
+   ÍCONE INPUT
+===================================================== */
 
 .input-icon {
 
@@ -429,15 +679,18 @@ body {
 
     height: 19px;
 
-    color: #999;
+    color: #999999;
 
     pointer-events: none;
+
 }
+
 
 
 .input-icon svg {
 
     width: 100%;
+
     height: 100%;
 
     fill: none;
@@ -449,11 +702,13 @@ body {
     stroke-linecap: round;
 
     stroke-linejoin: round;
+
 }
 
 
+
 /* =====================================================
-   SENHA
+   BOTÃO SENHA
 ===================================================== */
 
 .password-toggle {
@@ -463,38 +718,47 @@ body {
     right: 14px;
 
     width: 32px;
+
     height: 32px;
 
     display: flex;
 
     justify-content: center;
+
     align-items: center;
 
     border: none;
 
     background: transparent;
 
-    cursor: pointer;
-
-    color: #999;
+    color: #999999;
 
     border-radius: 7px;
 
+    cursor: pointer;
+
     transition: 0.2s;
+
 }
+
 
 
 .password-toggle:hover {
 
     color: var(--orange);
 
-    background: rgba(255,106,0,0.08);
+    background:
+
+        rgba(255,106,0,0.08);
+
 }
+
 
 
 .password-toggle svg {
 
     width: 19px;
+
     height: 19px;
 
     fill: none;
@@ -506,23 +770,62 @@ body {
     stroke-linecap: round;
 
     stroke-linejoin: round;
+
 }
+
 
 
 .hidden {
+
     display: none !important;
+
 }
 
 
+
 /* =====================================================
-   BOTÃO
+   MENSAGEM
+===================================================== */
+
+.login-message {
+
+    min-height: 20px;
+
+    margin:
+
+        -5px
+        0
+        16px;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    color: #d94040;
+
+}
+
+
+
+/* =====================================================
+   BOTÃO LOGIN
 ===================================================== */
 
 .login-button {
 
+    position: relative;
+
     width: 100%;
 
     height: 58px;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 13px;
 
     border: none;
 
@@ -542,26 +845,21 @@ body {
 
     cursor: pointer;
 
-    display: flex;
-
-    justify-content: center;
-
-    align-items: center;
-
-    gap: 13px;
-
-    position: relative;
-
-    overflow: hidden;
-
     box-shadow:
-        0 8px 20px rgba(255,106,0,0.20);
+
+        0 8px 20px
+        rgba(255,106,0,0.20);
 
     transition:
+
         transform 0.2s ease,
+
         background 0.2s ease,
+
         box-shadow 0.2s ease;
+
 }
+
 
 
 .login-button:hover {
@@ -571,19 +869,40 @@ body {
     transform: translateY(-2px);
 
     box-shadow:
-        0 12px 25px rgba(255,106,0,0.28);
+
+        0 12px 25px
+        rgba(255,106,0,0.28);
+
 }
+
 
 
 .login-button:active {
 
     transform: translateY(0);
+
 }
 
+
+
+.login-button:disabled {
+
+    opacity: 0.8;
+
+    cursor: not-allowed;
+
+}
+
+
+
+/* =====================================================
+   SETA
+===================================================== */
 
 .button-arrow {
 
     width: 18px;
+
     height: 18px;
 
     fill: none;
@@ -597,13 +916,19 @@ body {
     stroke-linejoin: round;
 
     transition: transform 0.2s;
+
 }
 
 
-.login-button:hover .button-arrow {
 
-    transform: translateX(4px);
+.login-button:hover
+.button-arrow {
+
+    transform:
+        translateX(4px);
+
 }
+
 
 
 /* =====================================================
@@ -613,46 +938,41 @@ body {
 .loader {
 
     width: 18px;
+
     height: 18px;
 
-    border: 2px solid rgba(255,255,255,0.35);
+    border:
+
+        2px solid
+        rgba(255,255,255,0.35);
 
     border-top-color: white;
 
     border-radius: 50%;
 
-    animation: spin 0.7s linear infinite;
+    animation:
+
+        spin 0.7s linear infinite;
+
 }
+
 
 
 @keyframes spin {
 
     to {
-        transform: rotate(360deg);
+
+        transform:
+            rotate(360deg);
+
     }
+
 }
 
 
-/* =====================================================
-   MENSAGEM
-===================================================== */
-
-.login-message {
-
-    min-height: 20px;
-
-    margin: -5px 0 16px;
-
-    font-size: 12px;
-
-    font-weight: 700;
-
-    color: #d94040;
-}
-
 
 /* =====================================================
-   FOOTER
+   FOOTER LOGIN
 ===================================================== */
 
 .login-footer {
@@ -672,7 +992,9 @@ body {
     font-weight: 600;
 
     text-align: center;
+
 }
+
 
 
 .footer-line {
@@ -682,7 +1004,9 @@ body {
     flex: 1;
 
     background: #eeeeee;
+
 }
+
 
 
 /* =====================================================
@@ -692,82 +1016,123 @@ body {
 @media (max-width: 900px) {
 
     .brand-section {
+
         width: 50%;
+
     }
 
     .login-section {
+
         width: 50%;
+
         padding: 35px;
+
     }
 
     .brand-content {
+
         width: 80%;
+
     }
 
     .brand-content p {
+
         font-size: 15px;
+
     }
 
 }
 
 
+
 @media (max-width: 700px) {
 
     body {
+
         overflow: auto;
+
     }
 
     .login-container {
+
         min-height: 100vh;
+
         height: auto;
+
         display: block;
+
     }
 
     .brand-section {
+
         width: 100%;
-        height: 270px;
+
+        height: 280px;
+
     }
 
     .brand-content {
+
         width: 85%;
+
         align-items: center;
+
         text-align: center;
+
     }
 
     .brand-logo {
+
         font-size: 42px;
+
         margin-bottom: 12px;
+
     }
 
     .brand-line {
+
         width: 45px;
+
         height: 3px;
+
         margin-bottom: 14px;
+
     }
 
     .brand-content h1 {
+
         font-size: 26px;
+
         margin-bottom: 0;
+
     }
 
     .brand-content p,
+
     .connection-status,
+
     .brand-footer {
+
         display: none;
+
     }
 
     .login-section {
+
         width: 100%;
-        min-height: calc(100vh - 270px);
+
+        min-height:
+
+            calc(100vh - 280px);
+
         padding: 40px 25px;
+
     }
 
     .login-box {
-        max-width: 450px;
-    }
 
-    .mobile-logo {
-        display: none;
+        max-width: 450px;
+
     }
 
 }
