@@ -1,497 +1,288 @@
-/* ==========================================
-   CENTRAL SAC ALCANS
-   CONSTELAÇÕES
-========================================== */
+/* =====================================================
+   REDE / CONSTELAÇÕES
+===================================================== */
 
-
-const canvas =
-    document.getElementById("networkCanvas");
-
-const ctx =
-    canvas.getContext("2d");
-
+const canvas = document.getElementById("networkCanvas");
+const ctx = canvas.getContext("2d");
 
 let particles = [];
 
-
-const particleCount = 95;
-
-const connectionDistance = 145;
-
-
-/* ==========================================
-   TAMANHO DO CANVAS
-========================================== */
-
 function resizeCanvas() {
 
-    const ratio =
-        window.devicePixelRatio || 1;
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
 
-
-    canvas.width =
-        canvas.clientWidth * ratio;
-
-
-    canvas.height =
-        canvas.clientHeight * ratio;
-
-
-    ctx.setTransform(
-        ratio,
-        0,
-        0,
-        ratio,
-        0,
-        0
-    );
+    createParticles();
 }
 
-
-resizeCanvas();
-
-
-window.addEventListener(
-    "resize",
-    () => {
-
-        resizeCanvas();
-
-        createParticles();
-
-    }
-);
-
-
-/* ==========================================
-   CRIAR CONSTELAÇÕES
-========================================== */
 
 function createParticles() {
 
     particles = [];
 
+    const amount = Math.floor(
+        (canvas.width * canvas.height) / 15000
+    );
 
-    for (
-        let i = 0;
-        i < particleCount;
-        i++
-    ) {
+    for (let i = 0; i < amount; i++) {
 
         particles.push({
 
-            x:
-                Math.random() *
-                canvas.clientWidth,
+            x: Math.random() * canvas.width,
 
-            y:
-                Math.random() *
-                canvas.clientHeight,
+            y: Math.random() * canvas.height,
 
-            vx:
-                (Math.random() - 0.5)
-                * 0.25,
+            vx: (Math.random() - 0.5) * 0.25,
 
-            vy:
-                (Math.random() - 0.5)
-                * 0.25,
+            vy: (Math.random() - 0.5) * 0.25,
 
-            radius:
-                Math.random() *
-                1.5 +
-                0.5
+            radius: Math.random() * 1.8 + 0.7
 
         });
-
     }
 }
 
 
-createParticles();
-
-
-/* ==========================================
-   MOVIMENTO
-========================================== */
-
-function updateParticles() {
-
-    particles.forEach(
-        particle => {
-
-            particle.x +=
-                particle.vx;
-
-
-            particle.y +=
-                particle.vy;
-
-
-            if (
-                particle.x < 0
-            ) {
-
-                particle.x =
-                    canvas.clientWidth;
-            }
-
-
-            if (
-                particle.x >
-                canvas.clientWidth
-            ) {
-
-                particle.x = 0;
-            }
-
-
-            if (
-                particle.y < 0
-            ) {
-
-                particle.y =
-                    canvas.clientHeight;
-            }
-
-
-            if (
-                particle.y >
-                canvas.clientHeight
-            ) {
-
-                particle.y = 0;
-            }
-
-        }
-    );
-}
-
-
-/* ==========================================
-   LINHAS DAS CONSTELAÇÕES
-========================================== */
-
-function drawConnections() {
-
-    for (
-        let i = 0;
-        i < particles.length;
-        i++
-    ) {
-
-        for (
-            let j = i + 1;
-            j < particles.length;
-            j++
-        ) {
-
-            const a =
-                particles[i];
-
-            const b =
-                particles[j];
-
-
-            const dx =
-                a.x - b.x;
-
-
-            const dy =
-                a.y - b.y;
-
-
-            const distance =
-                Math.sqrt(
-                    dx * dx +
-                    dy * dy
-                );
-
-
-            if (
-                distance <
-                connectionDistance
-            ) {
-
-                const opacity =
-                    (
-                        1 -
-                        distance /
-                        connectionDistance
-                    ) * 0.22;
-
-
-                ctx.beginPath();
-
-
-                ctx.moveTo(
-                    a.x,
-                    a.y
-                );
-
-
-                ctx.lineTo(
-                    b.x,
-                    b.y
-                );
-
-
-                ctx.strokeStyle =
-                    `rgba(
-                        255,
-                        255,
-                        255,
-                        ${opacity}
-                    )`;
-
-
-                ctx.lineWidth =
-                    0.7;
-
-
-                ctx.stroke();
-
-            }
-
-        }
-
-    }
-}
-
-
-/* ==========================================
-   PONTOS DAS CONSTELAÇÕES
-========================================== */
-
-function drawParticles() {
-
-    particles.forEach(
-        particle => {
-
-            ctx.beginPath();
-
-
-            ctx.arc(
-                particle.x,
-                particle.y,
-                particle.radius,
-                0,
-                Math.PI * 2
-            );
-
-
-            ctx.fillStyle =
-                "rgba(255,255,255,0.55)";
-
-
-            ctx.fill();
-
-        }
-    );
-}
-
-
-/* ==========================================
-   ANIMAÇÃO
-========================================== */
-
-function animate() {
+function drawNetwork() {
 
     ctx.clearRect(
         0,
         0,
-        canvas.clientWidth,
-        canvas.clientHeight
+        canvas.width,
+        canvas.height
     );
 
 
-    updateParticles();
+    particles.forEach((particle, index) => {
+
+        particle.x += particle.vx;
+        particle.y += particle.vy;
 
 
-    drawConnections();
+        if (particle.x < 0 || particle.x > canvas.width) {
+            particle.vx *= -1;
+        }
+
+        if (particle.y < 0 || particle.y > canvas.height) {
+            particle.vy *= -1;
+        }
 
 
-    drawParticles();
+        /* PONTO */
+
+        ctx.beginPath();
+
+        ctx.arc(
+            particle.x,
+            particle.y,
+            particle.radius,
+            0,
+            Math.PI * 2
+        );
+
+        ctx.fillStyle = "rgba(255,255,255,0.8)";
+
+        ctx.fill();
 
 
-    requestAnimationFrame(
-        animate
-    );
+        /* CONEXÕES */
+
+        for (
+            let j = index + 1;
+            j < particles.length;
+            j++
+        ) {
+
+            const other = particles[j];
+
+            const dx = particle.x - other.x;
+            const dy = particle.y - other.y;
+
+            const distance = Math.sqrt(
+                dx * dx + dy * dy
+            );
+
+
+            if (distance < 130) {
+
+                const opacity =
+                    1 - distance / 130;
+
+
+                ctx.beginPath();
+
+                ctx.moveTo(
+                    particle.x,
+                    particle.y
+                );
+
+                ctx.lineTo(
+                    other.x,
+                    other.y
+                );
+
+                ctx.strokeStyle =
+                    `rgba(255,255,255,${opacity * 0.25})`;
+
+                ctx.lineWidth = 0.7;
+
+                ctx.stroke();
+            }
+        }
+
+    });
+
+
+    requestAnimationFrame(drawNetwork);
 }
 
 
-animate();
+window.addEventListener(
+    "resize",
+    resizeCanvas
+);
+
+resizeCanvas();
+drawNetwork();
 
 
-/* ==========================================
+/* =====================================================
    MOSTRAR / ESCONDER SENHA
-========================================== */
+===================================================== */
 
 const passwordInput =
-    document.getElementById(
-        "password"
-    );
-
+    document.getElementById("password");
 
 const togglePassword =
-    document.getElementById(
-        "togglePassword"
-    );
-
+    document.getElementById("togglePassword");
 
 const eyeOpen =
-    document.getElementById(
-        "eyeOpen"
-    );
-
+    document.getElementById("eyeOpen");
 
 const eyeClosed =
-    document.getElementById(
-        "eyeClosed"
-    );
+    document.getElementById("eyeClosed");
 
 
 togglePassword.addEventListener(
     "click",
     () => {
 
-        const isPassword =
-            passwordInput.type ===
-            "password";
+        const showing =
+            passwordInput.type === "text";
 
 
-        passwordInput.type =
-            isPassword
-                ? "text"
-                : "password";
+        if (showing) {
 
+            passwordInput.type = "password";
 
-        eyeOpen.classList.toggle(
-            "hidden",
-            isPassword
-        );
+            eyeOpen.classList.remove("hidden");
 
+            eyeClosed.classList.add("hidden");
 
-        eyeClosed.classList.toggle(
-            "hidden",
-            !isPassword
-        );
+            togglePassword.setAttribute(
+                "aria-label",
+                "Mostrar senha"
+            );
+
+        } else {
+
+            passwordInput.type = "text";
+
+            eyeOpen.classList.add("hidden");
+
+            eyeClosed.classList.remove("hidden");
+
+            togglePassword.setAttribute(
+                "aria-label",
+                "Ocultar senha"
+            );
+        }
 
     }
 );
 
 
-/* ==========================================
+/* =====================================================
    LOGIN
-========================================== */
+===================================================== */
 
 const loginForm =
-    document.getElementById(
-        "loginForm"
-    );
-
+    document.getElementById("loginForm");
 
 const loginButton =
-    document.getElementById(
-        "loginButton"
-    );
-
+    document.getElementById("loginButton");
 
 const buttonText =
-    document.getElementById(
-        "buttonText"
-    );
-
+    document.getElementById("buttonText");
 
 const buttonLoader =
-    document.getElementById(
-        "buttonLoader"
-    );
-
+    document.getElementById("buttonLoader");
 
 const loginMessage =
-    document.getElementById(
-        "loginMessage"
-    );
+    document.getElementById("loginMessage");
 
 
 loginForm.addEventListener(
     "submit",
-    function (event) {
+    async (event) => {
 
         event.preventDefault();
 
 
         const username =
-            document
-                .getElementById(
-                    "username"
-                )
-                .value
-                .trim();
-
+            document.getElementById("username").value.trim();
 
         const password =
-            document
-                .getElementById(
-                    "password"
-                )
-                .value
-                .trim();
+            document.getElementById("password").value;
 
 
-        loginMessage.textContent =
-            "";
+        loginMessage.textContent = "";
 
 
-        if (
-            !username ||
-            !password
-        ) {
+        if (!username || !password) {
 
             loginMessage.textContent =
-                "Preencha o usuário e a senha.";
+                "Preencha usuário e senha.";
 
             return;
         }
 
 
-        buttonText.classList.add(
-            "hidden"
+        /* ESTADO DE CARREGAMENTO */
+
+        loginButton.disabled = true;
+
+        buttonText.classList.add("hidden");
+
+        buttonLoader.classList.remove("hidden");
+
+
+        /*
+            POR ENQUANTO É APENAS UMA SIMULAÇÃO.
+
+            NO PRÓXIMO PASSO:
+
+            supabase.auth.signInWithPassword({
+                email: username,
+                password: password
+            })
+        */
+
+
+        await new Promise(
+            resolve => setTimeout(resolve, 1000)
         );
 
 
-        buttonLoader.classList.remove(
-            "hidden"
-        );
+        loginButton.disabled = false;
+
+        buttonText.classList.remove("hidden");
+
+        buttonLoader.classList.add("hidden");
 
 
-        loginButton.disabled =
-            true;
-
-
-        setTimeout(
-            () => {
-
-                buttonText.classList.remove(
-                    "hidden"
-                );
-
-
-                buttonLoader.classList.add(
-                    "hidden"
-                );
-
-
-                loginButton.disabled =
-                    false;
-
-
-                loginMessage.textContent =
-                    "Login ainda não conectado ao Supabase.";
-
-            },
-            1000
-        );
+        loginMessage.textContent =
+            "Autenticação do Supabase ainda não configurada.";
 
     }
 );
