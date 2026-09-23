@@ -1,63 +1,105 @@
 /* ==========================================
    CENTRAL SAC ALCANS
-   Globo + rede de conexões
+   GLOBO + REDE DE CONEXÕES
 ========================================== */
 
-const canvas = document.getElementById("networkCanvas");
-const ctx = canvas.getContext("2d");
+
+const canvas =
+    document.getElementById("networkCanvas");
+
+const ctx =
+    canvas.getContext("2d");
+
 
 let particles = [];
 
+
 const particleCount = 65;
+
 const connectionDistance = 155;
 
 
 /* ==========================================
-   AJUSTAR CANVAS
+   CONFIGURAÇÃO DO CANVAS
 ========================================== */
 
 function resizeCanvas() {
 
-    const ratio = window.devicePixelRatio || 1;
+    const ratio =
+        window.devicePixelRatio || 1;
 
-    canvas.width = canvas.clientWidth * ratio;
-    canvas.height = canvas.clientHeight * ratio;
 
-    ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+    canvas.width =
+        canvas.clientWidth * ratio;
+
+
+    canvas.height =
+        canvas.clientHeight * ratio;
+
+
+    ctx.setTransform(
+        ratio,
+        0,
+        0,
+        ratio,
+        0,
+        0
+    );
 }
+
 
 resizeCanvas();
 
-window.addEventListener("resize", () => {
 
-    resizeCanvas();
+window.addEventListener(
+    "resize",
+    () => {
 
-    createParticles();
+        resizeCanvas();
 
-});
+        createParticles();
+
+    }
+);
 
 
 /* ==========================================
-   PARTÍCULAS
+   CRIAR PARTÍCULAS
 ========================================== */
 
 function createParticles() {
 
     particles = [];
 
-    for (let i = 0; i < particleCount; i++) {
+
+    for (
+        let i = 0;
+        i < particleCount;
+        i++
+    ) {
 
         particles.push({
 
-            x: Math.random() * canvas.clientWidth,
+            x:
+                Math.random() *
+                canvas.clientWidth,
 
-            y: Math.random() * canvas.clientHeight,
+            y:
+                Math.random() *
+                canvas.clientHeight,
 
-            vx: (Math.random() - 0.5) * 0.22,
+            vx:
+                (Math.random() - 0.5)
+                * 0.22,
 
-            vy: (Math.random() - 0.5) * 0.22,
+            vy:
+                (Math.random() - 0.5)
+                * 0.22,
 
-            radius: Math.random() * 1.4 + 0.6
+            radius:
+                Math.random() *
+                1.4 +
+                0.6
 
         });
 
@@ -69,75 +111,141 @@ createParticles();
 
 
 /* ==========================================
-   ATUALIZAR PARTÍCULAS
+   MOVIMENTO
 ========================================== */
 
 function updateParticles() {
 
-    particles.forEach(p => {
+    particles.forEach(
+        p => {
 
-        p.x += p.vx;
-        p.y += p.vy;
+            p.x += p.vx;
+
+            p.y += p.vy;
 
 
-        if (p.x < 0) {
-            p.x = canvas.clientWidth;
+            if (
+                p.x < 0
+            ) {
+
+                p.x =
+                    canvas.clientWidth;
+            }
+
+
+            if (
+                p.x >
+                canvas.clientWidth
+            ) {
+
+                p.x = 0;
+            }
+
+
+            if (
+                p.y < 0
+            ) {
+
+                p.y =
+                    canvas.clientHeight;
+            }
+
+
+            if (
+                p.y >
+                canvas.clientHeight
+            ) {
+
+                p.y = 0;
+            }
+
         }
-
-        if (p.x > canvas.clientWidth) {
-            p.x = 0;
-        }
-
-        if (p.y < 0) {
-            p.y = canvas.clientHeight;
-        }
-
-        if (p.y > canvas.clientHeight) {
-            p.y = 0;
-        }
-
-    });
+    );
 }
 
 
 /* ==========================================
-   CONEXÕES
+   CONEXÕES DA REDE
 ========================================== */
 
 function drawConnections() {
 
-    for (let i = 0; i < particles.length; i++) {
+    for (
+        let i = 0;
+        i < particles.length;
+        i++
+    ) {
 
-        for (let j = i + 1; j < particles.length; j++) {
+        for (
+            let j = i + 1;
+            j < particles.length;
+            j++
+        ) {
 
-            const a = particles[i];
-            const b = particles[j];
+            const a =
+                particles[i];
 
-            const dx = a.x - b.x;
-            const dy = a.y - b.y;
-
-            const distance = Math.sqrt(
-                dx * dx + dy * dy
-            );
+            const b =
+                particles[j];
 
 
-            if (distance < connectionDistance) {
+            const dx =
+                a.x - b.x;
+
+            const dy =
+                a.y - b.y;
+
+
+            const distance =
+                Math.sqrt(
+                    dx * dx +
+                    dy * dy
+                );
+
+
+            if (
+                distance <
+                connectionDistance
+            ) {
 
                 const opacity =
-                    (1 - distance / connectionDistance) * 0.22;
+                    (
+                        1 -
+                        distance /
+                        connectionDistance
+                    ) * 0.20;
+
 
                 ctx.beginPath();
 
-                ctx.moveTo(a.x, a.y);
 
-                ctx.lineTo(b.x, b.y);
+                ctx.moveTo(
+                    a.x,
+                    a.y
+                );
+
+
+                ctx.lineTo(
+                    b.x,
+                    b.y
+                );
+
 
                 ctx.strokeStyle =
-                    `rgba(255,255,255,${opacity})`;
+                    `rgba(
+                        255,
+                        255,
+                        255,
+                        ${opacity}
+                    )`;
 
-                ctx.lineWidth = 0.7;
+
+                ctx.lineWidth =
+                    0.7;
+
 
                 ctx.stroke();
+
             }
 
         }
@@ -152,57 +260,101 @@ function drawConnections() {
 
 function drawParticles() {
 
-    particles.forEach(p => {
+    particles.forEach(
+        p => {
 
-        ctx.beginPath();
+            ctx.beginPath();
 
-        ctx.arc(
-            p.x,
-            p.y,
-            p.radius,
-            0,
-            Math.PI * 2
-        );
 
-        ctx.fillStyle =
-            "rgba(255,255,255,0.45)";
+            ctx.arc(
+                p.x,
+                p.y,
+                p.radius,
+                0,
+                Math.PI * 2
+            );
 
-        ctx.fill();
 
-    });
+            ctx.fillStyle =
+                "rgba(255,255,255,0.42)";
+
+
+            ctx.fill();
+
+        }
+    );
 }
 
 
 /* ==========================================
-   GLOBO CENTRAL
+   POSIÇÃO DO GLOBO
+========================================== */
+
+function getGlobePosition() {
+
+    return {
+
+        x:
+            canvas.clientWidth * 0.70,
+
+        y:
+            canvas.clientHeight * 0.52
+
+    };
+}
+
+
+/* ==========================================
+   GLOBO
 ========================================== */
 
 function drawGlobe(time) {
 
-    const centerX = canvas.clientWidth * 0.72;
-    const centerY = canvas.clientHeight * 0.51;
-
-    const radius = Math.min(
-        canvas.clientWidth,
-        canvas.clientHeight
-    ) * 0.105;
+    const position =
+        getGlobePosition();
 
 
-    /* brilho atrás do globo */
+    const centerX =
+        position.x;
 
-    const glow = ctx.createRadialGradient(
-        centerX,
-        centerY,
-        radius * 0.3,
-        centerX,
-        centerY,
-        radius * 2.4
-    );
+    const centerY =
+        position.y;
+
+
+    /*
+        Globo pequeno,
+        mas claramente visível.
+    */
+
+    const radius = 65;
+
+
+    /* =====================================
+       BRILHO EXTERNO
+    ====================================== */
+
+    const glow =
+        ctx.createRadialGradient(
+            centerX,
+            centerY,
+            radius * 0.3,
+            centerX,
+            centerY,
+            radius * 2.2
+        );
+
 
     glow.addColorStop(
         0,
-        "rgba(255,255,255,0.12)"
+        "rgba(255,255,255,0.15)"
     );
+
+
+    glow.addColorStop(
+        0.5,
+        "rgba(255,255,255,0.05)"
+    );
+
 
     glow.addColorStop(
         1,
@@ -212,135 +364,200 @@ function drawGlobe(time) {
 
     ctx.beginPath();
 
-    ctx.arc(
-        centerX,
-        centerY,
-        radius * 2.4,
-        0,
-        Math.PI * 2
-    );
-
-    ctx.fillStyle = glow;
-
-    ctx.fill();
-
-
-    /* esfera */
-
-    ctx.beginPath();
 
     ctx.arc(
         centerX,
         centerY,
-        radius,
+        radius * 2.2,
         0,
         Math.PI * 2
     );
+
 
     ctx.fillStyle =
-        "rgba(110,38,0,0.30)";
+        glow;
+
+
+    ctx.fill();
+
+
+    /* =====================================
+       ESFERA
+    ====================================== */
+
+    ctx.beginPath();
+
+
+    ctx.arc(
+        centerX,
+        centerY,
+        radius,
+        0,
+        Math.PI * 2
+    );
+
+
+    ctx.fillStyle =
+        "rgba(88,28,0,0.42)";
+
 
     ctx.fill();
 
 
     ctx.strokeStyle =
-        "rgba(255,255,255,0.75)";
+        "rgba(255,255,255,0.88)";
 
-    ctx.lineWidth = 1.4;
+
+    ctx.lineWidth = 2;
+
 
     ctx.stroke();
 
 
-    /* latitude */
-
-    ctx.save();
-
-    ctx.beginPath();
-
-    ctx.arc(
-        centerX,
-        centerY,
-        radius * 0.52,
-        0,
-        Math.PI * 2
-    );
-
-    ctx.strokeStyle =
-        "rgba(255,255,255,0.40)";
-
-    ctx.lineWidth = 0.8;
-
-    ctx.stroke();
-
-
-    /* longitude */
+    /* =====================================
+       LINHA EQUATORIAL
+    ====================================== */
 
     ctx.beginPath();
 
-    ctx.ellipse(
-        centerX,
-        centerY,
-        radius * 0.42,
-        radius,
-        0,
-        0,
-        Math.PI * 2
-    );
-
-    ctx.strokeStyle =
-        "rgba(255,255,255,0.40)";
-
-    ctx.stroke();
-
-
-    ctx.beginPath();
-
-    ctx.ellipse(
-        centerX,
-        centerY,
-        radius * 0.78,
-        radius,
-        0,
-        0,
-        Math.PI * 2
-    );
-
-    ctx.strokeStyle =
-        "rgba(255,255,255,0.25)";
-
-    ctx.stroke();
-
-    ctx.restore();
-
-
-    /* linhas horizontais */
-
-    ctx.beginPath();
 
     ctx.moveTo(
         centerX - radius,
         centerY
     );
 
+
     ctx.lineTo(
         centerX + radius,
         centerY
     );
 
-    ctx.strokeStyle =
-        "rgba(255,255,255,0.35)";
 
-    ctx.lineWidth = 0.8;
+    ctx.strokeStyle =
+        "rgba(255,255,255,0.48)";
+
+
+    ctx.lineWidth = 1;
+
 
     ctx.stroke();
 
 
-    /* ponto pulsante */
-
-    const pulse =
-        Math.sin(time * 0.003) * 2 + 4;
+    /* =====================================
+       LATITUDE SUPERIOR
+    ====================================== */
 
     ctx.beginPath();
+
+
+    ctx.ellipse(
+        centerX,
+        centerY,
+        radius,
+        radius * 0.38,
+        0,
+        0,
+        Math.PI * 2
+    );
+
+
+    ctx.strokeStyle =
+        "rgba(255,255,255,0.55)";
+
+
+    ctx.lineWidth = 1;
+
+
+    ctx.stroke();
+
+
+    /* =====================================
+       LATITUDE INFERIOR
+    ====================================== */
+
+    ctx.beginPath();
+
+
+    ctx.ellipse(
+        centerX,
+        centerY,
+        radius,
+        radius * 0.70,
+        0,
+        0,
+        Math.PI * 2
+    );
+
+
+    ctx.strokeStyle =
+        "rgba(255,255,255,0.28)";
+
+
+    ctx.stroke();
+
+
+    /* =====================================
+       LONGITUDE CENTRAL
+    ====================================== */
+
+    ctx.beginPath();
+
+
+    ctx.ellipse(
+        centerX,
+        centerY,
+        radius * 0.38,
+        radius,
+        0,
+        0,
+        Math.PI * 2
+    );
+
+
+    ctx.strokeStyle =
+        "rgba(255,255,255,0.55)";
+
+
+    ctx.stroke();
+
+
+    /* =====================================
+       LONGITUDE LATERAL
+    ====================================== */
+
+    ctx.beginPath();
+
+
+    ctx.ellipse(
+        centerX,
+        centerY,
+        radius * 0.72,
+        radius,
+        0,
+        0,
+        Math.PI * 2
+    );
+
+
+    ctx.strokeStyle =
+        "rgba(255,255,255,0.28)";
+
+
+    ctx.stroke();
+
+
+    /* =====================================
+       PONTO CENTRAL PULSANTE
+    ====================================== */
+
+    const pulse =
+        Math.sin(
+            time * 0.003
+        ) * 2 + 5;
+
+
+    ctx.beginPath();
+
 
     ctx.arc(
         centerX,
@@ -350,8 +567,10 @@ function drawGlobe(time) {
         Math.PI * 2
     );
 
+
     ctx.fillStyle =
-        "rgba(255,255,255,0.75)";
+        "rgba(255,255,255,0.90)";
+
 
     ctx.fill();
 }
@@ -363,107 +582,167 @@ function drawGlobe(time) {
 
 function drawGlobeConnections(time) {
 
-    const centerX = canvas.clientWidth * 0.72;
-    const centerY = canvas.clientHeight * 0.51;
+    const position =
+        getGlobePosition();
 
-    const radius = Math.min(
-        canvas.clientWidth,
-        canvas.clientHeight
-    ) * 0.105;
+
+    const centerX =
+        position.x;
+
+    const centerY =
+        position.y;
 
 
     const points = [
 
         {
-            x: centerX - radius * 2.8,
-            y: centerY - radius * 1.3,
-            label: "CLIENTE"
+            x:
+                centerX - 180,
+
+            y:
+                centerY - 95,
+
+            label:
+                "CLIENTE"
         },
 
         {
-            x: centerX + radius * 2.7,
-            y: centerY - radius * 1.1,
-            label: "ATENDIMENTO"
+            x:
+                centerX + 180,
+
+            y:
+                centerY - 80,
+
+            label:
+                "ATENDIMENTO"
         },
 
         {
-            x: centerX - radius * 2.5,
-            y: centerY + radius * 1.6,
-            label: "PROCEDIMENTO"
+            x:
+                centerX - 175,
+
+            y:
+                centerY + 105,
+
+            label:
+                "PROCEDIMENTO"
         },
 
         {
-            x: centerX + radius * 2.5,
-            y: centerY + radius * 1.5,
-            label: "SOLUÇÃO"
+            x:
+                centerX + 175,
+
+            y:
+                centerY + 100,
+
+            label:
+                "SOLUÇÃO"
         }
 
     ];
 
 
-    points.forEach((point, index) => {
+    points.forEach(
+        (point, index) => {
 
-        const wave =
-            Math.sin(time * 0.002 + index) * 0.15 + 0.85;
-
-
-        /* linha */
-
-        ctx.beginPath();
-
-        ctx.moveTo(
-            centerX,
-            centerY
-        );
-
-        ctx.lineTo(
-            point.x,
-            point.y
-        );
-
-        ctx.strokeStyle =
-            `rgba(255,255,255,${0.13 * wave})`;
-
-        ctx.lineWidth = 1;
-
-        ctx.stroke();
+            const pulse =
+                Math.sin(
+                    time * 0.002 +
+                    index
+                ) * 0.15 + 0.85;
 
 
-        /* pequeno ponto */
+            /* =================================
+               LINHA
+            ================================= */
 
-        ctx.beginPath();
-
-        ctx.arc(
-            point.x,
-            point.y,
-            3,
-            0,
-            Math.PI * 2
-        );
-
-        ctx.fillStyle =
-            `rgba(255,255,255,${0.65 * wave})`;
-
-        ctx.fill();
+            ctx.beginPath();
 
 
-        /* etiqueta */
+            ctx.moveTo(
+                centerX,
+                centerY
+            );
 
-        ctx.font =
-            "700 9px Nunito";
 
-        ctx.fillStyle =
-            `rgba(255,255,255,${0.55 * wave})`;
+            ctx.lineTo(
+                point.x,
+                point.y
+            );
 
-        ctx.textAlign = "center";
 
-        ctx.fillText(
-            point.label,
-            point.x,
-            point.y - 10
-        );
+            ctx.strokeStyle =
+                `rgba(
+                    255,
+                    255,
+                    255,
+                    ${0.20 * pulse}
+                )`;
 
-    });
+
+            ctx.lineWidth = 1;
+
+
+            ctx.stroke();
+
+
+            /* =================================
+               PONTO
+            ================================= */
+
+            ctx.beginPath();
+
+
+            ctx.arc(
+                point.x,
+                point.y,
+                3,
+                0,
+                Math.PI * 2
+            );
+
+
+            ctx.fillStyle =
+                `rgba(
+                    255,
+                    255,
+                    255,
+                    ${0.75 * pulse}
+                )`;
+
+
+            ctx.fill();
+
+
+            /* =================================
+               TEXTO
+            ================================= */
+
+            ctx.font =
+                "700 9px Nunito";
+
+
+            ctx.fillStyle =
+                `rgba(
+                    255,
+                    255,
+                    255,
+                    ${0.65 * pulse}
+                )`;
+
+
+            ctx.textAlign =
+                "center";
+
+
+            ctx.fillText(
+                point.label,
+                point.x,
+                point.y - 11
+            );
+
+        }
+    );
 }
 
 
@@ -483,20 +762,32 @@ function animate(time) {
 
     updateParticles();
 
+
     drawConnections();
+
 
     drawParticles();
 
-    drawGlobeConnections(time);
 
-    drawGlobe(time);
+    drawGlobeConnections(
+        time
+    );
 
 
-    requestAnimationFrame(animate);
+    drawGlobe(
+        time
+    );
+
+
+    requestAnimationFrame(
+        animate
+    );
 }
 
 
-requestAnimationFrame(animate);
+requestAnimationFrame(
+    animate
+);
 
 
 /* ==========================================
@@ -504,16 +795,27 @@ requestAnimationFrame(animate);
 ========================================== */
 
 const passwordInput =
-    document.getElementById("password");
+    document.getElementById(
+        "password"
+    );
+
 
 const togglePassword =
-    document.getElementById("togglePassword");
+    document.getElementById(
+        "togglePassword"
+    );
+
 
 const eyeOpen =
-    document.getElementById("eyeOpen");
+    document.getElementById(
+        "eyeOpen"
+    );
+
 
 const eyeClosed =
-    document.getElementById("eyeClosed");
+    document.getElementById(
+        "eyeClosed"
+    );
 
 
 togglePassword.addEventListener(
@@ -521,17 +823,21 @@ togglePassword.addEventListener(
     () => {
 
         const isPassword =
-            passwordInput.type === "password";
+            passwordInput.type ===
+            "password";
 
 
         passwordInput.type =
-            isPassword ? "text" : "password";
+            isPassword
+                ? "text"
+                : "password";
 
 
         eyeOpen.classList.toggle(
             "hidden",
             isPassword
         );
+
 
         eyeClosed.classList.toggle(
             "hidden",
@@ -547,19 +853,33 @@ togglePassword.addEventListener(
 ========================================== */
 
 const loginForm =
-    document.getElementById("loginForm");
+    document.getElementById(
+        "loginForm"
+    );
+
 
 const loginButton =
-    document.getElementById("loginButton");
+    document.getElementById(
+        "loginButton"
+    );
+
 
 const buttonText =
-    document.getElementById("buttonText");
+    document.getElementById(
+        "buttonText"
+    );
+
 
 const buttonLoader =
-    document.getElementById("buttonLoader");
+    document.getElementById(
+        "buttonLoader"
+    );
+
 
 const loginMessage =
-    document.getElementById("loginMessage");
+    document.getElementById(
+        "loginMessage"
+    );
 
 
 loginForm.addEventListener(
@@ -571,22 +891,34 @@ loginForm.addEventListener(
 
         const username =
             document
-                .getElementById("username")
+                .getElementById(
+                    "username"
+                )
                 .value
                 .trim();
 
 
         const password =
             document
-                .getElementById("password")
+                .getElementById(
+                    "password"
+                )
                 .value
                 .trim();
 
 
-        loginMessage.textContent = "";
+        loginMessage.textContent =
+            "";
 
 
-        if (!username || !password) {
+        /* =================================
+           VALIDAR CAMPOS
+        ================================= */
+
+        if (
+            !username ||
+            !password
+        ) {
 
             loginMessage.textContent =
                 "Preencha o usuário e a senha.";
@@ -595,26 +927,51 @@ loginForm.addEventListener(
         }
 
 
-        buttonText.classList.add("hidden");
+        /* =================================
+           LOADING
+        ================================= */
 
-        buttonLoader.classList.remove("hidden");
-
-        loginButton.disabled = true;
-
-
-        setTimeout(() => {
-
-            buttonText.classList.remove("hidden");
-
-            buttonLoader.classList.add("hidden");
-
-            loginButton.disabled = false;
+        buttonText.classList.add(
+            "hidden"
+        );
 
 
-            loginMessage.textContent =
-                "Login ainda não conectado ao Supabase.";
+        buttonLoader.classList.remove(
+            "hidden"
+        );
 
-        }, 1000);
+
+        loginButton.disabled =
+            true;
+
+
+        /* =================================
+           SIMULAÇÃO
+        ================================= */
+
+        setTimeout(
+            () => {
+
+                buttonText.classList.remove(
+                    "hidden"
+                );
+
+
+                buttonLoader.classList.add(
+                    "hidden"
+                );
+
+
+                loginButton.disabled =
+                    false;
+
+
+                loginMessage.textContent =
+                    "Login ainda não conectado ao Supabase.";
+
+            },
+            1000
+        );
 
     }
 );
