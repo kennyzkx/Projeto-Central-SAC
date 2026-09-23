@@ -1,0 +1,773 @@
+:root {
+    --orange: #ff6a00;
+    --orange-light: #ff7a1a;
+    --orange-dark: #e95700;
+
+    --black: #111111;
+    --black-soft: #171717;
+
+    --white: #ffffff;
+    --gray: #777777;
+    --gray-light: #eeeeee;
+
+    --font: "Nunito", sans-serif;
+}
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+body {
+    min-height: 100vh;
+
+    font-family: var(--font);
+
+    background: var(--black);
+
+    color: var(--black);
+
+    overflow: hidden;
+}
+
+
+.login-container {
+    width: 100%;
+    height: 100vh;
+
+    display: flex;
+}
+
+
+/* =====================================================
+   LADO ALCANS
+===================================================== */
+
+.brand-section {
+
+    position: relative;
+
+    width: 60%;
+    height: 100%;
+
+    overflow: hidden;
+
+    background:
+        radial-gradient(
+            circle at 20% 30%,
+            rgba(255,255,255,0.12),
+            transparent 30%
+        ),
+        linear-gradient(
+            135deg,
+            #ff7200 0%,
+            #ff6200 45%,
+            #e95000 100%
+        );
+
+    color: white;
+}
+
+
+#networkCanvas {
+
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    opacity: 0.65;
+}
+
+
+.brand-content {
+
+    position: relative;
+
+    z-index: 2;
+
+    width: min(620px, 80%);
+
+    margin: auto;
+
+    height: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: flex-start;
+}
+
+
+.brand-logo {
+
+    font-size: clamp(45px, 5vw, 78px);
+
+    font-weight: 900;
+
+    letter-spacing: 5px;
+
+    line-height: 1;
+
+    margin-bottom: 24px;
+
+    text-shadow:
+        0 4px 20px rgba(0,0,0,0.12);
+}
+
+
+.brand-line {
+
+    width: 70px;
+    height: 5px;
+
+    background: white;
+
+    border-radius: 20px;
+
+    margin-bottom: 28px;
+}
+
+
+.brand-content h1 {
+
+    font-size: clamp(34px, 4vw, 58px);
+
+    line-height: 1.05;
+
+    font-weight: 800;
+
+    letter-spacing: -1px;
+
+    margin-bottom: 24px;
+}
+
+
+.brand-content p {
+
+    max-width: 480px;
+
+    font-size: 18px;
+
+    line-height: 1.7;
+
+    font-weight: 500;
+
+    color: rgba(255,255,255,0.88);
+}
+
+
+.connection-status {
+
+    margin-top: 38px;
+
+    padding: 10px 16px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    border: 1px solid rgba(255,255,255,0.25);
+
+    background: rgba(255,255,255,0.08);
+
+    backdrop-filter: blur(8px);
+
+    border-radius: 50px;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    letter-spacing: 0.4px;
+}
+
+
+.status-dot {
+
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+
+    background: white;
+
+    box-shadow:
+        0 0 10px white;
+
+    animation: pulse 2s infinite;
+}
+
+
+@keyframes pulse {
+
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.4;
+        transform: scale(0.7);
+    }
+}
+
+
+.brand-footer {
+
+    position: absolute;
+
+    z-index: 3;
+
+    bottom: 30px;
+    left: 45px;
+
+    display: flex;
+
+    gap: 12px;
+
+    align-items: center;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    letter-spacing: 1px;
+
+    color: rgba(255,255,255,0.65);
+}
+
+
+/* =====================================================
+   LOGIN
+===================================================== */
+
+.login-section {
+
+    width: 40%;
+    height: 100%;
+
+    background: #ffffff;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    padding: 50px;
+}
+
+
+.login-box {
+
+    width: 100%;
+    max-width: 430px;
+}
+
+
+.mobile-logo {
+
+    display: none;
+}
+
+
+.login-header {
+
+    margin-bottom: 38px;
+}
+
+
+.login-label {
+
+    display: inline-block;
+
+    margin-bottom: 13px;
+
+    color: var(--orange);
+
+    font-size: 12px;
+
+    font-weight: 900;
+
+    letter-spacing: 2px;
+}
+
+
+.login-header h2 {
+
+    font-size: 34px;
+
+    line-height: 1.15;
+
+    font-weight: 800;
+
+    color: #151515;
+
+    margin-bottom: 12px;
+}
+
+
+.login-header p {
+
+    color: #858585;
+
+    font-size: 14px;
+
+    line-height: 1.6;
+
+    max-width: 370px;
+}
+
+
+/* =====================================================
+   INPUTS
+===================================================== */
+
+.input-group {
+
+    margin-bottom: 22px;
+}
+
+
+.input-group label {
+
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #333333;
+
+    font-size: 13px;
+
+    font-weight: 800;
+}
+
+
+.input-wrapper {
+
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+}
+
+
+.input-wrapper input {
+
+    width: 100%;
+
+    height: 58px;
+
+    border: 1px solid #e3e3e3;
+
+    border-radius: 12px;
+
+    outline: none;
+
+    padding: 0 48px 0 50px;
+
+    font-family: var(--font);
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    color: #222;
+
+    background: #fafafa;
+
+    transition: all 0.25s ease;
+}
+
+
+.input-wrapper input::placeholder {
+
+    color: #aaaaaa;
+
+    font-weight: 500;
+}
+
+
+.input-wrapper input:hover {
+
+    border-color: #d4d4d4;
+}
+
+
+.input-wrapper input:focus {
+
+    background: white;
+
+    border-color: var(--orange);
+
+    box-shadow:
+        0 0 0 4px rgba(255,106,0,0.10);
+}
+
+
+.input-icon {
+
+    position: absolute;
+
+    left: 17px;
+
+    z-index: 2;
+
+    width: 19px;
+
+    height: 19px;
+
+    color: #999;
+
+    pointer-events: none;
+}
+
+
+.input-icon svg {
+
+    width: 100%;
+    height: 100%;
+
+    fill: none;
+
+    stroke: currentColor;
+
+    stroke-width: 1.8;
+
+    stroke-linecap: round;
+
+    stroke-linejoin: round;
+}
+
+
+/* =====================================================
+   SENHA
+===================================================== */
+
+.password-toggle {
+
+    position: absolute;
+
+    right: 14px;
+
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    border: none;
+
+    background: transparent;
+
+    cursor: pointer;
+
+    color: #999;
+
+    border-radius: 7px;
+
+    transition: 0.2s;
+}
+
+
+.password-toggle:hover {
+
+    color: var(--orange);
+
+    background: rgba(255,106,0,0.08);
+}
+
+
+.password-toggle svg {
+
+    width: 19px;
+    height: 19px;
+
+    fill: none;
+
+    stroke: currentColor;
+
+    stroke-width: 1.8;
+
+    stroke-linecap: round;
+
+    stroke-linejoin: round;
+}
+
+
+.hidden {
+    display: none !important;
+}
+
+
+/* =====================================================
+   BOTÃO
+===================================================== */
+
+.login-button {
+
+    width: 100%;
+
+    height: 58px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background: var(--orange);
+
+    color: white;
+
+    font-family: var(--font);
+
+    font-size: 13px;
+
+    font-weight: 900;
+
+    letter-spacing: 1.5px;
+
+    cursor: pointer;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 13px;
+
+    position: relative;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 8px 20px rgba(255,106,0,0.20);
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.login-button:hover {
+
+    background: var(--orange-dark);
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 12px 25px rgba(255,106,0,0.28);
+}
+
+
+.login-button:active {
+
+    transform: translateY(0);
+}
+
+
+.button-arrow {
+
+    width: 18px;
+    height: 18px;
+
+    fill: none;
+
+    stroke: currentColor;
+
+    stroke-width: 2;
+
+    stroke-linecap: round;
+
+    stroke-linejoin: round;
+
+    transition: transform 0.2s;
+}
+
+
+.login-button:hover .button-arrow {
+
+    transform: translateX(4px);
+}
+
+
+/* =====================================================
+   LOADER
+===================================================== */
+
+.loader {
+
+    width: 18px;
+    height: 18px;
+
+    border: 2px solid rgba(255,255,255,0.35);
+
+    border-top-color: white;
+
+    border-radius: 50%;
+
+    animation: spin 0.7s linear infinite;
+}
+
+
+@keyframes spin {
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* =====================================================
+   MENSAGEM
+===================================================== */
+
+.login-message {
+
+    min-height: 20px;
+
+    margin: -5px 0 16px;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    color: #d94040;
+}
+
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+.login-footer {
+
+    margin-top: 28px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    color: #b0b0b0;
+
+    font-size: 10px;
+
+    font-weight: 600;
+
+    text-align: center;
+}
+
+
+.footer-line {
+
+    height: 1px;
+
+    flex: 1;
+
+    background: #eeeeee;
+}
+
+
+/* =====================================================
+   RESPONSIVO
+===================================================== */
+
+@media (max-width: 900px) {
+
+    .brand-section {
+        width: 50%;
+    }
+
+    .login-section {
+        width: 50%;
+        padding: 35px;
+    }
+
+    .brand-content {
+        width: 80%;
+    }
+
+    .brand-content p {
+        font-size: 15px;
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    body {
+        overflow: auto;
+    }
+
+    .login-container {
+        min-height: 100vh;
+        height: auto;
+        display: block;
+    }
+
+    .brand-section {
+        width: 100%;
+        height: 270px;
+    }
+
+    .brand-content {
+        width: 85%;
+        align-items: center;
+        text-align: center;
+    }
+
+    .brand-logo {
+        font-size: 42px;
+        margin-bottom: 12px;
+    }
+
+    .brand-line {
+        width: 45px;
+        height: 3px;
+        margin-bottom: 14px;
+    }
+
+    .brand-content h1 {
+        font-size: 26px;
+        margin-bottom: 0;
+    }
+
+    .brand-content p,
+    .connection-status,
+    .brand-footer {
+        display: none;
+    }
+
+    .login-section {
+        width: 100%;
+        min-height: calc(100vh - 270px);
+        padding: 40px 25px;
+    }
+
+    .login-box {
+        max-width: 450px;
+    }
+
+    .mobile-logo {
+        display: none;
+    }
+
+}
