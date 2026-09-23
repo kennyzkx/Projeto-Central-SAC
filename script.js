@@ -1,168 +1,95 @@
-/* =====================================================
-   GLOBO TECNOLÓGICO ALCANS
-===================================================== */
+/* =========================================
+   VISUAL DA CENTRAL DE ATENDIMENTO
+========================================= */
 
-const canvas =
-    document.getElementById("networkCanvas");
-
-const ctx =
-    canvas.getContext("2d");
-
+const canvas = document.getElementById("networkCanvas");
+const ctx = canvas.getContext("2d");
 
 let width;
 let height;
-
-let globePoints = [];
-
-let rotation = 0;
+let animationFrame;
 
 
+/* =========================================
+   CONFIGURAÇÃO
+========================================= */
 
-/* =====================================================
-   CONFIGURAÇÕES DO GLOBO
-===================================================== */
+const config = {
 
-const settings = {
+    particles: 95,
 
-    /*
-        Quantidade de pontos
-    */
+    connectionDistance: 145,
 
-    points: 520,
+    particleSpeed: 0.25,
 
-
-    /*
-        Tamanho do planeta
-    */
-
-    globeSize: 0.75,
-
-
-    /*
-        Distância máxima entre pontos
-    */
-
-    connectionDistance: 0.34,
-
-
-    /*
-        Velocidade de rotação
-    */
-
-    rotationSpeed: 0.0007
+    pulseSpeed: 0.012
 
 };
 
 
+/* =========================================
+   PARTICULAS
+========================================= */
 
-/* =====================================================
-   AJUSTAR CANVAS
-===================================================== */
+let particles = [];
+
+let pulses = [];
+
+
+/* =========================================
+   REDIMENSIONAR
+========================================= */
 
 function resizeCanvas() {
 
-    width =
-        canvas.width =
-        canvas.offsetWidth;
+    const ratio = window.devicePixelRatio || 1;
 
+    width = canvas.clientWidth;
+    height = canvas.clientHeight;
 
-    height =
-        canvas.height =
-        canvas.offsetHeight;
+    canvas.width = width * ratio;
+    canvas.height = height * ratio;
 
+    ctx.setTransform(
+        ratio,
+        0,
+        0,
+        ratio,
+        0,
+        0
+    );
 
-    createGlobe();
-
+    createParticles();
 }
 
 
+/* =========================================
+   CRIAR PARTICULAS
+========================================= */
 
-/* =====================================================
-   CRIAR GLOBO
-===================================================== */
+function createParticles() {
 
-function createGlobe() {
+    particles = [];
 
-    globePoints = [];
+    for (let i = 0; i < config.particles; i++) {
 
+        particles.push({
 
-    /*
-        Ângulo dourado.
+            x: Math.random() * width,
 
-        Permite distribuir os pontos
-        uniformemente na esfera.
-    */
+            y: Math.random() * height,
 
-    const goldenAngle =
-        Math.PI *
-        (3 - Math.sqrt(5));
+            vx: (Math.random() - 0.5) *
+                config.particleSpeed,
 
+            vy: (Math.random() - 0.5) *
+                config.particleSpeed,
 
-    for (
-        let i = 0;
-        i < settings.points;
-        i++
-    ) {
+            radius:
+                Math.random() * 1.7 + 0.6,
 
-
-        /*
-            Coordenada vertical
-        */
-
-        const y =
-            1 -
-            (
-                i /
-                (settings.points - 1)
-            ) *
-            2;
-
-
-        /*
-            Raio da posição
-        */
-
-        const radius =
-            Math.sqrt(
-                1 -
-                y * y
-            );
-
-
-        /*
-            Ângulo
-        */
-
-        const theta =
-            goldenAngle * i;
-
-
-        /*
-            Coordenadas 3D
-        */
-
-        const x =
-            Math.cos(theta) *
-            radius;
-
-
-        const z =
-            Math.sin(theta) *
-            radius;
-
-
-        globePoints.push({
-
-            x,
-
-            y,
-
-            z,
-
-            brightness:
-                Math.random() *
-                0.5 +
-                0.5
+            alpha:
+                Math.random() * 0.5 + 0.25
 
         });
 
@@ -171,339 +98,365 @@ function createGlobe() {
 }
 
 
+/* =========================================
+   HEADSET
+========================================= */
 
-/* =====================================================
-   PROJEÇÃO 3D
-===================================================== */
+function drawHeadset(time) {
 
-function projectPoint(point) {
+    /*
+        Centro do headset
+    */
+
+    const centerX = width * 0.68;
+
+    const centerY = height * 0.50;
+
+    const scale =
+        Math.min(width, height) * 0.20;
+
+
+    ctx.save();
+
+    ctx.translate(centerX, centerY);
 
 
     /*
-        Rotação horizontal
+        Glow externo
     */
 
-    const cos =
-        Math.cos(rotation);
+    ctx.shadowColor =
+        "rgba(255,101,0,0.7)";
 
-
-    const sin =
-        Math.sin(rotation);
-
-
-    const x =
-        point.x * cos -
-        point.z * sin;
-
-
-    const z =
-        point.x * sin +
-        point.z * cos;
-
+    ctx.shadowBlur = 25;
 
 
     /*
-        Tamanho do globo
+        Arco do headset
     */
-
-    const radius =
-        Math.min(width, height) *
-        settings.globeSize;
-
-
-
-    /*
-        Perspectiva
-    */
-
-    const perspective =
-        1 /
-        (
-            1.8 -
-            z * 0.55
-        );
-
-
-
-    return {
-
-        x:
-            width * 0.48 +
-            x *
-            radius *
-            perspective,
-
-
-        y:
-            height * 0.50 +
-            point.y *
-            radius *
-            perspective,
-
-
-        z,
-
-
-        scale:
-            perspective
-
-    };
-
-}
-
-
-
-/* =====================================================
-   DESENHAR GLOBO
-===================================================== */
-
-function drawGlobe() {
-
-
-    /*
-        Limpar tela
-    */
-
-    ctx.clearRect(
-        0,
-        0,
-        width,
-        height
-    );
-
-
-
-    /* =================================================
-       BRILHO DO GLOBO
-    ================================================= */
-
-    const glow =
-        ctx.createRadialGradient(
-
-            width * 0.48,
-
-            height * 0.50,
-
-            20,
-
-            width * 0.48,
-
-            height * 0.50,
-
-            Math.min(
-                width,
-                height
-            ) * 0.46
-
-        );
-
-
-
-    glow.addColorStop(
-        0,
-        "rgba(255,90,0,0.14)"
-    );
-
-
-    glow.addColorStop(
-        0.45,
-        "rgba(255,70,0,0.05)"
-    );
-
-
-    glow.addColorStop(
-        1,
-        "rgba(255,50,0,0)"
-    );
-
-
-
-    ctx.fillStyle = glow;
-
-
 
     ctx.beginPath();
 
-
     ctx.arc(
-
-        width * 0.48,
-
-        height * 0.50,
-
-        Math.min(
-            width,
-            height
-        ) * 0.46,
-
         0,
-
+        0,
+        scale,
+        Math.PI,
         Math.PI * 2
-
     );
 
+    ctx.lineWidth = 5;
+
+    ctx.strokeStyle =
+        "rgba(255,101,0,0.9)";
+
+    ctx.stroke();
+
+
+    /*
+        segundo arco
+    */
+
+    ctx.shadowBlur = 10;
+
+    ctx.beginPath();
+
+    ctx.arc(
+        0,
+        0,
+        scale - 13,
+        Math.PI,
+        Math.PI * 2
+    );
+
+    ctx.lineWidth = 1.5;
+
+    ctx.strokeStyle =
+        "rgba(255,145,70,0.35)";
+
+    ctx.stroke();
+
+
+    /*
+        lado esquerdo
+    */
+
+    drawHeadphoneSide(
+        -scale,
+        0,
+        -1
+    );
+
+
+    /*
+        lado direito
+    */
+
+    drawHeadphoneSide(
+        scale,
+        0,
+        1
+    );
+
+
+    /*
+        microfone
+    */
+
+    ctx.shadowBlur = 18;
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        scale + 16,
+        42
+    );
+
+    ctx.bezierCurveTo(
+        scale + 55,
+        45,
+        scale + 60,
+        75,
+        scale + 32,
+        82
+    );
+
+    ctx.strokeStyle =
+        "rgba(255,101,0,0.95)";
+
+    ctx.lineWidth = 5;
+
+    ctx.lineCap = "round";
+
+    ctx.stroke();
+
+
+    /*
+        ponta do microfone
+    */
+
+    ctx.beginPath();
+
+    ctx.arc(
+        scale + 28,
+        82,
+        5,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fillStyle =
+        "#ff6500";
 
     ctx.fill();
 
 
+    /*
+        pequenas ondas de comunicação
+    */
 
-    /* =================================================
-       PROJETAR PONTOS
-    ================================================= */
+    const wave =
+        Math.sin(time * 0.002) * 4;
 
-    const projected =
-        globePoints.map(
-            point => ({
 
-                original:
-                    point,
+    ctx.shadowBlur = 15;
 
-                projected:
-                    projectPoint(point)
+    ctx.beginPath();
 
-            })
-        );
+    ctx.arc(
+        scale + 38,
+        80,
+        17 + wave,
+        -Math.PI / 2,
+        Math.PI / 2
+    );
 
+    ctx.strokeStyle =
+        "rgba(255,101,0,0.4)";
+
+    ctx.lineWidth = 1.5;
+
+    ctx.stroke();
+
+
+    ctx.beginPath();
+
+    ctx.arc(
+        scale + 38,
+        80,
+        27 + wave,
+        -Math.PI / 2,
+        Math.PI / 2
+    );
+
+    ctx.strokeStyle =
+        "rgba(255,101,0,0.18)";
+
+    ctx.stroke();
+
+
+    ctx.restore();
+
+}
+
+
+/* =========================================
+   LATERAIS DO HEADSET
+========================================= */
+
+function drawHeadphoneSide(x, y, direction) {
+
+    const size =
+        Math.min(width, height) * 0.20;
+
+
+    ctx.save();
+
+    ctx.translate(x, y);
 
 
     /*
-        Organizar por profundidade
+        concha
     */
 
-    projected.sort(
-        (a, b) =>
-            a.projected.z -
-            b.projected.z
+    ctx.beginPath();
+
+    ctx.roundRect(
+        direction * -14,
+        -15,
+        28,
+        65,
+        12
     );
 
+    ctx.fillStyle =
+        "rgba(255,101,0,0.12)";
+
+    ctx.fill();
+
+    ctx.strokeStyle =
+        "rgba(255,101,0,0.85)";
+
+    ctx.lineWidth = 4;
+
+    ctx.stroke();
 
 
-    /* =================================================
-       CONEXÕES
-    ================================================= */
+    /*
+        detalhe interno
+    */
 
-    for (
-        let i = 0;
-        i < projected.length;
-        i++
-    ) {
+    ctx.beginPath();
+
+    ctx.roundRect(
+        direction * -7,
+        -5,
+        14,
+        45,
+        7
+    );
+
+    ctx.strokeStyle =
+        "rgba(255,145,70,0.3)";
+
+    ctx.lineWidth = 1;
+
+    ctx.stroke();
 
 
-        const a =
-            projected[i];
+    ctx.restore();
+
+}
 
 
+/* =========================================
+   PARTICULAS
+========================================= */
+
+function updateParticles() {
+
+    particles.forEach(p => {
+
+        p.x += p.vx;
+        p.y += p.vy;
+
+
+        /*
+            limites
+        */
+
+        if (p.x < 0 || p.x > width) {
+            p.vx *= -1;
+        }
+
+        if (p.y < 0 || p.y > height) {
+            p.vy *= -1;
+        }
+
+    });
+
+}
+
+
+/* =========================================
+   CONEXÕES
+========================================= */
+
+function drawConnections() {
+
+    for (let i = 0; i < particles.length; i++) {
 
         for (
             let j = i + 1;
-            j < projected.length;
+            j < particles.length;
             j++
         ) {
 
+            const a = particles[i];
 
-            const b =
-                projected[j];
-
-
-
-            const dx =
-                a.original.x -
-                b.original.x;
+            const b = particles[j];
 
 
-            const dy =
-                a.original.y -
-                b.original.y;
+            const dx = a.x - b.x;
 
-
-            const dz =
-                a.original.z -
-                b.original.z;
-
-
+            const dy = a.y - b.y;
 
             const distance =
                 Math.sqrt(
                     dx * dx +
-                    dy * dy +
-                    dz * dz
+                    dy * dy
                 );
-
 
 
             if (
                 distance <
-                settings.connectionDistance
+                config.connectionDistance
             ) {
 
-
-                /*
-                    Profundidade
-
-                    Pontos da parte traseira
-                    ficam mais discretos.
-                */
-
-                const depth =
-                    Math.max(
-                        0,
-                        (
-                            a.projected.z +
-                            1
-                        ) / 2
-                    );
-
-
-
                 const opacity =
-                    (
-                        1 -
+                    (1 -
                         distance /
-                        settings.connectionDistance
-                    ) *
-                    depth *
-                    0.65;
-
+                        config.connectionDistance
+                    ) * 0.22;
 
 
                 ctx.beginPath();
 
-
-
                 ctx.moveTo(
-
-                    a.projected.x,
-
-                    a.projected.y
-
+                    a.x,
+                    a.y
                 );
-
-
 
                 ctx.lineTo(
-
-                    b.projected.x,
-
-                    b.projected.y
-
+                    b.x,
+                    b.y
                 );
-
 
 
                 ctx.strokeStyle =
-                    `rgba(
-                        255,
-                        100,
-                        20,
-                        ${opacity}
-                    )`;
+                    `rgba(255,101,0,${opacity})`;
 
-
-
-                ctx.lineWidth =
-                    0.55;
-
-
+                ctx.lineWidth = 0.7;
 
                 ctx.stroke();
 
@@ -513,162 +466,201 @@ function drawGlobe() {
 
     }
 
+}
 
 
-    /* =================================================
-       PONTOS
-    ================================================= */
+/* =========================================
+   DESENHAR PARTICULAS
+========================================= */
 
-    projected.forEach(
-        item => {
+function drawParticles() {
 
+    particles.forEach(p => {
 
-            const point =
-                item.projected;
+        ctx.beginPath();
 
+        ctx.arc(
+            p.x,
+            p.y,
+            p.radius,
+            0,
+            Math.PI * 2
+        );
 
 
-            /*
-                Profundidade
-            */
+        ctx.fillStyle =
+            `rgba(255,130,45,${p.alpha})`;
 
-            const depth =
-                Math.max(
-                    0,
-                    (
-                        point.z +
-                        1
-                    ) / 2
-                );
+        ctx.fill();
 
-
-
-            /*
-                Tamanho
-            */
-
-            const size =
-                0.65 +
-                depth * 1.7;
-
-
-
-            /*
-                Transparência
-            */
-
-            const opacity =
-                0.15 +
-                depth * 0.85;
-
-
-
-            /*
-                Ponto
-            */
-
-            ctx.beginPath();
-
-
-
-            ctx.arc(
-
-                point.x,
-
-                point.y,
-
-                size,
-
-                0,
-
-                Math.PI * 2
-
-            );
-
-
-
-            ctx.fillStyle =
-                `rgba(
-                    255,
-                    ${80 + depth * 80},
-                    ${20 + depth * 40},
-                    ${opacity}
-                )`;
-
-
-
-            ctx.fill();
-
-
-
-            /*
-                Brilho nos pontos próximos
-            */
-
-            if (
-                depth > 0.7
-            ) {
-
-
-                ctx.beginPath();
-
-
-
-                ctx.arc(
-
-                    point.x,
-
-                    point.y,
-
-                    size * 4,
-
-                    0,
-
-                    Math.PI * 2
-
-                );
-
-
-
-                ctx.fillStyle =
-                    `rgba(
-                        255,
-                        80,
-                        0,
-                        ${0.035 * depth}
-                    )`;
-
-
-
-                ctx.fill();
-
-            }
-
-        }
-    );
-
-
-
-    /* =================================================
-       ROTAÇÃO
-    ================================================= */
-
-    rotation +=
-        settings.rotationSpeed;
-
-
-
-    requestAnimationFrame(
-        drawGlobe
-    );
+    });
 
 }
 
 
+/* =========================================
+   NÓS DE ATENDIMENTO
+========================================= */
 
-/* =====================================================
-   INICIALIZAÇÃO DO GLOBO
-===================================================== */
+function drawNodes(time) {
+
+    const centerX = width * 0.68;
+
+    const centerY = height * 0.50;
+
+
+    /*
+        posições dos nós
+    */
+
+    const nodes = [
+
+        {
+            x: centerX - 210,
+            y: centerY - 130,
+            label: "CLIENTE"
+        },
+
+        {
+            x: centerX + 220,
+            y: centerY - 120,
+            label: "ATENDIMENTO"
+        },
+
+        {
+            x: centerX - 230,
+            y: centerY + 140,
+            label: "PROCEDIMENTO"
+        },
+
+        {
+            x: centerX + 220,
+            y: centerY + 150,
+            label: "SOLUÇÃO"
+        }
+
+    ];
+
+
+    nodes.forEach((node, index) => {
+
+        /*
+            linha até o centro
+        */
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            node.x,
+            node.y
+        );
+
+        ctx.lineTo(
+            centerX,
+            centerY
+        );
+
+        ctx.strokeStyle =
+            "rgba(255,101,0,0.18)";
+
+        ctx.lineWidth = 1;
+
+        ctx.stroke();
+
+
+        /*
+            pulso
+        */
+
+        const pulse =
+            (Math.sin(
+                time * 0.002 +
+                index
+            ) + 1) / 2;
+
+
+        ctx.beginPath();
+
+        ctx.arc(
+            node.x,
+            node.y,
+            4 + pulse * 3,
+            0,
+            Math.PI * 2
+        );
+
+        ctx.fillStyle =
+            "#ff6500";
+
+        ctx.shadowColor =
+            "#ff6500";
+
+        ctx.shadowBlur =
+            10 + pulse * 10;
+
+        ctx.fill();
+
+        ctx.shadowBlur = 0;
+
+
+        /*
+            label
+        */
+
+        ctx.font =
+            "700 9px Nunito";
+
+        ctx.fillStyle =
+            "rgba(255,255,255,0.35)";
+
+        ctx.textAlign = "center";
+
+        ctx.fillText(
+            node.label,
+            node.x,
+            node.y + 22
+        );
+
+    });
+
+}
+
+
+/* =========================================
+   ANIMAÇÃO
+========================================= */
+
+function animate(time) {
+
+    ctx.clearRect(
+        0,
+        0,
+        width,
+        height
+    );
+
+
+    updateParticles();
+
+
+    drawConnections();
+
+    drawParticles();
+
+    drawNodes(time);
+
+    drawHeadset(time);
+
+
+    animationFrame =
+        requestAnimationFrame(animate);
+
+}
+
+
+/* =========================================
+   INICIALIZAÇÃO
+========================================= */
 
 window.addEventListener(
     "resize",
@@ -678,219 +670,125 @@ window.addEventListener(
 
 resizeCanvas();
 
-
-drawGlobe();
-
+animate(0);
 
 
-/* =====================================================
+/* =========================================
    MOSTRAR / ESCONDER SENHA
-===================================================== */
+========================================= */
 
 const passwordInput =
-    document.getElementById(
-        "password"
-    );
-
+    document.getElementById("password");
 
 const togglePassword =
-    document.getElementById(
-        "togglePassword"
-    );
-
+    document.getElementById("togglePassword");
 
 const eyeOpen =
-    document.getElementById(
-        "eyeOpen"
-    );
-
+    document.getElementById("eyeOpen");
 
 const eyeClosed =
-    document.getElementById(
-        "eyeClosed"
-    );
-
+    document.getElementById("eyeClosed");
 
 
 togglePassword.addEventListener(
     "click",
     () => {
 
-
-        const showing =
-            passwordInput.type ===
-            "text";
+        const isPassword =
+            passwordInput.type === "password";
 
 
-
-        if (showing) {
-
-
-            passwordInput.type =
-                "password";
+        passwordInput.type =
+            isPassword
+                ? "text"
+                : "password";
 
 
-            eyeOpen.classList.remove(
-                "hidden"
-            );
+        eyeOpen.classList.toggle(
+            "hidden",
+            isPassword
+        );
 
-
-            eyeClosed.classList.add(
-                "hidden"
-            );
-
-
-            togglePassword.setAttribute(
-                "aria-label",
-                "Mostrar senha"
-            );
-
-
-        } else {
-
-
-            passwordInput.type =
-                "text";
-
-
-            eyeOpen.classList.add(
-                "hidden"
-            );
-
-
-            eyeClosed.classList.remove(
-                "hidden"
-            );
-
-
-            togglePassword.setAttribute(
-                "aria-label",
-                "Ocultar senha"
-            );
-
-        }
+        eyeClosed.classList.toggle(
+            "hidden",
+            !isPassword
+        );
 
     }
 );
 
 
-
-/* =====================================================
-   LOGIN — PREPARADO PARA SUPABASE
-===================================================== */
+/* =========================================
+   LOGIN
+========================================= */
 
 const loginForm =
-    document.getElementById(
-        "loginForm"
-    );
-
+    document.getElementById("loginForm");
 
 const loginButton =
-    document.getElementById(
-        "loginButton"
-    );
-
+    document.getElementById("loginButton");
 
 const buttonText =
-    document.getElementById(
-        "buttonText"
-    );
-
+    document.getElementById("buttonText");
 
 const buttonLoader =
-    document.getElementById(
-        "buttonLoader"
-    );
-
+    document.getElementById("buttonLoader");
 
 const loginMessage =
-    document.getElementById(
-        "loginMessage"
-    );
-
+    document.getElementById("loginMessage");
 
 
 loginForm.addEventListener(
     "submit",
-    async event => {
-
+    async (event) => {
 
         event.preventDefault();
 
 
-
         const username =
             document
-                .getElementById(
-                    "username"
-                )
+                .getElementById("username")
                 .value
                 .trim();
 
 
-
         const password =
-            document
-                .getElementById(
-                    "password"
-                )
+            passwordInput
                 .value;
 
 
-
-        /*
-            Limpar mensagem
-        */
-
-        loginMessage.textContent =
-            "";
-
-
-
-        /*
-            Validação básica
-        */
-
-        if (
-            !username ||
-            !password
-        ) {
-
+        if (!username || !password) {
 
             loginMessage.textContent =
                 "Preencha usuário e senha.";
-
 
             return;
 
         }
 
 
-
         /*
-            Estado de carregamento
+            Estado carregando
         */
 
-        loginButton.disabled =
-            true;
+        loginMessage.textContent = "";
 
+        loginButton.disabled = true;
 
         buttonText.classList.add(
             "hidden"
         );
-
 
         buttonLoader.classList.remove(
             "hidden"
         );
 
 
-
         /*
             Simulação temporária.
 
-            ESTA PARTE SERÁ SUBSTITUÍDA
-            PELO SUPABASE AUTH.
+            Aqui vamos conectar
+            o Supabase depois.
         */
 
         await new Promise(
@@ -902,29 +800,16 @@ loginForm.addEventListener(
         );
 
 
-
-        /*
-            Voltar botão
-        */
-
-        loginButton.disabled =
-            false;
-
+        loginButton.disabled = false;
 
         buttonText.classList.remove(
             "hidden"
         );
 
-
         buttonLoader.classList.add(
             "hidden"
         );
 
-
-
-        /*
-            Mensagem temporária
-        */
 
         loginMessage.textContent =
             "Login ainda não conectado ao Supabase.";
