@@ -1,12 +1,10 @@
 :root {
-    --orange: #d95300;
-    --orange-light: #e9650b;
+
+    --orange: #d65305;
+    --orange-light: #e86a16;
     --orange-dark: #b94400;
 
-    --orange-bg: #c84b00;
-
     --black: #090909;
-    --black-soft: #111111;
 
     --white: #ffffff;
 
@@ -17,9 +15,9 @@
 }
 
 
-/* =========================
+/* =====================================
    RESET
-========================= */
+===================================== */
 
 * {
     margin: 0;
@@ -36,17 +34,21 @@ body {
 
 
 body {
+
     font-family: var(--font);
-    background: var(--black);
+
+    background: #090909;
+
     overflow: hidden;
 }
 
 
-/* =========================
-   CONTAINER
-========================= */
+/* =====================================
+   CONTAINER PRINCIPAL
+===================================== */
 
 .login-container {
+
     width: 100%;
     height: 100vh;
 
@@ -54,11 +56,12 @@ body {
 }
 
 
-/* =========================
-   LADO ALCANS
-========================= */
+/* =====================================
+   ÁREA LARANJA
+===================================== */
 
 .brand-section {
+
     position: relative;
 
     width: 60%;
@@ -67,53 +70,66 @@ body {
     overflow: hidden;
 
     background:
+
         radial-gradient(
-            circle at 50% 50%,
-            rgba(245, 105, 15, 0.25),
-            transparent 35%
+            circle at 65% 50%,
+            rgba(238, 102, 15, 0.32),
+            transparent 32%
         ),
+
         radial-gradient(
-            circle at 15% 85%,
-            rgba(90, 25, 0, 0.25),
+            circle at 10% 90%,
+            rgba(70, 20, 0, 0.22),
             transparent 45%
         ),
+
         linear-gradient(
             135deg,
             #b94400 0%,
-            #c94d00 45%,
-            #b54100 100%
+            #ca4d03 48%,
+            #b64000 100%
         );
 }
 
 
-/* brilho suave */
+/* =====================================
+   BRILHO
+===================================== */
 
 .brand-section::before {
+
     content: "";
 
     position: absolute;
 
-    width: 600px;
-    height: 600px;
+    width: 650px;
+    height: 650px;
 
+    left: 72%;
     top: 50%;
-    left: 50%;
 
     transform: translate(-50%, -50%);
 
-    background: radial-gradient(
-        circle,
-        rgba(255, 130, 35, 0.18),
-        transparent 68%
-    );
+    border-radius: 50%;
+
+    background:
+
+        radial-gradient(
+            circle,
+            rgba(255, 150, 50, 0.15),
+            transparent 68%
+        );
 
     pointer-events: none;
 }
 
 
-/* sombra */
+/* =====================================
+   SOMBRA LATERAL
+===================================== */
 
 .brand-section::after {
+
     content: "";
 
     position: absolute;
@@ -121,22 +137,24 @@ body {
     inset: 0;
 
     background:
+
         linear-gradient(
             90deg,
             rgba(0, 0, 0, 0.12),
-            transparent 40%,
-            rgba(0, 0, 0, 0.15)
+            transparent 45%,
+            rgba(0, 0, 0, 0.12)
         );
 
     pointer-events: none;
 }
 
 
-/* =========================
+/* =====================================
    CANVAS
-========================= */
+===================================== */
 
 #networkCanvas {
+
     position: absolute;
 
     inset: 0;
@@ -148,11 +166,12 @@ body {
 }
 
 
-/* =========================
+/* =====================================
    OVERLAY
-========================= */
+===================================== */
 
 .brand-overlay {
+
     position: absolute;
 
     inset: 0;
@@ -160,21 +179,23 @@ body {
     z-index: 2;
 
     background:
+
         radial-gradient(
-            circle at center,
-            transparent 25%,
-            rgba(80, 20, 0, 0.10) 100%
+            circle at 70% 50%,
+            transparent 20%,
+            rgba(60, 15, 0, 0.08) 100%
         );
 
     pointer-events: none;
 }
 
 
-/* =========================
+/* =====================================
    CONTEÚDO
-========================= */
+===================================== */
 
 .brand-content {
+
     position: absolute;
 
     left: 8%;
@@ -182,16 +203,25 @@ body {
 
     transform: translateY(-50%);
 
-    width: min(500px, 75%);
+    width: min(480px, 68%);
 
     z-index: 5;
 }
 
 
+/* =====================================
+   LOGO
+===================================== */
+
 .brand-logo {
+
     color: white;
 
-    font-size: clamp(48px, 5vw, 76px);
+    font-size: clamp(
+        48px,
+        5vw,
+        74px
+    );
 
     font-weight: 900;
 
@@ -200,15 +230,25 @@ body {
     line-height: 0.95;
 
     text-shadow:
-        0 5px 20px rgba(0, 0, 0, 0.18);
+
+        0 5px 20px
+        rgba(0, 0, 0, 0.18);
 }
 
 
+/* =====================================
+   LINHA
+===================================== */
+
 .brand-line {
+
     width: 65px;
     height: 4px;
 
-    margin: 22px 0 25px;
+    margin:
+
+        22px 0
+        25px;
 
     border-radius: 10px;
 
@@ -216,10 +256,19 @@ body {
 }
 
 
+/* =====================================
+   TÍTULO
+===================================== */
+
 .brand-content h1 {
+
     color: white;
 
-    font-size: clamp(27px, 3vw, 42px);
+    font-size: clamp(
+        27px,
+        3vw,
+        40px
+    );
 
     font-weight: 800;
 
@@ -229,8 +278,20 @@ body {
 }
 
 
+/* =====================================
+   TEXTO
+===================================== */
+
 .brand-content p {
-    color: rgba(255, 255, 255, 0.88);
+
+    color:
+
+        rgba(
+            255,
+            255,
+            255,
+            0.88
+        );
 
     font-size: 17px;
 
@@ -238,15 +299,16 @@ body {
 
     font-weight: 500;
 
-    max-width: 470px;
+    max-width: 460px;
 }
 
 
-/* =========================
+/* =====================================
    STATUS
-========================= */
+===================================== */
 
 .connection-status {
+
     display: inline-flex;
 
     align-items: center;
@@ -255,7 +317,9 @@ body {
 
     margin-top: 30px;
 
-    padding: 9px 15px;
+    padding:
+
+        9px 15px;
 
     border-radius: 30px;
 
@@ -265,26 +329,50 @@ body {
 
     font-weight: 700;
 
-    background: rgba(0, 0, 0, 0.16);
+    background:
 
-    border: 1px solid rgba(255, 255, 255, 0.18);
+        rgba(
+            0,
+            0,
+            0,
+            0.16
+        );
+
+    border:
+
+        1px solid
+        rgba(
+            255,
+            255,
+            255,
+            0.18
+        );
 
     backdrop-filter: blur(8px);
 }
 
 
 .status-dot {
+
     width: 8px;
     height: 8px;
 
     border-radius: 50%;
 
-    background: #ffffff;
+    background: white;
 
     box-shadow:
-        0 0 10px rgba(255, 255, 255, 0.8);
 
-    animation: statusPulse 2s infinite;
+        0 0 10px
+        rgba(
+            255,
+            255,
+            255,
+            0.8
+        );
+
+    animation:
+        statusPulse 2s infinite;
 }
 
 
@@ -292,22 +380,29 @@ body {
 
     0%,
     100% {
+
         opacity: 1;
-        transform: scale(1);
+
+        transform:
+            scale(1);
     }
 
     50% {
+
         opacity: 0.45;
-        transform: scale(0.75);
+
+        transform:
+            scale(0.75);
     }
 }
 
 
-/* =========================
-   FOOTER ALCANS
-========================= */
+/* =====================================
+   FOOTER
+===================================== */
 
 .brand-footer {
+
     position: absolute;
 
     left: 8%;
@@ -315,7 +410,14 @@ body {
 
     z-index: 5;
 
-    color: rgba(255, 255, 255, 0.55);
+    color:
+
+        rgba(
+            255,
+            255,
+            255,
+            0.55
+        );
 
     font-size: 12px;
 
@@ -325,11 +427,12 @@ body {
 }
 
 
-/* =========================
+/* =====================================
    LOGIN
-========================= */
+===================================== */
 
 .login-section {
+
     width: 40%;
     height: 100%;
 
@@ -338,23 +441,26 @@ body {
     align-items: center;
     justify-content: center;
 
-    background: #ffffff;
+    background: white;
 
     padding: 50px;
 }
 
 
 .login-box {
+
     width: 100%;
+
     max-width: 410px;
 }
 
 
-/* =========================
-   LOGIN HEADER
-========================= */
+/* =====================================
+   CABEÇALHO
+===================================== */
 
 .login-label {
+
     display: block;
 
     color: var(--orange);
@@ -370,6 +476,7 @@ body {
 
 
 .login-header h2 {
+
     color: #111111;
 
     font-size: 32px;
@@ -383,6 +490,7 @@ body {
 
 
 .login-header p {
+
     color: #777777;
 
     font-size: 15px;
@@ -393,16 +501,18 @@ body {
 }
 
 
-/* =========================
-   INPUTS
-========================= */
+/* =====================================
+   INPUT
+===================================== */
 
 .input-group {
+
     margin-bottom: 22px;
 }
 
 
 .input-group label {
+
     display: block;
 
     color: #252525;
@@ -416,11 +526,15 @@ body {
 
 
 .input-group input {
+
     width: 100%;
 
     height: 52px;
 
-    border: 1px solid #dddddd;
+    border:
+
+        1px solid
+        #dddddd;
 
     border-radius: 9px;
 
@@ -432,50 +546,65 @@ body {
 
     color: #222222;
 
-    background: #ffffff;
+    background: white;
 
     outline: none;
 
     transition:
+
         border-color 0.2s,
         box-shadow 0.2s;
 }
 
 
 .input-group input::placeholder {
+
     color: #aaaaaa;
 }
 
 
 .input-group input:focus {
-    border-color: var(--orange);
+
+    border-color:
+        var(--orange);
 
     box-shadow:
-        0 0 0 3px rgba(217, 83, 0, 0.10);
+
+        0 0 0 3px
+        rgba(
+            214,
+            83,
+            5,
+            0.10
+        );
 }
 
 
-/* =========================
+/* =====================================
    SENHA
-========================= */
+===================================== */
 
 .password-wrapper {
+
     position: relative;
 }
 
 
 .password-wrapper input {
+
     padding-right: 50px;
 }
 
 
 .password-toggle {
+
     position: absolute;
 
     right: 14px;
     top: 50%;
 
-    transform: translateY(-50%);
+    transform:
+        translateY(-50%);
 
     width: 30px;
     height: 30px;
@@ -496,31 +625,40 @@ body {
 
 
 .password-toggle:hover {
-    color: var(--orange);
+
+    color:
+        var(--orange);
 }
 
 
 .password-toggle svg {
+
     width: 19px;
     height: 19px;
 }
 
 
 .hidden {
+
     display: none !important;
 }
 
 
-/* =========================
+/* =====================================
    MENSAGEM
-========================= */
+===================================== */
 
 .login-message {
+
     min-height: 20px;
 
-    margin: 5px 0 12px;
+    margin:
 
-    color: #d95300;
+        5px 0
+        12px;
+
+    color:
+        var(--orange);
 
     font-size: 13px;
 
@@ -528,11 +666,12 @@ body {
 }
 
 
-/* =========================
+/* =====================================
    BOTÃO
-========================= */
+===================================== */
 
 .login-button {
+
     position: relative;
 
     width: 100%;
@@ -542,7 +681,8 @@ body {
 
     border-radius: 9px;
 
-    background: var(--orange);
+    background:
+        var(--orange);
 
     color: white;
 
@@ -560,6 +700,7 @@ body {
     justify-content: center;
 
     transition:
+
         background 0.2s,
         transform 0.2s,
         box-shadow 0.2s;
@@ -567,21 +708,34 @@ body {
 
 
 .login-button:hover {
-    background: var(--orange-dark);
 
-    transform: translateY(-1px);
+    background:
+        var(--orange-dark);
+
+    transform:
+        translateY(-1px);
 
     box-shadow:
-        0 8px 20px rgba(180, 65, 0, 0.20);
+
+        0 8px 20px
+        rgba(
+            180,
+            65,
+            0,
+            0.20
+        );
 }
 
 
 .login-button:active {
-    transform: translateY(0);
+
+    transform:
+        translateY(0);
 }
 
 
 .button-arrow {
+
     position: absolute;
 
     right: 18px;
@@ -592,36 +746,51 @@ body {
 }
 
 
-/* =========================
+/* =====================================
    LOADER
-========================= */
+===================================== */
 
 .button-loader {
+
     width: 18px;
     height: 18px;
 
-    border: 2px solid rgba(255, 255, 255, 0.35);
+    border:
 
-    border-top-color: white;
+        2px solid
+        rgba(
+            255,
+            255,
+            255,
+            0.35
+        );
+
+    border-top-color:
+        white;
 
     border-radius: 50%;
 
-    animation: spin 0.7s linear infinite;
+    animation:
+        spin 0.7s linear infinite;
 }
 
 
 @keyframes spin {
+
     to {
-        transform: rotate(360deg);
+
+        transform:
+            rotate(360deg);
     }
 }
 
 
-/* =========================
+/* =====================================
    FOOTER LOGIN
-========================= */
+===================================== */
 
 .login-footer {
+
     margin-top: 30px;
 
     text-align: center;
@@ -634,9 +803,9 @@ body {
 }
 
 
-/* =========================
+/* =====================================
    RESPONSIVO
-========================= */
+===================================== */
 
 @media (max-width: 900px) {
 
@@ -644,35 +813,52 @@ body {
         overflow: auto;
     }
 
+
     .login-container {
+
         height: auto;
+
         min-height: 100vh;
 
         flex-direction: column;
     }
 
+
     .brand-section {
+
         width: 100%;
-        height: 420px;
+
+        height: 430px;
     }
+
 
     .login-section {
+
         width: 100%;
+
         min-height: 500px;
 
-        padding: 40px 25px;
+        padding:
+            40px 25px;
     }
 
+
     .brand-content {
+
         left: 8%;
+
         width: 84%;
     }
 
+
     .brand-logo {
+
         font-size: 52px;
     }
 
+
     .brand-content h1 {
+
         font-size: 30px;
     }
 }
@@ -681,27 +867,40 @@ body {
 @media (max-width: 500px) {
 
     .brand-section {
-        height: 380px;
+
+        height: 390px;
     }
+
 
     .brand-content {
+
         left: 25px;
-        width: calc(100% - 50px);
+
+        width:
+            calc(100% - 50px);
     }
 
+
     .brand-logo {
+
         font-size: 44px;
     }
 
+
     .brand-content h1 {
+
         font-size: 25px;
     }
 
+
     .brand-content p {
+
         font-size: 14px;
     }
 
+
     .brand-footer {
+
         left: 25px;
     }
 }
