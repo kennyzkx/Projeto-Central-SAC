@@ -1,1050 +1,519 @@
-/* =========================================================
+/* ==========================================
    CENTRAL SAC ALCANS
-   VISUAL + LOGIN
-========================================================= */
-
-
-/* =========================================================
-   CANVAS
-========================================================= */
+   Globo + rede de conexões
+========================================== */
 
 const canvas = document.getElementById("networkCanvas");
-
 const ctx = canvas.getContext("2d");
-
-let width;
-let height;
-
-let animationFrame;
-
-
-/* =========================================================
-   CONFIGURAÇÕES
-========================================================= */
-
-const config = {
-
-    // Quantidade de pontos da rede
-    particles: 95,
-
-    // Distância máxima entre pontos conectados
-    connectionDistance: 145,
-
-    // Velocidade dos pontos
-    particleSpeed: 0.25
-
-};
-
-
-/* =========================================================
-   PARTICULAS
-========================================================= */
 
 let particles = [];
 
+const particleCount = 65;
+const connectionDistance = 155;
 
-/* =========================================================
-   REDIMENSIONAR CANVAS
-========================================================= */
+
+/* ==========================================
+   AJUSTAR CANVAS
+========================================== */
 
 function resizeCanvas() {
 
-    const ratio =
-        window.devicePixelRatio || 1;
+    const ratio = window.devicePixelRatio || 1;
 
-    width =
-        canvas.clientWidth;
+    canvas.width = canvas.clientWidth * ratio;
+    canvas.height = canvas.clientHeight * ratio;
 
-    height =
-        canvas.clientHeight;
+    ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+}
 
+resizeCanvas();
 
-    canvas.width =
-        width * ratio;
+window.addEventListener("resize", () => {
 
-    canvas.height =
-        height * ratio;
-
-
-    ctx.setTransform(
-        ratio,
-        0,
-        0,
-        ratio,
-        0,
-        0
-    );
-
+    resizeCanvas();
 
     createParticles();
 
-}
+});
 
 
-/* =========================================================
-   CRIAR PARTICULAS
-========================================================= */
+/* ==========================================
+   PARTÍCULAS
+========================================== */
 
 function createParticles() {
 
     particles = [];
 
-
-    for (
-        let i = 0;
-        i < config.particles;
-        i++
-    ) {
+    for (let i = 0; i < particleCount; i++) {
 
         particles.push({
 
-            x:
-                Math.random() * width,
+            x: Math.random() * canvas.clientWidth,
 
-            y:
-                Math.random() * height,
+            y: Math.random() * canvas.clientHeight,
 
-            vx:
-                (Math.random() - 0.5) *
-                config.particleSpeed,
+            vx: (Math.random() - 0.5) * 0.22,
 
-            vy:
-                (Math.random() - 0.5) *
-                config.particleSpeed,
+            vy: (Math.random() - 0.5) * 0.22,
 
-            radius:
-                Math.random() * 1.7 + 0.6,
-
-            alpha:
-                Math.random() * 0.45 + 0.2
+            radius: Math.random() * 1.4 + 0.6
 
         });
 
     }
-
 }
 
 
-/* =========================================================
-   ATUALIZAR PARTICULAS
-========================================================= */
+createParticles();
+
+
+/* ==========================================
+   ATUALIZAR PARTÍCULAS
+========================================== */
 
 function updateParticles() {
 
-    particles.forEach(
-        particle => {
+    particles.forEach(p => {
 
-            particle.x +=
-                particle.vx;
-
-            particle.y +=
-                particle.vy;
+        p.x += p.vx;
+        p.y += p.vy;
 
 
-            /*
-                Rebater nas bordas
-            */
-
-            if (
-                particle.x < 0 ||
-                particle.x > width
-            ) {
-
-                particle.vx *= -1;
-
-            }
-
-
-            if (
-                particle.y < 0 ||
-                particle.y > height
-            ) {
-
-                particle.vy *= -1;
-
-            }
-
+        if (p.x < 0) {
+            p.x = canvas.clientWidth;
         }
-    );
 
+        if (p.x > canvas.clientWidth) {
+            p.x = 0;
+        }
+
+        if (p.y < 0) {
+            p.y = canvas.clientHeight;
+        }
+
+        if (p.y > canvas.clientHeight) {
+            p.y = 0;
+        }
+
+    });
 }
 
 
-/* =========================================================
-   DESENHAR CONEXÕES
-========================================================= */
+/* ==========================================
+   CONEXÕES
+========================================== */
 
 function drawConnections() {
 
-    for (
-        let i = 0;
-        i < particles.length;
-        i++
-    ) {
+    for (let i = 0; i < particles.length; i++) {
 
-        for (
-            let j = i + 1;
-            j < particles.length;
-            j++
-        ) {
+        for (let j = i + 1; j < particles.length; j++) {
 
-            const a =
-                particles[i];
+            const a = particles[i];
+            const b = particles[j];
 
-            const b =
-                particles[j];
+            const dx = a.x - b.x;
+            const dy = a.y - b.y;
+
+            const distance = Math.sqrt(
+                dx * dx + dy * dy
+            );
 
 
-            const dx =
-                a.x - b.x;
-
-            const dy =
-                a.y - b.y;
-
-
-            const distance =
-                Math.sqrt(
-                    dx * dx +
-                    dy * dy
-                );
-
-
-            if (
-                distance <
-                config.connectionDistance
-            ) {
+            if (distance < connectionDistance) {
 
                 const opacity =
-                    (
-                        1 -
-                        distance /
-                        config.connectionDistance
-                    ) * 0.20;
-
+                    (1 - distance / connectionDistance) * 0.22;
 
                 ctx.beginPath();
 
+                ctx.moveTo(a.x, a.y);
 
-                ctx.moveTo(
-                    a.x,
-                    a.y
-                );
-
-
-                ctx.lineTo(
-                    b.x,
-                    b.y
-                );
-
+                ctx.lineTo(b.x, b.y);
 
                 ctx.strokeStyle =
                     `rgba(255,255,255,${opacity})`;
 
-
-                ctx.lineWidth =
-                    0.7;
-
+                ctx.lineWidth = 0.7;
 
                 ctx.stroke();
-
             }
 
         }
 
     }
-
 }
 
 
-/* =========================================================
-   DESENHAR PARTICULAS
-========================================================= */
+/* ==========================================
+   PARTÍCULAS
+========================================== */
 
 function drawParticles() {
 
-    particles.forEach(
-        particle => {
+    particles.forEach(p => {
 
-            ctx.beginPath();
+        ctx.beginPath();
 
+        ctx.arc(
+            p.x,
+            p.y,
+            p.radius,
+            0,
+            Math.PI * 2
+        );
 
-            ctx.arc(
-                particle.x,
-                particle.y,
-                particle.radius,
-                0,
-                Math.PI * 2
-            );
+        ctx.fillStyle =
+            "rgba(255,255,255,0.45)";
 
+        ctx.fill();
 
-            ctx.fillStyle =
-                `rgba(255,255,255,${particle.alpha})`;
-
-
-            ctx.fill();
-
-        }
-    );
-
+    });
 }
 
 
-/* =========================================================
-   HEADSET
-========================================================= */
+/* ==========================================
+   GLOBO CENTRAL
+========================================== */
 
-function drawHeadset(time) {
+function drawGlobe(time) {
 
-    /*
-        Centro do headset
-    */
+    const centerX = canvas.clientWidth * 0.72;
+    const centerY = canvas.clientHeight * 0.51;
 
-    const centerX =
-        width * 0.68;
-
-    const centerY =
-        height * 0.50;
+    const radius = Math.min(
+        canvas.clientWidth,
+        canvas.clientHeight
+    ) * 0.105;
 
 
-    /*
-        Tamanho proporcional
-    */
+    /* brilho atrás do globo */
 
-    const scale =
-        Math.min(
-            width,
-            height
-        ) * 0.20;
+    const glow = ctx.createRadialGradient(
+        centerX,
+        centerY,
+        radius * 0.3,
+        centerX,
+        centerY,
+        radius * 2.4
+    );
 
+    glow.addColorStop(
+        0,
+        "rgba(255,255,255,0.12)"
+    );
+
+    glow.addColorStop(
+        1,
+        "rgba(255,255,255,0)"
+    );
+
+
+    ctx.beginPath();
+
+    ctx.arc(
+        centerX,
+        centerY,
+        radius * 2.4,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fillStyle = glow;
+
+    ctx.fill();
+
+
+    /* esfera */
+
+    ctx.beginPath();
+
+    ctx.arc(
+        centerX,
+        centerY,
+        radius,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fillStyle =
+        "rgba(110,38,0,0.30)";
+
+    ctx.fill();
+
+
+    ctx.strokeStyle =
+        "rgba(255,255,255,0.75)";
+
+    ctx.lineWidth = 1.4;
+
+    ctx.stroke();
+
+
+    /* latitude */
 
     ctx.save();
 
+    ctx.beginPath();
 
-    ctx.translate(
+    ctx.arc(
         centerX,
+        centerY,
+        radius * 0.52,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.strokeStyle =
+        "rgba(255,255,255,0.40)";
+
+    ctx.lineWidth = 0.8;
+
+    ctx.stroke();
+
+
+    /* longitude */
+
+    ctx.beginPath();
+
+    ctx.ellipse(
+        centerX,
+        centerY,
+        radius * 0.42,
+        radius,
+        0,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.strokeStyle =
+        "rgba(255,255,255,0.40)";
+
+    ctx.stroke();
+
+
+    ctx.beginPath();
+
+    ctx.ellipse(
+        centerX,
+        centerY,
+        radius * 0.78,
+        radius,
+        0,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.strokeStyle =
+        "rgba(255,255,255,0.25)";
+
+    ctx.stroke();
+
+    ctx.restore();
+
+
+    /* linhas horizontais */
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        centerX - radius,
         centerY
     );
 
+    ctx.lineTo(
+        centerX + radius,
+        centerY
+    );
 
-    /* =====================================================
-       GLOW ESCURO
-    ===================================================== */
+    ctx.strokeStyle =
+        "rgba(255,255,255,0.35)";
 
-    ctx.shadowColor =
-        "rgba(0,0,0,0.75)";
+    ctx.lineWidth = 0.8;
 
-    ctx.shadowBlur =
-        35;
+    ctx.stroke();
 
 
-    /* =====================================================
-       ARCO PRINCIPAL PRETO
-    ===================================================== */
+    /* ponto pulsante */
+
+    const pulse =
+        Math.sin(time * 0.003) * 2 + 4;
 
     ctx.beginPath();
-
 
     ctx.arc(
-        0,
-        0,
-        scale,
-        Math.PI,
-        Math.PI * 2
-    );
-
-
-    ctx.lineWidth =
-        13;
-
-
-    ctx.strokeStyle =
-        "#111111";
-
-
-    ctx.stroke();
-
-
-    /* =====================================================
-       CONTORNO BRANCO
-    ===================================================== */
-
-    ctx.shadowColor =
-        "rgba(255,255,255,0.45)";
-
-    ctx.shadowBlur =
-        8;
-
-
-    ctx.beginPath();
-
-
-    ctx.arc(
-        0,
-        0,
-        scale,
-        Math.PI,
-        Math.PI * 2
-    );
-
-
-    ctx.lineWidth =
-        3;
-
-
-    ctx.strokeStyle =
-        "rgba(255,255,255,0.9)";
-
-
-    ctx.stroke();
-
-
-    /* =====================================================
-       LINHA LARANJA INTERNA
-    ===================================================== */
-
-    ctx.shadowColor =
-        "#ff6500";
-
-    ctx.shadowBlur =
-        12;
-
-
-    ctx.beginPath();
-
-
-    ctx.arc(
-        0,
-        0,
-        scale - 7,
-        Math.PI,
-        Math.PI * 2
-    );
-
-
-    ctx.lineWidth =
-        2;
-
-
-    ctx.strokeStyle =
-        "#ff6500";
-
-
-    ctx.stroke();
-
-
-    /* =====================================================
-       FONE ESQUERDO
-    ===================================================== */
-
-    drawHeadphoneSide(
-        -scale,
-        0,
-        -1
-    );
-
-
-    /* =====================================================
-       FONE DIREITO
-    ===================================================== */
-
-    drawHeadphoneSide(
-        scale,
-        0,
-        1
-    );
-
-
-    /* =====================================================
-       MICROFONE — CORPO
-    ===================================================== */
-
-    ctx.shadowColor =
-        "rgba(0,0,0,0.85)";
-
-    ctx.shadowBlur =
-        15;
-
-
-    ctx.beginPath();
-
-
-    ctx.moveTo(
-        scale + 13,
-        40
-    );
-
-
-    ctx.bezierCurveTo(
-        scale + 48,
-        43,
-        scale + 56,
-        68,
-        scale + 30,
-        82
-    );
-
-
-    ctx.strokeStyle =
-        "#111111";
-
-
-    ctx.lineWidth =
-        11;
-
-
-    ctx.lineCap =
-        "round";
-
-
-    ctx.stroke();
-
-
-    /* =====================================================
-       MICROFONE — CONTORNO
-    ===================================================== */
-
-    ctx.shadowColor =
-        "rgba(255,255,255,0.4)";
-
-    ctx.shadowBlur =
-        8;
-
-
-    ctx.beginPath();
-
-
-    ctx.moveTo(
-        scale + 13,
-        40
-    );
-
-
-    ctx.bezierCurveTo(
-        scale + 48,
-        43,
-        scale + 56,
-        68,
-        scale + 30,
-        82
-    );
-
-
-    ctx.strokeStyle =
-        "rgba(255,255,255,0.85)";
-
-
-    ctx.lineWidth =
-        3;
-
-
-    ctx.stroke();
-
-
-    /* =====================================================
-       PONTA DO MICROFONE
-    ===================================================== */
-
-    ctx.shadowColor =
-        "#ff6500";
-
-    ctx.shadowBlur =
-        22;
-
-
-    ctx.beginPath();
-
-
-    ctx.arc(
-        scale + 28,
-        82,
-        6,
+        centerX,
+        centerY,
+        pulse,
         0,
         Math.PI * 2
     );
-
 
     ctx.fillStyle =
-        "#ff6500";
-
-
-    ctx.fill();
-
-
-    /* =====================================================
-       ONDAS DE COMUNICAÇÃO
-    ===================================================== */
-
-    const wave =
-        Math.sin(
-            time * 0.002
-        ) * 4;
-
-
-    ctx.shadowColor =
-        "#ff6500";
-
-    ctx.shadowBlur =
-        10;
-
-
-    /*
-        Onda 1
-    */
-
-    ctx.beginPath();
-
-
-    ctx.arc(
-        scale + 38,
-        80,
-        18 + wave,
-        -Math.PI / 2,
-        Math.PI / 2
-    );
-
-
-    ctx.strokeStyle =
-        "rgba(255,255,255,0.9)";
-
-
-    ctx.lineWidth =
-        2;
-
-
-    ctx.stroke();
-
-
-    /*
-        Onda 2
-    */
-
-    ctx.beginPath();
-
-
-    ctx.arc(
-        scale + 38,
-        80,
-        29 + wave,
-        -Math.PI / 2,
-        Math.PI / 2
-    );
-
-
-    ctx.strokeStyle =
-        "rgba(255,255,255,0.45)";
-
-
-    ctx.lineWidth =
-        1.5;
-
-
-    ctx.stroke();
-
-
-    /* =====================================================
-       PONTO CENTRAL
-    ===================================================== */
-
-    ctx.shadowColor =
-        "#ff6500";
-
-    ctx.shadowBlur =
-        25;
-
-
-    ctx.beginPath();
-
-
-    ctx.arc(
-        0,
-        0,
-        5,
-        0,
-        Math.PI * 2
-    );
-
-
-    ctx.fillStyle =
-        "#ff6500";
-
+        "rgba(255,255,255,0.75)";
 
     ctx.fill();
-
-
-    ctx.restore();
-
 }
 
 
-/* =========================================================
-   FONES LATERAIS
-========================================================= */
+/* ==========================================
+   CONEXÕES DO GLOBO
+========================================== */
 
-function drawHeadphoneSide(
-    x,
-    y,
-    direction
-) {
+function drawGlobeConnections(time) {
 
-    ctx.save();
+    const centerX = canvas.clientWidth * 0.72;
+    const centerY = canvas.clientHeight * 0.51;
 
+    const radius = Math.min(
+        canvas.clientWidth,
+        canvas.clientHeight
+    ) * 0.105;
 
-    ctx.translate(
-        x,
-        y
-    );
 
-
-    /* =====================================================
-       CORPO PRETO
-    ===================================================== */
-
-    ctx.shadowColor =
-        "rgba(0,0,0,0.8)";
-
-    ctx.shadowBlur =
-        20;
-
-
-    ctx.beginPath();
-
-
-    ctx.roundRect(
-        direction * -16,
-        -17,
-        32,
-        68,
-        13
-    );
-
-
-    ctx.fillStyle =
-        "#111111";
-
-
-    ctx.fill();
-
-
-    /* =====================================================
-       BORDA BRANCA
-    ===================================================== */
-
-    ctx.shadowColor =
-        "rgba(255,255,255,0.4)";
-
-    ctx.shadowBlur =
-        8;
-
-
-    ctx.strokeStyle =
-        "rgba(255,255,255,0.9)";
-
-
-    ctx.lineWidth =
-        2.5;
-
-
-    ctx.stroke();
-
-
-    /* =====================================================
-       DETALHE INTERNO LARANJA
-    ===================================================== */
-
-    ctx.shadowColor =
-        "#ff6500";
-
-    ctx.shadowBlur =
-        12;
-
-
-    ctx.beginPath();
-
-
-    ctx.roundRect(
-        direction * -8,
-        -6,
-        16,
-        46,
-        7
-    );
-
-
-    ctx.fillStyle =
-        "rgba(255,101,0,0.4)";
-
-
-    ctx.fill();
-
-
-    ctx.strokeStyle =
-        "#ff6500";
-
-
-    ctx.lineWidth =
-        1.5;
-
-
-    ctx.stroke();
-
-
-    /* =====================================================
-       LED
-    ===================================================== */
-
-    ctx.beginPath();
-
-
-    ctx.arc(
-        0,
-        28,
-        2.5,
-        0,
-        Math.PI * 2
-    );
-
-
-    ctx.fillStyle =
-        "#ff6500";
-
-
-    ctx.fill();
-
-
-    ctx.restore();
-
-}
-
-
-/* =========================================================
-   NÓS DE ATENDIMENTO
-========================================================= */
-
-function drawNodes(time) {
-
-    const centerX =
-        width * 0.68;
-
-    const centerY =
-        height * 0.50;
-
-
-    /*
-        Nós da Central
-    */
-
-    const nodes = [
+    const points = [
 
         {
-            x: centerX - 210,
-            y: centerY - 130,
+            x: centerX - radius * 2.8,
+            y: centerY - radius * 1.3,
             label: "CLIENTE"
         },
 
         {
-            x: centerX + 220,
-            y: centerY - 120,
+            x: centerX + radius * 2.7,
+            y: centerY - radius * 1.1,
             label: "ATENDIMENTO"
         },
 
         {
-            x: centerX - 230,
-            y: centerY + 140,
+            x: centerX - radius * 2.5,
+            y: centerY + radius * 1.6,
             label: "PROCEDIMENTO"
         },
 
         {
-            x: centerX + 220,
-            y: centerY + 150,
+            x: centerX + radius * 2.5,
+            y: centerY + radius * 1.5,
             label: "SOLUÇÃO"
         }
 
     ];
 
 
-    nodes.forEach(
-        (node, index) => {
+    points.forEach((point, index) => {
 
-            /* =============================================
-               LINHA ATÉ O HEADSET
-            ============================================= */
-
-            ctx.beginPath();
+        const wave =
+            Math.sin(time * 0.002 + index) * 0.15 + 0.85;
 
 
-            ctx.moveTo(
-                node.x,
-                node.y
-            );
+        /* linha */
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            centerX,
+            centerY
+        );
+
+        ctx.lineTo(
+            point.x,
+            point.y
+        );
+
+        ctx.strokeStyle =
+            `rgba(255,255,255,${0.13 * wave})`;
+
+        ctx.lineWidth = 1;
+
+        ctx.stroke();
 
 
-            ctx.lineTo(
-                centerX,
-                centerY
-            );
+        /* pequeno ponto */
+
+        ctx.beginPath();
+
+        ctx.arc(
+            point.x,
+            point.y,
+            3,
+            0,
+            Math.PI * 2
+        );
+
+        ctx.fillStyle =
+            `rgba(255,255,255,${0.65 * wave})`;
+
+        ctx.fill();
 
 
-            ctx.strokeStyle =
-                "rgba(255,255,255,0.28)";
+        /* etiqueta */
 
+        ctx.font =
+            "700 9px Nunito";
 
-            ctx.lineWidth =
-                1;
+        ctx.fillStyle =
+            `rgba(255,255,255,${0.55 * wave})`;
 
+        ctx.textAlign = "center";
 
-            ctx.stroke();
+        ctx.fillText(
+            point.label,
+            point.x,
+            point.y - 10
+        );
 
-
-            /* =============================================
-               PULSO
-            ============================================= */
-
-            const pulse =
-                (
-                    Math.sin(
-                        time * 0.002 +
-                        index
-                    ) + 1
-                ) / 2;
-
-
-            ctx.beginPath();
-
-
-            ctx.arc(
-                node.x,
-                node.y,
-                4 + pulse * 3,
-                0,
-                Math.PI * 2
-            );
-
-
-            ctx.fillStyle =
-                "#ff6500";
-
-
-            ctx.shadowColor =
-                "#ff6500";
-
-
-            ctx.shadowBlur =
-                12 + pulse * 12;
-
-
-            ctx.fill();
-
-
-            ctx.shadowBlur = 0;
-
-
-            /* =============================================
-               LABEL
-            ============================================= */
-
-            ctx.font =
-                "800 9px Nunito";
-
-
-            ctx.fillStyle =
-                "rgba(255,255,255,0.7)";
-
-
-            ctx.textAlign =
-                "center";
-
-
-            ctx.fillText(
-                node.label,
-                node.x,
-                node.y + 22
-            );
-
-        }
-    );
-
+    });
 }
 
 
-/* =========================================================
+/* ==========================================
    ANIMAÇÃO
-========================================================= */
+========================================== */
 
 function animate(time) {
 
     ctx.clearRect(
         0,
         0,
-        width,
-        height
+        canvas.clientWidth,
+        canvas.clientHeight
     );
 
 
     updateParticles();
 
-
     drawConnections();
-
 
     drawParticles();
 
+    drawGlobeConnections(time);
 
-    drawNodes(time);
-
-
-    drawHeadset(time);
+    drawGlobe(time);
 
 
-    animationFrame =
-        requestAnimationFrame(
-            animate
-        );
-
+    requestAnimationFrame(animate);
 }
 
 
-/* =========================================================
-   INICIAR CANVAS
-========================================================= */
-
-window.addEventListener(
-    "resize",
-    resizeCanvas
-);
+requestAnimationFrame(animate);
 
 
-resizeCanvas();
-
-
-animate(0);
-
-
-/* =========================================================
+/* ==========================================
    MOSTRAR / ESCONDER SENHA
-========================================================= */
+========================================== */
 
 const passwordInput =
-    document.getElementById(
-        "password"
-    );
-
+    document.getElementById("password");
 
 const togglePassword =
-    document.getElementById(
-        "togglePassword"
-    );
-
+    document.getElementById("togglePassword");
 
 const eyeOpen =
-    document.getElementById(
-        "eyeOpen"
-    );
-
+    document.getElementById("eyeOpen");
 
 const eyeClosed =
-    document.getElementById(
-        "eyeClosed"
-    );
+    document.getElementById("eyeClosed");
 
 
 togglePassword.addEventListener(
@@ -1052,21 +521,17 @@ togglePassword.addEventListener(
     () => {
 
         const isPassword =
-            passwordInput.type ===
-            "password";
+            passwordInput.type === "password";
 
 
         passwordInput.type =
-            isPassword
-                ? "text"
-                : "password";
+            isPassword ? "text" : "password";
 
 
         eyeOpen.classList.toggle(
             "hidden",
             isPassword
         );
-
 
         eyeClosed.classList.toggle(
             "hidden",
@@ -1077,142 +542,79 @@ togglePassword.addEventListener(
 );
 
 
-/* =========================================================
+/* ==========================================
    LOGIN
-========================================================= */
+========================================== */
 
 const loginForm =
-    document.getElementById(
-        "loginForm"
-    );
-
+    document.getElementById("loginForm");
 
 const loginButton =
-    document.getElementById(
-        "loginButton"
-    );
-
+    document.getElementById("loginButton");
 
 const buttonText =
-    document.getElementById(
-        "buttonText"
-    );
-
+    document.getElementById("buttonText");
 
 const buttonLoader =
-    document.getElementById(
-        "buttonLoader"
-    );
-
+    document.getElementById("buttonLoader");
 
 const loginMessage =
-    document.getElementById(
-        "loginMessage"
-    );
+    document.getElementById("loginMessage");
 
 
 loginForm.addEventListener(
     "submit",
-    async event => {
+    function (event) {
 
         event.preventDefault();
 
 
         const username =
             document
-                .getElementById(
-                    "username"
-                )
+                .getElementById("username")
                 .value
                 .trim();
 
 
         const password =
-            passwordInput.value;
+            document
+                .getElementById("password")
+                .value
+                .trim();
 
 
-        /* =============================================
-           VALIDAÇÃO
-        ============================================= */
+        loginMessage.textContent = "";
 
-        if (
-            !username ||
-            !password
-        ) {
+
+        if (!username || !password) {
 
             loginMessage.textContent =
-                "Preencha usuário e senha.";
+                "Preencha o usuário e a senha.";
 
             return;
-
         }
 
 
-        /* =============================================
-           LOADING
-        ============================================= */
+        buttonText.classList.add("hidden");
 
-        loginMessage.textContent =
-            "";
+        buttonLoader.classList.remove("hidden");
 
-
-        loginButton.disabled =
-            true;
+        loginButton.disabled = true;
 
 
-        buttonText.classList.add(
-            "hidden"
-        );
+        setTimeout(() => {
+
+            buttonText.classList.remove("hidden");
+
+            buttonLoader.classList.add("hidden");
+
+            loginButton.disabled = false;
 
 
-        buttonLoader.classList.remove(
-            "hidden"
-        );
+            loginMessage.textContent =
+                "Login ainda não conectado ao Supabase.";
 
-
-        /* =============================================
-           SIMULAÇÃO TEMPORÁRIA
-           
-           Depois vamos substituir
-           isso pelo Supabase Auth.
-        ============================================= */
-
-        await new Promise(
-            resolve => {
-
-                setTimeout(
-                    resolve,
-                    1000
-                );
-
-            }
-        );
-
-
-        /* =============================================
-           FINALIZAR LOADING
-        ============================================= */
-
-        loginButton.disabled =
-            false;
-
-
-        buttonText.classList.remove(
-            "hidden"
-        );
-
-
-        buttonLoader.classList.add(
-            "hidden"
-        );
-
-
-        /* =============================================
-           MENSAGEM TEMPORÁRIA
-        ============================================= */
-
-        loginMessage.textContent =
-            "Login ainda não conectado ao Supabase.";
+        }, 1000);
 
     }
 );
